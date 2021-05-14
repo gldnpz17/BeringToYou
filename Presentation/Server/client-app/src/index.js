@@ -4,9 +4,13 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import HomePage from './pages/home-page';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { ThemeProvider } from 'react-bootstrap';
+import App from './app';
+
 ReactDOM.render(
   <React.StrictMode>
-    <HomePage />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );
