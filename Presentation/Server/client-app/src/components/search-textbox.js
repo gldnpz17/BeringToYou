@@ -4,6 +4,7 @@ import SearchIcon from "../svg/search-icon";
 
 const StyledInputGroup = styled(InputGroup)`
   box-shadow: ${props => props.theme.shadow} 0rem 0.1rem 0.3rem;
+  border-radius: 0.25rem;
 
   svg {
     color: black;
@@ -15,6 +16,7 @@ const StyledSearchButton = styled(Button)`
   border-color: ${props => props.theme.secondary};
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
+  z-index: 0 !important;
 `;
 
 const SearchTextBox = ({ className, placeholder }) => {

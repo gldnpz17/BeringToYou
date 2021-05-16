@@ -10,18 +10,18 @@ const StyledCard = styled(Card)`
   overflow: hidden;
 `;
 
-const ProductCategoryCard = ({ image, name, itemCount, style, className }) => {
+const ShopCard = ({ image, name, category, style, className }) => {
   return (
     <StyledCard className={`m-0 ${className}`} style={style}>
       <Card.Body className='p-0 d-flex flex-column h-100'>
-        <img className='flex-grow-1' src='dummy-images/vegetables.jpg' style={{objectFit: 'cover'}} />
+        <img className='flex-grow-1' src='dummy-images/food-stall.jpg' style={{objectFit: 'cover'}} />
         <div className='p-1'>
           <p className='m-0'><b>{name}</b></p>
-          <p className='m-0'>123 Items</p>
+          <p className='m-0'>Makanan & Jajanan</p>
         </div>
       </Card.Body>
     </StyledCard>
   );
 };
   
-export default ProductCategoryCard;
+export default ShopCard;

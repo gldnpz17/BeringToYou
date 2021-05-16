@@ -1,7 +1,10 @@
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import NavigationBar from "./components/navigation-bar";
 import NavigationOverlay from "./overlays/navigation-overlay";
 import HomePage from "./pages/home-page";
+import ProductSearchPage from "./pages/product-search-page";
+import ShopListPage from "./pages/shop-list-page";
 
 const App = () => {
   const theme = {
@@ -17,9 +20,21 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <NavigationBar />
-      <NavigationOverlay id='navigation-overlay' />
-      <HomePage />
+      <BrowserRouter>
+        <NavigationBar />
+        <NavigationOverlay id='navigation-overlay' />
+        <Switch>
+          <Route exact path='/'>
+            <HomePage />
+          </Route>
+          <Route path='/toko'>
+            <ShopListPage />
+          </Route>
+          <Route path='/produk'>
+            <ProductSearchPage />
+          </Route>
+        </Switch>
+      </BrowserRouter>
     </ThemeProvider>
   );
 };

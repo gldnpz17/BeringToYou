@@ -4,7 +4,7 @@ import IconButton from "../components/icon-button";
 import ProductCategoryCard from "../components/product-category-card";
 import SearchTextBox from "../components/search-textbox";
 import MapIcon from "../svg/map-icon";
-import StoreIcon from '../svg/store-icon';
+import ShopIcon from '../svg/shop-icon';
 
 const StyledContainer = styled(Container)`
   font-family: 'Roboto';
@@ -108,7 +108,7 @@ const HomePage = () => {
               <MapIcon style={{height: '1.6rem', width: '1.6rem'}} />
             </IconButton>
             <IconButton text='Toko' className='mx-2'>
-              <StoreIcon style={{height: '1.6rem', width: '1.6rem'}} />
+              <ShopIcon style={{height: '1.6rem', width: '1.6rem'}} />
             </IconButton>
           </div>
 
@@ -128,8 +128,8 @@ const HomePage = () => {
               width='100%'
               loading='lazy'
               allowfullscreen
-              src='https://www.google.com/maps/embed/v1/place?q=place_id:ChIJYTfKAv73ei4RDEEL-U286zk&key=AIzaSyBtalCC-R8JSIvQMaIPRMubGYRaOtUbgpM'>
-            </iframe>
+              src='https://www.google.com/maps/embed/v1/place?q=place_id:ChIJYTfKAv73ei4RDEEL-U286zk&key=AIzaSyBtalCC-R8JSIvQMaIPRMubGYRaOtUbgpM'
+            />
           </div>
         </StyledContainer>
       </ParallexFront>

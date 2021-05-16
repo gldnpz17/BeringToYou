@@ -3,7 +3,7 @@ import NavMenuItem from '../components/nav-menu-item';
 import HomeIcon from '../svg/home-icon';
 import MapIcon from "../svg/map-icon";
 import SearchIcon from "../svg/search-icon";
-import StoreIcon from "../svg/store-icon";
+import ShopIcon from "../svg/shop-icon";
 import AdminIcon from '../svg/admin-icon';
 
 const Container = styled.div`
@@ -14,6 +14,7 @@ const Container = styled.div`
   left: 0;
   top: 0;
   background-color:  rgba(0, 0, 0, 0.85);
+  
   transition: 0.5s;
 
   color: whitesmoke;
@@ -39,14 +40,14 @@ const NavigationOverlay = ({ id }) => {
   return (
     <Container id={id} className='d-flex justify-content-center align-items-center overflow-hidden'>
       <Content>
-        <NavMenuItem name='Home'>
+        <NavMenuItem name='Beranda' href='/'>
           <HomeIcon />
         </NavMenuItem>
-        <NavMenuItem name='Cari Produk'>
+        <NavMenuItem name='Cari Produk' href='/produk'>
           <SearchIcon />
         </NavMenuItem>
-        <NavMenuItem name='Toko'>
-          <StoreIcon />
+        <NavMenuItem name='Toko' href='/toko'>
+          <ShopIcon />
         </NavMenuItem>
         <NavMenuItem name='Peta Digital'>
           <MapIcon />
