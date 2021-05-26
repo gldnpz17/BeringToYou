@@ -78,11 +78,11 @@ const ProductSearchPage = () => {
         </RadioIconButton>
       </div>
 
-      <Row className={`${(DisplayOptions.productDisplayMode === 'list' ? 'row-cols-1' : 'row-cols-2')} mx-2`}>
+      <Row className={`d-flex justify-content-center ${(DisplayOptions.productDisplayMode === 'list' ? 'row-cols-1' : 'row-cols-2 row-cols-lg-6')} mx-2`} >
         {
           [...Array(10).keys()].map(item => {
             return (
-              <Col className={`${(displayMode === 'list' ? 'px-0' : 'px-1')} py-2`}>
+              <Col className={`${(displayMode === 'list' ? 'px-0' : 'px-1')} py-2`} >
                 <ProductCard image='/dummy-images/vegetables.jpg' displayMode={displayMode} />
               </Col>
             );

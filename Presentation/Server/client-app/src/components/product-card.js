@@ -30,45 +30,79 @@ const StyledCard = styled(CustomCard)`
 
 const StyledListCardBody = styled(Card.Body)`
   padding: 0.75rem;
+
+  &.display-list {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+
+    .item-image {
+      width: 3.5rem;
+      height: 3.5rem;
+      object-fit: cover;
+      margin-right: 0.5rem;
+    }
+
+    .item-info-container {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      width: 100%;
+    }
+
+    .item-title,.item-shop,.item-price {
+      margin: 0;
+    }
+
+    .item-shop {
+      flex-grow: 1;
+    }
+
+    .item-price {
+      text-align: end;
+    }
+  }
+
+  &.display-card {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .item-image {
+      flex-grow: 1;
+      object-fit: cover;
+    }
+
+    .item-info-container {
+      padding: 0.5rem;
+    }
+
+    .item-title,.item-shop,.item-price {
+      margin: 0;
+    }
+
+    .item-shop {
+      margin-bottom: 0.5rem;
+    }
+
+    .item-price {
+      text-align: end;
+    }
+  }
 `;
 
 const ProductCard = ({ image, productName, shopName, price, displayMode, style, className }) => {
-  const getCardBody = () => {
-    if (displayMode === 'list') {
-      return (
-        <StyledListCardBody className='d-flex flex-row align-item-top'>
-          <img src={image} className='me-2' style={{width: '3.5rem', height: '3.5rem', objectFit: 'cover'}} />
-          <div className='flex-grow-1 d-flex flex-column' style={{width: '100%'}}>
-            <p className='m-0 item-title'>Lorem Ipsum</p>
-            <p className='m-0 item-shop flex-grow-1'>Toko Lorem</p>
-            <p className='m-0 text-end item-price'>Rp 12.345</p>
-          </div>
-        </StyledListCardBody>
-      );
-    } else if (displayMode === 'card') {
-      return (
-        <Card.Body className='p-0 d-flex flex-column h-100'>
-          <img className='flex-grow-1' src={image} style={{objectFit: 'cover'}} />
-          <div className='p-1'>
-            <p className='m-0 item-title'>Lorem Ipsum</p>
-            <p className='m-0 item-shop flex-grow-1'>Toko Lorem</p>
-            <p className='m-0 text-end item-price'>Rp 12.345</p>
-          </div>
-        </Card.Body>
-      );
-    } else {
-      throw new Error('Invalid displayMode.');
-    }
-  };
-
-  const showViewProductOverlay = () => {
-    document.getElementById('view-product-overlay').style.opacity = 1.0;
-    document.getElementById('view-product-overlay').style.visibility = 'visible';
-  }
-
   return (
     <StyledCard className={`m-0 ${className}`} style={style} onClick={() => window.location.href='/produk/idproduk'}>
-      {getCardBody()}
+      <StyledListCardBody className={`display-${displayMode}`}>
+        <img src={image} className='item-image' />
+        <div className='item-info-container' >
+          <p className='item-title'>Lorem Ipsum</p>
+          <p className='item-shop'>Toko Lorem</p>
+          <p className='item-price'>Rp 12.345</p>
+        </div>
+      </StyledListCardBody>
     </StyledCard>
   );
 };
