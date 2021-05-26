@@ -7,9 +7,9 @@ const StyledCard = styled(CustomCard)`
   color: black;
 `;
 
-const ProductCategoryCard = ({ image, name, itemCount, style, className }) => {
+const ProductCategoryCard = ({ image, name, itemCount, style, className, onClick }) => {
   return (
-    <StyledCard className={`m-0 ${className}`} style={style}>
+    <StyledCard className={`m-0 ${className}`} style={style} onClick={onClick}>
       <Card.Body className='p-0 d-flex flex-column h-100'>
         <img className='flex-grow-1' src='dummy-images/vegetables.jpg' style={{objectFit: 'cover'}} />
         <div className='p-1'>

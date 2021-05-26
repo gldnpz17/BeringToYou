@@ -10,6 +10,8 @@ import AddcategoryIcon from "../svg/add-category-icon";
 import { Form } from "react-bootstrap";
 import FormRadio from '../components/form-radio';
 import CustomButton from '../components/custom-button';
+import SelectProductCategoryOverlay from "./select-product-category-overlay";
+import { useState } from "react";
 
 const OverlayContainer = styled.div`
   position: fixed;
@@ -65,12 +67,15 @@ const OverlayBackground = styled.div`
 `;
 
 const ProductSearchOptionsOverlay = ({ setVisible, visible }) => {
+  const [categoryOverlayVisible, setCategoryOverlayVisible] = useState(false);
+
   return (
     <OverlayContainer className='d-flex flex-row justify-content-end'
       style={{
         visibility: visible ? 'visible' : 'hidden'
       }}
     >
+      <SelectProductCategoryOverlay visible={categoryOverlayVisible} setVisible={setCategoryOverlayVisible} />
       <OverlayBackground onClick={() => { setVisible(false) }}
         style={{
           opacity: visible ? '100%' : '0%'
@@ -95,7 +100,9 @@ const ProductSearchOptionsOverlay = ({ setVisible, visible }) => {
             }
           </div>
           <div className='d-flex justify-content-center m-1'>
-            <IconButton text='Tambah Kategori'>
+            <IconButton text='Tambah Kategori' onClick={() => {
+              setCategoryOverlayVisible(true);
+            }}>
               <AddcategoryIcon style={{width: '1.2rem', height: '1.2rem'}} />
             </IconButton>
           </div>
