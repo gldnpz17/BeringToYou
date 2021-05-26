@@ -3,6 +3,12 @@ import styled from "styled-components";
 const StyledAnchor = styled.a`
   color: ${props => props.theme.whitespace};
   text-decoration: none;
+
+  transition-duration: 0.2s;
+
+  :active,:focus,:hover {
+    color: ${props => props.theme.secondaryDark};
+  }
 `;
 
 const NavMenuItem = ({ href, name, children, className }) => {

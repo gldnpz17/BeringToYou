@@ -1,19 +1,13 @@
 import { Button } from "react-bootstrap";
 import styled from "styled-components";
-
-const StyledButton = styled(Button)`
-  background-color: ${props => props.theme.secondary};
-  border-color: ${props => props.theme.secondary};
-  color: black;
-  box-shadow: ${props => props.theme.shadow} 0rem 0.15rem 0.3rem;
-`;
+import CustomButton from "./custom-button";
 
 const ButtonText = styled.p`
   font-size: 1.25rem;
   line-height: 95%;
 `;
 
-const IconButton = ({ children, text, onClick, className, iconOnly }) => {
+const IconButton = ({ children, text, onClick, className, iconOnly, id }) => {
   let buttonContent = null;
   if (iconOnly) {
     buttonContent = children;
@@ -27,9 +21,9 @@ const IconButton = ({ children, text, onClick, className, iconOnly }) => {
   }
 
   return (
-    <StyledButton className={`${iconOnly ? '' : 'py-1 px-2'} ${className}`} onClick={onClick}>
+    <CustomButton id={id} variant='none' className={`${iconOnly ? '' : 'py-1 px-2'} ${className}`} onClick={onClick}>
       {buttonContent}
-    </StyledButton>
+    </CustomButton>
   );
 };
 

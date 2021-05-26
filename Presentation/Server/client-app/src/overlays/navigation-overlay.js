@@ -9,7 +9,7 @@ import AdminIcon from '../svg/admin-icon';
 const Container = styled.div`
   height: 0%;
   width: 100%;
-  z-index: 1;
+  z-index: 10;
   position: fixed;
   left: 0;
   top: 0;
@@ -21,7 +21,7 @@ const Container = styled.div`
 `;
 
 const Content = styled.div`
-  z-index: 2;
+  z-index: 10;
 
   p {
     font-weight: lighter;

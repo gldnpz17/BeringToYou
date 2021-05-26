@@ -1,13 +1,10 @@
 import { Card } from "react-bootstrap";
 import styled from "styled-components";
+import CustomCard from "./custom-card";
 
-const StyledCard = styled(Card)`
+const StyledCard = styled(CustomCard)`
   font-family: 'Open Sans';
   color: black;
-  box-shadow: ${props => props.theme.shadow} 0.2rem 0.2rem 0.4rem;
-
-  border: none;
-  overflow: hidden;
 `;
 
 const ProductCategoryCard = ({ image, name, itemCount, style, className }) => {

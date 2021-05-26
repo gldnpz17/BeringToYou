@@ -1,13 +1,11 @@
 import { Card } from "react-bootstrap";
 import styled from "styled-components";
+import ViewProductOverlay from "../overlays/view-product-overlay";
+import CustomCard from './custom-card';
 
-const StyledCard = styled(Card)`
+const StyledCard = styled(CustomCard)`
   font-family: 'Roboto';
   color: black;
-  box-shadow: ${props => props.theme.shadow} 0 0.2rem 0.4rem;
-
-  border: none;
-  overflow: hidden;
 
   p {
     line-height: 98%;
@@ -50,7 +48,7 @@ const ProductCard = ({ image, productName, shopName, price, displayMode, style, 
     } else if (displayMode === 'card') {
       return (
         <Card.Body className='p-0 d-flex flex-column h-100'>
-          <img className='flex-grow-1' src='dummy-images/vegetables.jpg' style={{objectFit: 'cover'}} />
+          <img className='flex-grow-1' src={image} style={{objectFit: 'cover'}} />
           <div className='p-1'>
             <p className='m-0 item-title'>Lorem Ipsum</p>
             <p className='m-0 item-shop flex-grow-1'>Toko Lorem</p>
@@ -61,10 +59,15 @@ const ProductCard = ({ image, productName, shopName, price, displayMode, style, 
     } else {
       throw new Error('Invalid displayMode.');
     }
+  };
+
+  const showViewProductOverlay = () => {
+    document.getElementById('view-product-overlay').style.opacity = 1.0;
+    document.getElementById('view-product-overlay').style.visibility = 'visible';
   }
 
   return (
-    <StyledCard className={`m-0 ${className}`} style={style}>
+    <StyledCard className={`m-0 ${className}`} style={style} onClick={() => window.location.href='/produk/idproduk'}>
       {getCardBody()}
     </StyledCard>
   );

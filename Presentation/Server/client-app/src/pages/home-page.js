@@ -1,5 +1,6 @@
 import { Button, CardDeck, Col, Container, Row } from "react-bootstrap";
 import styled from "styled-components";
+import AnimatedSearchTextBox from "../components/animated-search-texbox";
 import IconButton from "../components/icon-button";
 import ProductCategoryCard from "../components/product-category-card";
 import SearchTextBox from "../components/search-textbox";
@@ -101,7 +102,11 @@ const HomePage = () => {
           <h1 id='welcome-title' className='content-text text-center m-0'>Selamat Datang!</h1>
           <p id='welcome-subtitle' className='content-text text-center m-0'>Butuh apa hari ini?</p>
           <div className='p-4'>
-            <SearchTextBox placeholder='Cari produk' />
+            <AnimatedSearchTextBox placeholders={[
+              'Baju batik',
+              'Bakpia',
+              'Gula jawa'
+            ]} />
           </div>
           <div className='d-flex flex-row justify-content-center mb-4'>
             <IconButton text='Peta' className='mx-2'>
