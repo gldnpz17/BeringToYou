@@ -49,7 +49,7 @@ const NavigationOverlay = ({ id }) => {
         <NavMenuItem name='Toko' href='/toko'>
           <ShopIcon />
         </NavMenuItem>
-        <NavMenuItem name='Peta Digital'>
+        <NavMenuItem name='Peta Digital' href='/peta'>
           <MapIcon />
         </NavMenuItem>
         <NavMenuItem name='Administrasi'>

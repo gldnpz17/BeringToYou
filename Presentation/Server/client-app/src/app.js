@@ -6,6 +6,7 @@ import NavigationBar from "./components/navigation-bar";
 import NavigationOverlay from "./overlays/navigation-overlay";
 import ViewProductOverlay from './overlays/view-product-overlay';
 import HomePage from "./pages/home-page";
+import MarketMapPage from './pages/market-map-page';
 import ProductDetailsPage from './pages/product-details-page';
 import ProductSearchPage from "./pages/product-search-page";
 import ShopListPage from "./pages/shop-list-page";
@@ -49,6 +50,9 @@ const App = () => {
           </Route>
           <Route path='/produk/idproduk'>
             <ProductDetailsPage />
+          </Route>
+          <Route path='/peta'>
+            <MarketMapPage />
           </Route>
         </Switch>
       </BrowserRouter>
