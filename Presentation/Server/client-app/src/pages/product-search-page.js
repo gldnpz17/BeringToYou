@@ -46,9 +46,9 @@ const ProductSearchPage = () => {
   }
 
   return (
-    <StyledContainer className='p-0 mt-5 pt-3'>
+    <StyledContainer className='p-0'>
       <ProductSearchOptionsOverlay visible={filterOverlayVisible} setVisible={setFilterOverlayVisible} />
-      <div className='title d-flex flex-row px-2 align-items-center mb-2'>
+      <div className='title d-flex flex-row px-2 align-items-center mb-2 pt-2'>
         <SearchIcon style={{width: 'calc(1.375rem + 1.5vw)', height: 'calc(1.375rem + 1.5vw)'}} />
         <h1 className='m-0'>Cari Produk</h1>
       </div>

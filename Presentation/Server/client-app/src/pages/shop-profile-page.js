@@ -118,7 +118,7 @@ const ShopProfilePage = () => {
   }
 
   return (
-    <StyledContainer className='p-0 pt-5 d-flex flex-column'>
+    <StyledContainer className='p-0 d-flex flex-column'>
       <div>
         <div style={{position: 'relative'}}>
           <StyledHeroImage src='/dummy-images/food-stall.jpg' />

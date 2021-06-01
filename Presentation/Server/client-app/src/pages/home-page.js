@@ -98,8 +98,8 @@ const HomePage = () => {
         </StyledBackgroundContainerDiv>
       </ParallexBack>
       <ParallexFront>
-        <StyledContainer className='p-0 mt-5 pt-5'>
-          <h1 id='welcome-title' className='content-text text-center m-0'>Selamat Datang!</h1>
+        <StyledContainer className='p-0'>
+          <h1 id='welcome-title' className='content-text text-center m-0 mt-5'>Selamat Datang!</h1>
           <p id='welcome-subtitle' className='content-text text-center m-0'>Butuh apa hari ini?</p>
           <div className='p-4'>
             <AnimatedSearchTextBox placeholders={[
