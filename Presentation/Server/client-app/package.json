@@ -7,6 +7,8 @@
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
     "bootstrap": "^5.0.0",
+    "dompurify": "^2.2.8",
+    "html-entities": "^2.3.2",
     "kute.js": "^2.1.1-alpha3",
     "leaflet": "^1.7.1",
     "react": "^17.0.2",

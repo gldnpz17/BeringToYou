@@ -164,7 +164,7 @@ const ProductDetailsPage = () => {
 
   return (
     <Container className='p-0'>
-      <ContentContainer className='w-100 d-flex flex-column pt-5'>
+      <ContentContainer className='w-100 d-flex flex-column'>
         <SelectedSlideshowImageContainer>
           <SelectedSlideshowImageBackground src={images[currentImageIndex]} />
           <SelectedSlideshowImage id='product-slideshow-current'

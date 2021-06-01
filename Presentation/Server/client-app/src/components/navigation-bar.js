@@ -10,7 +10,7 @@ const StyledNavbar = styled(Navbar)`
   color: ${props => props.theme.secondary};
 `;
 
-const NavigationBar = () => {
+const NavigationBar = (props) => {
   const [navigationOpened, setNavigationOpened] = useState(false);
 
   const toggleNavigation = () => {
@@ -42,7 +42,7 @@ const NavigationBar = () => {
   };
 
   return (
-    <StyledNavbar expand='md' className='fixed-top w-100'>
+    <StyledNavbar {...props} expand='md' className='fixed-top w-100'>
       <a onClick={() => toggleNavigation()}>
         <MenuIcon id='menu-icon' className='ms-3' style={{width: '2.2rem', height: '2.2rem'}} />
       </a>

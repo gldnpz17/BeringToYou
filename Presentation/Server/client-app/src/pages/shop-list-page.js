@@ -25,8 +25,8 @@ const StyledContainer = styled(Container)`
 
 const ShopListPage = () => {
   return (
-    <StyledContainer className='p-0 mt-5 pt-3'>
-      <div className='title d-flex flex-row px-2 mb-2 align-items-center'>
+    <StyledContainer className='p-0'>
+      <div className='title d-flex flex-row px-2 mb-2 pt-2 align-items-center'>
         <ShopIcon style={{width: 'calc(1.375rem + 1.5vw)', height: 'calc(1.375rem + 1.5vw)'}} />
         <h1 className='ps-1 m-0'>Daftar Toko</h1>
       </div>
