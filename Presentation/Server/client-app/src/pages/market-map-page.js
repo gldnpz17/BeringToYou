@@ -217,7 +217,7 @@ const MarketMapPage = () => {
   }, []);
 
   const initalizeCompass = async () => {
-    let isIOS = !(
+    let isIOS = (
       navigator.userAgent.match(/(iPod|iPhone|iPad)/) &&
       navigator.userAgent.match(/AppleWebKit/)
     );
