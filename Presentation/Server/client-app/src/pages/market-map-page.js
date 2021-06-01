@@ -237,16 +237,21 @@ const MarketMapPage = () => {
         document.getElementById('compass-button').classList.add('disabled');
       }
     } else {
-      window.addEventListener(
-        'deviceorientationabsolute',
-        (event) => changeCompassAngle(event.webkitCompassHeading || Math.abs(event.alpha - 360)),
-        true
-      );
+      if (window.DeviceOrientationEvent) {
+        window.addEventListener(
+          'deviceorientation',
+          (event) => changeCompassAngle(event.webkitCompassHeading || Math.abs(event.alpha - 360)),
+          true
+        );
+      } else {
+        document.getElementById('compass-button').classList.add('disabled');
+      }
     }
   };
 
   const changeCompassAngle = (degrees) => {
     let compassNeedle = document.getElementById('compass-needle');
+    console.log(degrees);
 
     compassNeedle.style.transform = `rotate(${-degrees}deg)`;
   }
