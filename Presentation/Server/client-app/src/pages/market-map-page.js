@@ -240,7 +240,7 @@ const MarketMapPage = () => {
       if (window.DeviceOrientationEvent) {
         window.addEventListener(
           'deviceorientation',
-          (event) => changeCompassAngle(event.webkitCompassHeading || Math.abs(event.alpha - 360)),
+          (event) => changeCompassAngle(Math.abs(event.alpha - 360)),
           false
         );
       } else {
