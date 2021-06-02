@@ -72,6 +72,7 @@ const StyledListCardBody = styled(Card.Body)`
     .item-image {
       flex-grow: 1;
       object-fit: cover;
+      width: 100%;
     }
 
     .item-info-container {
