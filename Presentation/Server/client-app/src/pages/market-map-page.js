@@ -230,7 +230,7 @@ const MarketMapPage = () => {
           window.addEventListener(
             'deviceorientation', 
             (event) => changeCompassAngle(event.webkitCompassHeading || Math.abs(event.alpha - 360)),
-            true
+            false
           );
         }
       } catch(error) {
@@ -241,7 +241,7 @@ const MarketMapPage = () => {
         window.addEventListener(
           'deviceorientation',
           (event) => changeCompassAngle(event.webkitCompassHeading || Math.abs(event.alpha - 360)),
-          true
+          false
         );
       } else {
         document.getElementById('compass-button').classList.add('disabled');
@@ -253,7 +253,7 @@ const MarketMapPage = () => {
     let compassNeedle = document.getElementById('compass-needle');
     console.log(degrees);
 
-    compassNeedle.style.transform = `rotate(${-degrees}deg)`;
+    compassNeedle.style.transform = `rotate(${degrees}deg)`;
   }
 
   const zoomIn = () => {
