@@ -66,7 +66,11 @@ const StyledCardContainer = styled.div`
 
 const Parallax = styled.div`
   perspective: 1px;
-  height: 100vh;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   overflow-x: hidden;
   overflow-y: scroll;
 `;
