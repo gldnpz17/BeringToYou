@@ -4,7 +4,7 @@ import SearchIcon from "../svg/search-icon";
 import CustomButton from "./custom-button";
 
 const StyledInputGroup = styled(InputGroup)`
-  box-shadow: ${props => props.theme.shadow} 0rem 0.1rem 0.3rem;
+  box-shadow: ${props => props.theme.shadow} 0rem 0.05rem 0.1rem;
   border-radius: 0.25rem;
 
   svg {

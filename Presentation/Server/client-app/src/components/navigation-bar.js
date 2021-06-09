@@ -3,11 +3,22 @@ import { Navbar } from "react-bootstrap";
 import styled from "styled-components";
 import MenuIcon from "../svg/menu-icon";
 import KUTE from 'kute.js';
+import BeringharjoLogo from "../svg/beringharjo-logo";
 
 const StyledNavbar = styled(Navbar)`
   background-color: ${props => props.theme.primary};
   box-shadow: ${props => props.theme.shadow} 0rem 0.1rem 0.3rem;
   color: ${props => props.theme.secondary};
+
+  h1 {
+    font-family: 'Open Sans';
+    font-size: 1.6rem;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 `;
 
 const NavigationBar = (props) => {
@@ -42,10 +53,17 @@ const NavigationBar = (props) => {
   };
 
   return (
-    <StyledNavbar {...props} expand='md' className='fixed-top w-100'>
-      <a onClick={() => toggleNavigation()}>
-        <MenuIcon id='menu-icon' className='ms-3' style={{width: '2.2rem', height: '2.2rem'}} />
+    <StyledNavbar {...props} className='fixed-top w-100 d-flex'>
+      <a className='d-flex flex-row align-items-center flex-grow-1 ms-2'
+        href='/'
+      >
+        <BeringharjoLogo style={{width: '1.6rem', height: '1.6rem'}} />
+        <h1 className='m-0 ms-1'>BeringToYou</h1>
       </a>
+      <MenuIcon id='menu-icon' className='me-2' 
+        style={{width: '2.2rem', height: '2.2rem'}} 
+        onClick={() => toggleNavigation()}
+      />
     </StyledNavbar>
   );
 };

@@ -90,7 +90,7 @@ const ParallexBack = styled.div`
   bottom: 0;
   left: 0;
 
-  transform: translateZ(-1px) scale(3.5);
+  transform: translateZ(-1px) scale(3.7);
 `;
 
 const HomePage = () => {

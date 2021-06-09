@@ -5,7 +5,6 @@ import CustomCard from "./custom-card";
 const StyledCard = styled(CustomCard)`
   font-family: 'Open Sans';
   color: black;
-  box-shadow: ${props => props.theme.shadow} 0.2rem 0.2rem 0.4rem;
 
   border: none;
   overflow: hidden;

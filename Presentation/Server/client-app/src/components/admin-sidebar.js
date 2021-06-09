@@ -7,6 +7,8 @@ import ShopIcon from '../svg/shop-icon';
 import MiscIcon  from '../svg/misc-icon';
 import ChevronDoubleLeftIcon from '../svg/chevron-double-left-icon';
 import { useState } from "react";
+import { useParams } from "react-router";
+import AdminSidebarDisplay from '../helpers/admin-sidebar-display';
 
 const Container = styled.div`
   z-index: 10;
@@ -86,9 +88,11 @@ const Container = styled.div`
   }
 `;
 
-const NavigationOption = styled.div`
+const NavigationOption = styled.a`
   padding: 0.5rem;
   position: relative;
+  text-decoration: none;
+  z-index: 12;
 
   display: flex;
   flex-direction: row;
@@ -101,8 +105,8 @@ const NavigationOption = styled.div`
     white-space: nowrap;
 
     max-width: 100vw;
-    margin-right: 1rem;
-    margin-left: 0.25rem;
+    margin-right: 5rem;
+    margin-left: 0.5rem;
     margin-bottom: 0;
     overflow: hidden;
     color: white;
@@ -110,6 +114,23 @@ const NavigationOption = styled.div`
 
   .icon {
     color: ${props => props.theme.secondary};
+  }
+
+  ::after {
+    content: '';
+    visibility: hidden;
+
+    position: absolute;
+    left: 0;
+    right: -0.25rem;
+    top: 0;
+    bottom: 0;
+    z-index: -1;
+
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+
+    background-color: ${props => props.theme.secondary};
   }
 
   &.selected {
@@ -122,19 +143,7 @@ const NavigationOption = styled.div`
     }
 
     ::after {
-      content: '';
-
-      position: absolute;
-      left: 0;
-      right: -0.25rem;
-      top: 0;
-      bottom: 0;
-      z-index: -1;
-
-      border-top-right-radius: 0.25rem;
-      border-bottom-right-radius: 0.25rem;
-
-      background-color: ${props => props.theme.secondary};
+      visibility: visible;
     }
   }
 `;
@@ -161,26 +170,24 @@ const MinimizeSidebarButton = styled.div`
 `;
 
 const AdminSidebar = (props) => {
-  const [minimized, setMinimized] = useState(false);
+  const [minimized, setMinimized] = useState(AdminSidebarDisplay.minimized);
 
   const toggleMinimized = () => {
     if (minimized) {
       setMinimized(false);
 
-      document.getElementById('admin-sidebar').classList.remove('minimized');
+      AdminSidebarDisplay.minimized = false;
     } else {
       setMinimized(true);
 
-      document.getElementById('admin-sidebar').classList.add('minimized');
+      AdminSidebarDisplay.minimized = true;
     }
   };
 
   return (
-    <Container {...props} id='admin-sidebar'>
-      <MinimizeSidebarButton id='minimize-button'
-        onClick={() => toggleMinimized()}
-      >
-        <ChevronDoubleLeftIcon className='icon' />
+    <Container {...props} className={`${props.className ?? ''} ${minimized ? 'minimized' : ''}`}>
+      <MinimizeSidebarButton id='minimize-button'>
+        <ChevronDoubleLeftIcon className='icon' onClick={() => toggleMinimized()} />
       </MinimizeSidebarButton>
       <div id='profile-picture-container'>
         <img id='profile-picture' src='/dummy-images/profile-picture.png' />
@@ -190,23 +197,33 @@ const AdminSidebar = (props) => {
         <p id='account-display-name' className='text-center m-0 w-100'>Lorem Ipsum</p>
       </div>
       <div>
-        <NavigationOption>
+        <NavigationOption className={`${(props.page === 'akun') ? 'selected' : ''}`}
+          href='/admin/akun'
+        >
           <AccountIcon className='icon' />
           <p className='option-label'>Akun</p>
         </NavigationOption>
-        <NavigationOption className='selected'>
+        <NavigationOption className={`${(props.page === 'admin') ? 'selected' : ''}`}
+          href='/admin/admin'
+        >
           <AdminIcon className='icon' />
           <p className='option-label'>Admin</p>
         </NavigationOption>
-        <NavigationOption>
+        <NavigationOption className={`${(props.page === 'peta-digital') ? 'selected' : ''}`}
+          href='/admin/peta-digital'
+        >
           <MapIcon className='icon' />
           <p className='option-label'>Peta Digital</p>
         </NavigationOption>
-        <NavigationOption>
+        <NavigationOption className={`${(props.page === 'toko') ? 'selected' : ''}`}
+          href='/admin/toko'
+        >
           <ShopIcon className='icon' />
           <p className='option-label'>Toko</p>
         </NavigationOption>
-        <NavigationOption>
+        <NavigationOption className={`${(props.page === 'lain-lain') ? 'selected' : ''}`}
+          href='/admin/lain-lain'
+        >
           <MiscIcon className='icon' />
           <p className='option-label'>Lain-lain</p>
         </NavigationOption>
