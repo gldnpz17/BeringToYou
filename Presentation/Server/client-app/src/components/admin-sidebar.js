@@ -144,6 +144,7 @@ const NavigationOption = styled.a`
 
     ::after {
       visibility: visible;
+      box-shadow: ${props => props.theme.shadow} 0rem 0.03rem 0.1rem;
     }
   }
 `;
