@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Server.Common.Auth;
 using Server.Common.Auth.AuthorizationHandlers;
+using Server.Common.Middlewares.ApplicationExceptionHandler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,6 +82,8 @@ namespace Server
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            app.UseApplicationExceptionHandler();
 
             app.UseEndpoints(endpoints =>
             {
