@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DomainModel.Services
+namespace ApplicationServiceImplementations.FileSystemService
 {
-    public interface ITotpVerifier
+    public class FileSystemService
     {
-        bool VerifyTotp(string totp, string secret);
+        
     }
 }

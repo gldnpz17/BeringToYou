@@ -40,18 +40,17 @@ namespace Server.Controllers.Merchant.VerificationRequests
         [Authorize]
         public async Task<IActionResult> UploadMerchantVerificationPhoto(
             [FromRoute]Guid accountId,
-            [FromBody]IFormFile file,
-            [FromServices]IImageProcessingService imageProcessingService)
+            [FromForm(Name = "photo")]IFormFile photo)
         {
             await AuthorizeAccountOwner(accountId);
 
-            _fileSystemService.ValidateFileFormat(
-                Path.GetExtension(file.FileName),
+            _fileSystemService.ValidateExtension(
+                Path.GetExtension(photo.FileName),
                 _applicationConfiguration.MerchantVerification.AllowedPhotoExtensions);
 
             var account = await _database.MerchantAccounts.FirstOrDefaultAsync(account => account.Id == accountId);
 
-            string generatedFilename = await _fileSystemService.SaveFileAsync(file, _applicationConfiguration.MerchantVerification.PhotosDirectory);
+            string generatedFilename = await _fileSystemService.SaveFileAsync(photo, _applicationConfiguration.MerchantVerification.PhotosDirectory);
 
             account.VerificationRequest.VerificationPhotos.Add(new MerchantVerificationPhoto()
             {
@@ -59,12 +58,6 @@ namespace Server.Controllers.Merchant.VerificationRequests
             });
 
             await _database.SaveChangesAsync();
-
-            await imageProcessingService.ResizeImage(
-                _applicationConfiguration.MerchantVerification.PhotosDirectory,
-                generatedFilename,
-                _applicationConfiguration.MerchantVerification.PhotoWidthInPixels,
-                _applicationConfiguration.MerchantVerification.PhotoHeightInPixels);
 
             return Ok();
         }
@@ -77,9 +70,11 @@ namespace Server.Controllers.Merchant.VerificationRequests
         {
             await AuthorizeAccountOwner(accountId, PermissionNameConstants.CanManageAccounts);
 
+            _fileSystemService.CheckFilename(filename);
+
             var filePath = Path.Combine(
                 _applicationConfiguration.MerchantVerification.PhotosDirectory,
-                _fileSystemService.CheckFilename(filename));
+                filename);
 
             return PhysicalFile(filePath, MimeTypes.GetMimeType(filename));
         }
@@ -90,14 +85,16 @@ namespace Server.Controllers.Merchant.VerificationRequests
         {
             await AuthorizeAccountOwner(accountId);
 
+            _fileSystemService.CheckFilename(filename);
+
             var account = await _database.MerchantAccounts.FirstOrDefaultAsync(account => account.Id == accountId);
 
             var photoToRemove = account.VerificationRequest.VerificationPhotos.FirstOrDefault(photo => photo.Filename == filename);
             account.VerificationRequest.VerificationPhotos.Remove(photoToRemove);
 
-            await _fileSystemService.DeleteFile(
+            await _fileSystemService.DeleteFileAsync(
                 _applicationConfiguration.MerchantVerification.PhotosDirectory,
-                _fileSystemService.CheckFilename(filename));
+                filename);
 
             return Ok();
         }

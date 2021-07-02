@@ -29,17 +29,23 @@ namespace DomainModel.Entities
         public virtual AccountBase Account { get; set; }
         
         public virtual string Hash { get; set; }
+        
         public virtual string Salt { get; set; }
 
         public virtual DateTime PasswordAttemptMistakeClear { get; set; }
+        
         public virtual int PasswordAttemptMistakeCounter { get; set; }
+        
         public virtual DateTime PasswordAttemptTimeoutExpired { get; set; }
 
         public virtual string ResetToken { get; set; }
+        
         public virtual DateTime ResetTokenExpired { get; set; }
 
         public virtual DateTime ResetAttemptMistakeClear { get; set; }
+        
         public virtual int ResetAttemptMistakeCounter { get; set; }
+        
         public virtual DateTime ResetAttemptTimeoutExpired { get; set; }
 
         public bool VerifyPassword(

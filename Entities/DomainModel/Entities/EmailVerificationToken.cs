@@ -2,6 +2,7 @@
 using DomainModel.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,11 @@ namespace DomainModel.Entities
         }
 
         public AccountBase Account { get; set; }
+        
+        [Required]
         public string Token { get; set; }
+        
+        [Required]
         public DateTime Expired { get; set; }
 
         public void SendEmail(IEmailSender emailSender)

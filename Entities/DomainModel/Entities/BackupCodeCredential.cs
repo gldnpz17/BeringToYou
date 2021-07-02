@@ -21,7 +21,9 @@ namespace DomainModel.Entities
         public virtual IList<BackupCode> BackupCodes { get; set; } = new List<BackupCode>();
 
         public virtual DateTime BackupCodeAttemptMistakeClear { get; set; }
+
         public virtual int BackupCodeAttemptMistakeCounter { get; set; }
+
         public virtual DateTime BackupCodeAttemptTimeoutExpired { get; set; }
 
         public bool Verify(

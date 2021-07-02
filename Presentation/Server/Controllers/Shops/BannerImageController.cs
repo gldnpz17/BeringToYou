@@ -50,8 +50,7 @@ namespace Server.Controllers.Shops
             var thumbnailFilename = await _imageProcessingService.GenerateThumbnailAsync(
                 Path.Combine(_applicationConfiguration.PublicAssetsDirectory, originalFilename),
                 _applicationConfiguration.PublicAssetsDirectory,
-                _applicationConfiguration.Shop.MaxBannerImageThumbnailDimension,
-                _fileSystemService);
+                _applicationConfiguration.Shop.MaxBannerImageThumbnailDimension);
 
             shop.BannerImage = new ThumbnailedImage()
             {

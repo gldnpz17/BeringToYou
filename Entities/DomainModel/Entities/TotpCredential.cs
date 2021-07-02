@@ -23,7 +23,9 @@ namespace DomainModel.Entities
         public virtual AccountBase Account { get; set; }
 
         public virtual string AesEncryptedSharedSecret { get; set; }
+        
         public virtual string Base32EncodedInitializationVector { get; set; }
+        
         public virtual DateTime VerificationTimeoutEnd { get; set; }
 
         public string RevealSharedSecret(

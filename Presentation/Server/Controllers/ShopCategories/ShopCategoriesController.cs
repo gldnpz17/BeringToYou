@@ -53,14 +53,14 @@ namespace Server.Controllers.ShopCategories
             return shopCategorySummaries;
         }
 
-        [HttpPut("{categoryName}")]
+        [HttpPut("{categoryId}")]
         [Authorize(PolicyNameConstants.Admin.CanManageShops)]
         public async Task<IActionResult> UpdateShopCategory(
-            [FromRoute] string categoryName,
+            [FromRoute] Guid categoryId,
             [FromBody] UpdateShopCategoryBody body,
             [FromServices] IMapper mapper)
         {
-            var shopCategory = await _database.ShopCategories.FirstOrDefaultAsync(category => category.Name == categoryName);
+            var shopCategory = await _database.ShopCategories.FirstOrDefaultAsync(category => category.Id == categoryId);
 
             mapper.Map(body, shopCategory);
 
@@ -69,11 +69,11 @@ namespace Server.Controllers.ShopCategories
             return Ok();
         }
 
-        [HttpDelete("{categoryName}")]
+        [HttpDelete("{categoryId}")]
         [Authorize(PolicyNameConstants.Admin.CanManageShops)]
-        public async Task<IActionResult> DeleteShopCategory([FromRoute] string categoryName)
+        public async Task<IActionResult> DeleteShopCategory([FromRoute] Guid categoryId)
         {
-            var shopCategory = await _database.ShopCategories.FirstOrDefaultAsync(category => category.Name == categoryName);
+            var shopCategory = await _database.ShopCategories.FirstOrDefaultAsync(category => category.Id == categoryId);
 
             _database.ShopCategories.Remove(shopCategory);
 
@@ -82,15 +82,15 @@ namespace Server.Controllers.ShopCategories
             return Ok();
         }
 
-        [HttpPut("{categoryName}/icon")]
+        [HttpPut("{categoryId}/icon")]
         [Authorize(PolicyNameConstants.Admin.CanManageShops)]
         public async Task<IActionResult> UpdateShopCategoryIcon(
-            [FromRoute] string categoryName,
+            [FromRoute] Guid categoryId,
             [FromForm(Name = "icon")] IFormFile icon,
             [FromServices] IFileSystemService fileSystemService,
             [FromServices] ApplicationConfiguration applicationConfiguration)
         {
-            var shopCategory = await _database.ShopCategories.FirstOrDefaultAsync(category => category.Name == categoryName);
+            var shopCategory = await _database.ShopCategories.FirstOrDefaultAsync(category => category.Id == categoryId);
 
             var generatedFilename = await fileSystemService.SaveFileAsync(icon, applicationConfiguration.ShopCategory.IconDirectory);
 

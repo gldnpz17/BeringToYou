@@ -20,7 +20,6 @@ namespace Server.Services
         public Task<string> GenerateThumbnailAsync(
             string originalImagePath, 
             string thumbnailDirectory, 
-            int maxDimension,
-            IFileSystemService fileSystemService);
+            int maxDimension);
     }
 }

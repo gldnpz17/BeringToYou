@@ -2,6 +2,7 @@
 using DomainModel.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,15 +11,20 @@ namespace DomainModel.Entities
 {
     public class AuthenticationToken
     {
-        public AuthenticationToken(AccountBase account, string token)
+        public AuthenticationToken(AccountBase account, string token, IDateTimeService dateTimeService)
         {
             Account = account;
             Token = token;
+
+            Expired = dateTimeService.GetCurrentDateTime();
         }
 
         public virtual AccountBase Account { get; set; }
 
+        [Required]
         public virtual string Token { get; set; }
+        
+        [Required]
         public virtual DateTime Expired { get; set; }
 
         public bool Verify(IDateTimeService dateTimeService)

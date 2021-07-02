@@ -48,24 +48,17 @@ namespace Server.Controllers.Accounts
         public async Task<IActionResult> UploadProfilePicture(
             [FromRoute]Guid accountId,
             [FromBody]IFormFile file,
-            [FromServices]IFileSystemService fileSystemService,
-            [FromServices]IImageProcessingService imageProcessingService)
+            [FromServices]IFileSystemService fileSystemService)
         {
             await AuthorizeAccountOwner(accountId);
 
-            fileSystemService.ValidateFileFormat(
+            fileSystemService.ValidateExtension(
                 Path.GetExtension(file.FileName),
                 _applicationConfiguration.Account.AllowedProfilePictureExtensions);
 
             var account = await _database.Accounts.FirstOrDefaultAsync(account => account.Id == accountId);
 
             var generatedFilename = await fileSystemService.SaveFileAsync(file, _applicationConfiguration.Account.ProfilePictureDirectory);
-
-            await imageProcessingService.ResizeImage(
-                _applicationConfiguration.Account.ProfilePictureDirectory,
-                generatedFilename,
-                _applicationConfiguration.Account.ProfilePictureWidthInPixels,
-                _applicationConfiguration.Account.ProfilePictureHeightInPixels);
 
             account.ProfilePictureFilename = generatedFilename;
 
@@ -84,7 +77,7 @@ namespace Server.Controllers.Accounts
 
             var account = await _database.Accounts.FirstOrDefaultAsync(account => account.Id == accountId);
 
-            await fileSystemService.DeleteFile(_applicationConfiguration.Account.ProfilePictureDirectory, account.ProfilePictureFilename);
+            await fileSystemService.DeleteFileAsync(_applicationConfiguration.Account.ProfilePictureDirectory, account.ProfilePictureFilename);
 
             account.ProfilePictureFilename = null;
 

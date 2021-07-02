@@ -8,6 +8,8 @@ namespace Server.Common.Exceptions
 {
     public enum AppExceptionCode
     {
-        SHOP_CATEGORY_NOT_FOUND
+        SHOP_CATEGORY_NOT_FOUND,
+        INVALID_FILENAME,
+        INVALID_FILE_EXTENSION
     }
 }

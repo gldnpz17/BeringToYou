@@ -43,8 +43,7 @@ namespace Server.Controllers.Shops.Products
             var generatedThumbnailFilename = await imageProcessingService.GenerateThumbnailAsync(
                 Path.Combine(applicationConfiguration.PublicAssetsDirectory, generatedFilename),
                 applicationConfiguration.PublicAssetsDirectory,
-                applicationConfiguration.Product.MaxImageThumbnailDimension,
-                fileSystemService);
+                applicationConfiguration.Product.MaxImageThumbnailDimension);
 
             product.Images.Add(new DomainModel.ValueObjects.ThumbnailedImage()
             {

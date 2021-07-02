@@ -57,7 +57,13 @@ namespace Server.Controllers.Admin.Accounts
         public async Task<IList<AccountSummary>> GetAllAccounts(
             [FromServices] IMapper mapper)
         {
-            var accounts = await _database.AdminAccounts.ToListAsync();
+            var adminAccounts = await _database.AdminAccounts.ToListAsync();
+
+            var accounts = new List<AccountBase>();
+            foreach (var adminAccount in adminAccounts)
+            {
+                accounts.Add(adminAccount);
+            }
 
             var accountSummaries = mapper.Map<List<AccountBase>, List<AccountSummary>>(accounts);
 

@@ -13,6 +13,7 @@ namespace Server.Common.Configuration
         public ShopConfiguration Shop { get; set; }
         public ShopCategoryConfiguration ShopCategory { get; set; }
         public ProductConfiguration Product { get; set; }
+        public FileSystemServiceConfiguration FileSystemService { get; set; }
         
         public string PublicAssetsDirectory { get; set; }
 
@@ -52,6 +53,11 @@ namespace Server.Common.Configuration
             public string[] AllowedImageExtensions { get; set; }
             public int MaxImageSize { get; set; }
             public int MaxImageThumbnailDimension { get; set; }
+        }
+
+        public class FileSystemServiceConfiguration
+        {
+            public int GeneratedFilenameLength { get; set; }
         }
     }
 }

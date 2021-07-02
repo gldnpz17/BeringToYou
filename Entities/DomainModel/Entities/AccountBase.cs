@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace DomainModel.Entities
 {
@@ -25,20 +26,30 @@ namespace DomainModel.Entities
             PasswordCredential = new PasswordCredential(this, password, passwordHasher, alphanumericRng, domainModelConfiguration);
         }
 
+        [Key]
         public virtual Guid Id { get; set; }
 
+        [Required]
         public virtual string Email { get; set; }
+        
+        [Required]
         public virtual string DisplayName { get; set; }
+        
         public virtual string ProfilePictureFilename { get; set; }
 
+        [Required]
         public virtual PasswordCredential PasswordCredential { get; set; }
+        
         public virtual TotpCredential TotpCredential { get; set; }
+        
         public virtual BackupCodeCredential BackupCodeCredential { get; set; }
 
         public virtual IList<TwoFactorToken> TwoFactorTokens { get; set; } = new List<TwoFactorToken>();
+
         public virtual IList<AuthenticationToken> AuthenticationTokens { get; set; } = new List<AuthenticationToken>();
 
         public virtual bool EmailVerified { get; set; } = false;
+
         public virtual EmailVerificationToken EmailVerificationToken { get; set; }
 
         public PasswordAuthenticationResult PasswordLogin(
@@ -70,7 +81,7 @@ namespace DomainModel.Entities
                 } 
                 else
                 {
-                    var token = GenerateNewAuthenticationToken(alphanumericRng, configuration);
+                    var token = GenerateNewAuthenticationToken(alphanumericRng, dateTimeService, configuration);
 
                     return new PasswordAuthenticationResult()
                     {
@@ -107,7 +118,7 @@ namespace DomainModel.Entities
 
             if (totpIsValid)
             {
-                var token = GenerateNewAuthenticationToken(alphanumericRng, configuration);
+                var token = GenerateNewAuthenticationToken(alphanumericRng, dateTimeService, configuration);
 
                 AuthenticationTokens.Add(token);
 
@@ -143,7 +154,7 @@ namespace DomainModel.Entities
 
             if (backupCodeIsValid)
             {
-                var token = GenerateNewAuthenticationToken(alphanumericRng, configuration);
+                var token = GenerateNewAuthenticationToken(alphanumericRng, dateTimeService, configuration);
 
                 AuthenticationTokens.Add(token);
 
@@ -201,13 +212,15 @@ namespace DomainModel.Entities
 
         private AuthenticationToken GenerateNewAuthenticationToken(
             IAlphanumericRng alphanumericRng,
+            IDateTimeService dateTimeService,
             DomainModelConfiguration configuration)
         {
             var token = new AuthenticationToken(
                 this, 
                 alphanumericRng.GenerateRandomString(
                     configuration.AuthenticationTokenLength,
-                    cryptographicallySecure: true));
+                    cryptographicallySecure: true),
+                dateTimeService);
 
             AuthenticationTokens.Add(token);
 

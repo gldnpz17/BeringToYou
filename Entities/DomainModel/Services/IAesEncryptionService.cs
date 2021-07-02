@@ -8,7 +8,7 @@ namespace DomainModel.Services
 {
     public interface IAesEncryptionService
     {
-        (string encrypted, string base32EncodedInitializationVector) Encrypt(string raw, string key);
-        string Decrypt(string encrypted, string initializationVector, string key);
+        (string base64Encrypted, string base64InitializationVector) Encrypt(string raw, string base64Key);
+        string Decrypt(string base64Encrypted, string base64InitializationVector, string base64Key);
     }
 }
