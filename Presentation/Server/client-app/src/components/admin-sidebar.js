@@ -9,11 +9,13 @@ import ChevronDoubleLeftIcon from '../svg/chevron-double-left-icon';
 import { useState } from "react";
 import { useParams } from "react-router";
 import AdminSidebarDisplay from '../helpers/admin-sidebar-display';
+import AccountsIcon from "../svg/accounts-icon";
 
 const Container = styled.div`
   z-index: 10;
 
   background-color: ${props => props.theme.primary};
+  box-shadow: ${props => props.theme.shadow} 0.03rem 0rem 0.1rem;
 
   &.minimized {
     #minimize-button .icon {
@@ -198,17 +200,17 @@ const AdminSidebar = (props) => {
         <p id='account-display-name' className='text-center m-0 w-100'>Lorem Ipsum</p>
       </div>
       <div>
-        <NavigationOption className={`${(props.page === 'akun') ? 'selected' : ''}`}
-          href='/admin/akun'
+        <NavigationOption className={`${(props.page === 'akun-pribadi') ? 'selected' : ''}`}
+          href='/admin/akun-pribadi'
         >
           <AccountIcon className='icon' />
-          <p className='option-label'>Akun</p>
+          <p className='option-label'>Akun Pribadi</p>
         </NavigationOption>
-        <NavigationOption className={`${(props.page === 'admin') ? 'selected' : ''}`}
-          href='/admin/admin'
+        <NavigationOption className={`${(props.page === 'manajemen-akun') ? 'selected' : ''}`}
+          href='/admin/manajemen-akun'
         >
-          <AdminIcon className='icon' />
-          <p className='option-label'>Admin</p>
+          <AccountsIcon className='icon' />
+          <p className='option-label'>Manajemen Akun</p>
         </NavigationOption>
         <NavigationOption className={`${(props.page === 'peta-digital') ? 'selected' : ''}`}
           href='/admin/peta-digital'

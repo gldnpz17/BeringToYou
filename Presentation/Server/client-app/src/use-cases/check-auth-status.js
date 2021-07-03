@@ -1,9 +1,9 @@
 import delay from "../helpers/delay";
 
 const checkAuthStatus = async () => {
-  delay(100);
+  await delay(100);
 
-  return false;
+  return true;
 };
 
 export default checkAuthStatus;
