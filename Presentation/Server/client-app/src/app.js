@@ -19,6 +19,7 @@ const App = () => {
     primaryLight: '#70AF94',
     primaryDark: '#11523C',
     secondary: '#C5D784',
+    secondaryTransparent: 'rgba(197, 215, 132, 0.5)',
     secondaryLight: '#F9FFB5',
     secondaryLightTransparent: 'rgba(249, 255, 181, 0.5)',
     secondaryDark: '#93A656',
@@ -34,7 +35,9 @@ const App = () => {
     lightButton: '#CFD8DC',
     lightButtonDarkened: '#B0BEC5',
     textDisabled: 'gray',
-    adminNavLine: '#B0BEC5'
+    adminNavLine: '#B0BEC5',
+    danger: '#F44336',
+    textOnDanger: 'white'
   }
 
   const resizePageContent = () => {

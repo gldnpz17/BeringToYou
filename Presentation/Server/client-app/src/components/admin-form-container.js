@@ -5,6 +5,11 @@ const Container = styled.div`
   border-radius: 0.25rem;
 
   box-shadow: rgba(45, 45, 45, 0.2) 0rem 0rem 0.5rem;
+
+  h1 {
+    font-family: 'Open Sans';
+    font-size: 1.4rem;
+  }
 `;
 
 const AdminFormContainer = (props) => {

@@ -7,7 +7,14 @@ const ButtonText = styled.p`
   line-height: 95%;
 `;
 
-const IconButton = ({ children, text, onClick, className, iconOnly, id }) => {
+const StyledCustomButton = styled(CustomButton)`
+  svg {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+`;
+
+const IconButton = ({ children, text, onClick, className, iconOnly, id, style, danger }) => {
   let buttonContent = null;
   if (iconOnly) {
     buttonContent = children;
@@ -21,9 +28,9 @@ const IconButton = ({ children, text, onClick, className, iconOnly, id }) => {
   }
 
   return (
-    <CustomButton id={id} variant='none' className={`${iconOnly ? '' : 'py-1 px-2'} ${className}`} onClick={onClick}>
+    <StyledCustomButton id={id} variant='none' style={style} className={`${iconOnly ? '' : 'py-1 px-2'} ${className}`} onClick={onClick} danger={danger}>
       {buttonContent}
-    </CustomButton>
+    </StyledCustomButton>
   );
 };
 

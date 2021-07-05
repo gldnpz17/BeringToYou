@@ -2,9 +2,28 @@ import { Button } from "react-bootstrap";
 import styled from "styled-components";
 
 const StyledButton = styled(Button)`
-  background-color: ${props => props.secondary ? props.theme.whitespace : props.theme.secondary};
-  border-color: ${props => props.secondary ? props.theme.secondary : 'none'};
-  color: black;
+  background-color: ${props => {
+    if (props.secondary === true) {
+      return props.theme.whitespace;
+    } else if (props.danger === true) {
+      return props.theme.danger;
+    } else {
+      return props.theme.secondary;
+    }
+  }};
+
+  border-color: ${props => {
+    if (props.secondary === true) {
+      return props.theme.secondary;
+    } else if (props.danger === true) {
+      return props.theme.danger;
+    } else {
+      return 'none';
+    }
+  }};
+
+  color: ${props => props.danger ? props.theme.textOnDanger : 'black'};
+
   box-shadow: ${props => props.theme.shadow} 0rem 0.05rem 0.1rem;
   
   transition-property: all;
@@ -22,6 +41,8 @@ const StyledButton = styled(Button)`
   :not([aria-disabled='true']) {
     :hover,:active,:focus {
       filter: brightness(90%);
+
+      color: ${props => props.danger ? props.theme.textOnDanger : 'black'};
     }
 
     :active {
@@ -30,7 +51,6 @@ const StyledButton = styled(Button)`
 
     :focus {
       box-shadow: ${props => props.theme.shadow} 0rem 0.03rem 0.1rem;
-      color: black;
     }
   }
 `;
@@ -39,6 +59,6 @@ const CustomButton = (props) => {
   return (
     <StyledButton variant='none' {...props} />
   );
-}
+};
 
 export default CustomButton;

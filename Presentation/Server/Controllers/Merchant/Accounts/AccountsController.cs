@@ -56,11 +56,11 @@ namespace Server.Controllers.Merchant.Accounts
 
         [HttpGet]
         [Authorize(PolicyNameConstants.AdminsOnly)]
-        public async Task<IList<AccountSummary>> GetAllMerchantAccounts([FromServices]IMapper mapper)
+        public async Task<IList<MerchantAccountSummary>> GetAllMerchantAccounts([FromServices]IMapper mapper)
         {
             var accounts = await _database.MerchantAccounts.ToListAsync();
 
-            return mapper.Map<List<MerchantAccount>, List<AccountSummary>>(accounts);
+            return mapper.Map<List<MerchantAccount>, List<MerchantAccountSummary>>(accounts);
         }
     }
 }

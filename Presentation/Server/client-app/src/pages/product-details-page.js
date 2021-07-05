@@ -7,6 +7,7 @@ import ShopIcon from "../svg/shop-icon";
 import NextIcon from '../svg/next-icon';
 import PreviousButton  from '../svg/previous-icon';
 import RadioIconButton from "../components/radio-icon-button";
+import ImageSlideshow from "../components/image-slideshow";
 
 const ContentContainer = styled.article`
   font-family: 'Open Sans';
@@ -22,100 +23,6 @@ const ContentContainer = styled.article`
   }
 `;
 
-const SlideshowImagesContainer = styled.div`
-  height: 5rem;
-  overflow-x: scroll;
-
-  img[aria-selected=true] {
-    border-color: ${props => props.theme.secondaryDark};
-    filter: brightness(75%);
-  }
-`;
-
-const SlideshowImage = styled.img`
-  object-fit: cover;
-  height: 100%;
-  border-radius: 0.5rem;
-  border-color: ${props => props.theme.secondary};
-  border-width: 0.1rem;
-  border-style: solid;
-
-  transition-duration: 0.5s;
-
-  min-width: 6rem;
-  max-width: 6rem;
-`;
-
-const SelectedSlideshowImageContainer = styled.div`
-  height: 50vh;
-  position: relative;
-  overflow: hidden;
-`;
-
-const SelectedSlideshowImageBackground = styled.div`
-  position: absolute;
-  z-index: 0;
-
-  background-image: url(${props => props.src});
-  background-size: cover;
-  filter: blur(0.1rem) brightness(50%);
-  
-  left: -10px;
-  right: -10px;
-  top: -10px;
-  bottom: -10px;
-`;
-
-const SelectedSlideshowImage = styled.img`
-  position: relative;
-  z-index: 1;
-  object-fit: contain;
-  width: 100%;
-  height: 100%;
-`;
-
-const NextImageButton = styled(NextIcon)`
-  position: absolute;
-  z-index: 2;
-  right: 0.3rem;
-  top: 50%;
-  transform: translateY(-50%);
-
-  color: whitesmoke;
-  opacity: 80%;
-
-  transition-duration: 0.3s;
-
-  height: 2rem;
-  width: 2rem;
-
-  :active {
-    transform: translateX(0.2rem) translateY(-50%);
-    color: ${props => props.theme.secondary};
-  }
-`;
-
-const PreviousImageButton = styled(PreviousButton)`
-  position: absolute;
-  z-index: 2;
-  left: 0.3rem;
-  top: 50%;
-  transform: translateY(-50%);
-
-  color: whitesmoke;
-  opacity: 80%;
-
-  transition-duration: 0.3s;
-
-  height: 2rem;
-  width: 2rem;
-
-  :active {
-    transform: translateX(-0.2rem) translateY(-50%);
-    color: ${props => props.theme.secondary};
-  }
-`;
-
 const ProductDetailsPage = () => {
   const [images, setImages] = useState([
     '/dummy-images/vegetables.jpg', 
@@ -125,67 +32,10 @@ const ProductDetailsPage = () => {
     '/dummy-images/vegetables.jpg'
   ]);
 
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  useEffect(() => {
-    selectImage(0);
-  }, []);
-
-  const selectImage = (index) => {
-    let images = document.getElementsByClassName('slideshow-image');
-    
-    for (let x = 0; x < images.length; x++) {
-      if (x === index) {
-        images[x].ariaSelected = 'true';
-        images[x].parentNode.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
-      } else {
-        images[x].ariaSelected = 'false'
-      }
-    }
-
-    setCurrentImageIndex(index);
-  }
-
-  const nextImage = () => {
-    if (currentImageIndex >= (images.length - 1)) {
-      selectImage(0);
-    } else {
-      selectImage(currentImageIndex + 1);
-    }
-  }
-
-  const previousImage = () => {
-    if (currentImageIndex <= 0) {
-      selectImage(images.length - 1);
-    } else {
-      selectImage(currentImageIndex - 1);
-    }
-  }
-
   return (
     <Container className='p-0'>
+      <ImageSlideshow images={images} />
       <ContentContainer className='w-100 d-flex flex-column'>
-        <SelectedSlideshowImageContainer>
-          <SelectedSlideshowImageBackground src={images[currentImageIndex]} />
-          <SelectedSlideshowImage id='product-slideshow-current'
-            src={images[currentImageIndex]} 
-          />
-          <NextImageButton onClick={() => nextImage()}/>
-          <PreviousImageButton onClick={() => previousImage()} />
-        </SelectedSlideshowImageContainer>
-        <SlideshowImagesContainer className='d-flex flex-row py-1'>
-          {
-            images.map((image, index) => {
-              return (
-                <span className='px-1'>
-                  <SlideshowImage src={image} className='slideshow-image' 
-                    onClick={() => selectImage(index)} 
-                  />
-                </span>
-              );
-            })
-          }
-        </SlideshowImagesContainer>
         <div className='px-2 pt-2'>
           <IconButton text='Toko' className='align-self-start'>
             <ShopIcon style={{width: '1.6rem', height: '1.6rem'}} />

@@ -54,18 +54,12 @@ namespace Server.Controllers.Admin.Accounts
 
         [HttpGet]
         [Authorize(PolicyNameConstants.AdminsOnly)]
-        public async Task<IList<AccountSummary>> GetAllAccounts(
+        public async Task<IList<AdminAccountSummary>> GetAllAccounts(
             [FromServices] IMapper mapper)
         {
-            var adminAccounts = await _database.AdminAccounts.ToListAsync();
+            var accounts = await _database.AdminAccounts.ToListAsync();
 
-            var accounts = new List<AccountBase>();
-            foreach (var adminAccount in adminAccounts)
-            {
-                accounts.Add(adminAccount);
-            }
-
-            var accountSummaries = mapper.Map<List<AccountBase>, List<AccountSummary>>(accounts);
+            var accountSummaries = mapper.Map<List<AdminAccount>, List<AdminAccountSummary>>(accounts);
 
             return accountSummaries;
         }

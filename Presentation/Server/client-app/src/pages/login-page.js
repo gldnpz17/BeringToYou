@@ -9,6 +9,8 @@ const Container = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
+
+  z-index: 0;
 `;
 
 const ContainerBackground = styled.div`
@@ -58,17 +60,17 @@ const LoginPage = () => {
       <ContainerBackground />
       <ContentContainer className='p-3'>
         <ContentContainerBackground />
-        <h1 className='text-center'>Log In</h1>
+        <h1 className='text-center'>Selamat Datang!</h1>
         <Form className='d-flex flex-column'>
           <Form.Group className='mb-3'>
             <Form.Label>Email</Form.Label>
             <AdminFormControl type='text' />
           </Form.Group>
           <Form.Group className='mb-3'>
-            <Form.Label>Password</Form.Label>
+            <Form.Label>Kata sandi</Form.Label>
             <AdminFormControl type='password' />
           </Form.Group>
-          <CustomButton className='align-self-center'>Log In</CustomButton>
+          <CustomButton className='align-self-center'>Masuk</CustomButton>
         </Form>
       </ContentContainer>
     </Container>
