@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import ItemWithIdTableCell from "./item-with-id-table-cell";
 
-const AccountIdentityTableCell = styled.td`
+const AccountIdentityTableCell = styled(ItemWithIdTableCell)`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -12,11 +13,6 @@ const AccountIdentityTableCell = styled.td`
     border-radius: 50%;
 
     margin-right: 0.4rem;
-  }
-
-  p {
-    white-space: nowrap;
-    margin: 0;
   }
 
   .account-id {

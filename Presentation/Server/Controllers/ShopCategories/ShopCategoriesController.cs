@@ -44,6 +44,7 @@ namespace Server.Controllers.ShopCategories
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IList<ShopCategorySummary>> ReadAllShopCategories([FromServices] IMapper mapper)
         {
             var shopCategories = await _database.ShopCategories.ToListAsync();

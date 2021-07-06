@@ -14,7 +14,7 @@ const Container = styled.div`
 
 const AdminFormContainer = (props) => {
   return (
-    <Container {...props} className={`p-3 mb-3 ${props.className}`} />
+    <Container className='p-3 mb-3' {...props} />
   );
 };
 
