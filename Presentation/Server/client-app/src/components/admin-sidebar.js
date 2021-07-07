@@ -14,8 +14,8 @@ import AccountsIcon from "../svg/accounts-icon";
 const Container = styled.div`
   z-index: 10;
 
-  background-color: ${props => props.theme.primary};
-  box-shadow: ${props => props.theme.shadow} 0.03rem 0rem 0.1rem;
+  background-color: #cfd8dc;
+  box-shadow: ${props => props.theme.shadow} 0rem 0rem 0.3rem;
 
   &.minimized {
     #minimize-button .icon {
@@ -59,7 +59,7 @@ const Container = styled.div`
     max-height: 100vh;
     overflow: hidden;
 
-    color: white;
+    color: black;
     font-family: 'Open Sans';
   }
 
@@ -111,11 +111,11 @@ const NavigationOption = styled.a`
     margin-left: 0.5rem;
     margin-bottom: 0;
     overflow: hidden;
-    color: white;
+    color: black;
   }
 
   .icon {
-    color: ${props => props.theme.secondary};
+    color: ${props => props.theme.primary};
   }
 
   ::after {
@@ -132,16 +132,16 @@ const NavigationOption = styled.a`
     border-top-right-radius: 0.25rem;
     border-bottom-right-radius: 0.25rem;
 
-    background-color: ${props => props.theme.secondary};
+    background-color: ${props => props.theme.primary};
   }
 
   &.selected {
     .option-label {
-      color: black;
+      color: white;
     }
 
     .icon {
-      color: ${props => props.theme.secondaryDark};
+      color: ${props => props.theme.primaryDark};
     }
 
     ::after {
@@ -159,7 +159,7 @@ const MinimizeSidebarButton = styled.div`
 
     transition: left 0.6s, transform 0.3s linear 0.15s, color 0.3s;
 
-    color: ${props => props.theme.secondary};
+    color: ${props => props.theme.primary};
 
     left: 100%;
     transform: translateX(-150%);

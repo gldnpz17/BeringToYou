@@ -37,7 +37,7 @@ const AdminWelcomePage = () => {
         <StyledLogo />
         <MessageContainer>
           <h1>Selamat Datang!</h1>
-          <p>Silahkan memilih salah satu menu sidebar</p>
+          <p>Silahkan memilih salah satu menu di sidebar</p>
         </MessageContainer>
       </div>
     </AdminPageContainer>

@@ -14,16 +14,12 @@ import CustomButton from "../components/custom-button";
 import { useEffect, useState } from "react";
 import fetchAllMapFloors from "../use-cases/common/fetch-all-map-floors";
 import IconButton from "../components/icon-button";
-import MoveUpIcon from "../svg/move-up-icon";
-import MoveDownIcon from '../svg/move-down-icon';
 import AdminFormControl from "../components/admin-form-control";
 import CreateFloorModal from "../modals/create-floor-modal";
 import fetchAllMapOverlays from '../use-cases/common/fetch-all-map-overlays';
 import EditIcon from "../svg/edit-icon";
 import DeleteIcon from "../svg/delete-icon";
 import EditOverlayModal from "../modals/edit-overlay-modal";
-import DeleteFloorModal from "../modals/delete-floor-modal";
-import DeleteOverlayModal from "../modals/delete-overlay-modal";
 import MarketMap from "../components/market-map";
 import websiteConfiguration from "../config";
 import fetchAllShops from '../use-cases/common/fetch-all-shops';
@@ -33,6 +29,11 @@ import ItemWithIdTableCell from "../components/item-with-id-table-cell";
 import fetchAllPointOfInterestCategories from '../use-cases/common/fetch-all-point-of-interest-categories';
 import EditFloorModal from "../modals/edit-floor-modal";
 import CreateShopModal from "../modals/create-shop-modal";
+import EditShopModal from "../modals/edit-shop-modal";
+import CreatePointOfInterestModal from "../modals/create-point-of-interest-modal";
+import EditPointOfInterestModal from "../modals/edit-point-of-interest-modal";
+import DeleteItemModal from "../modals/delete-item-modal";
+import ManipulateItemModal from "../modals/manipulate-item-modal";
 
 const AdminMapPage = () => {
   const [floors, setFloors] = useState([]);
@@ -47,32 +48,36 @@ const AdminMapPage = () => {
   const [editFloorModalShow, setEditFloorModalShow] = useState(false);
   const [floorToEdit, setFloorToEdit] = useState(null);
 
-  const [deleteFloorModalShow, setDeleteFloorModalShow] = useState(false);
-  const [floorToDelete, setFloorToDelete] = useState(null);
-
   const [createOverlayModalShow, setCreateOverlayModalShow] = useState(false);
 
   const [editOverlayModalShow, setEditOverlayModalShow] = useState(false);
   const [overlayToEdit, setOverlayToEdit] = useState(null);
 
-  const [deleteOverlayModalShow, setDeleteOverlayModalShow] = useState(false);
-  const [overlayToDelete, setOverlayToDelete] = useState(null);
-
   const [createShopModalShow, setCreateShopModalShow] = useState(false);
 
-  useEffect(() => {
-    getAllMapFloors();
-    getAllMapOverlays();
-    getAllShops();
-    getAllPointsOfInterest();
-    getAllPointOfInterestCategories();
-  }, [])
+  const [editShopModalShow, setEditShopModalShow] = useState(false);
+  const [shopToEdit, setShopToEdit] = useState(null);
 
-  const getAllMapFloors = async () => setFloors(await fetchAllMapFloors());
-  const getAllMapOverlays = async () => setOverlays(await fetchAllMapOverlays());
-  const getAllShops = async () => setShops(await fetchAllShops());
-  const getAllPointsOfInterest = async () => setPointsOfInterest(await fetchAllPointsOfInterest());
-  const getAllPointOfInterestCategories = async () => setPointOfInterestCategories(await fetchAllPointOfInterestCategories())
+  const [createPointOfInterestModalShow, setCreatePointOfInterestModalShow] = useState(false);
+
+  const [editPointOfInterestModalShow, setEditPointOfInterestModalShow] = useState(false);
+  const [pointOfInterestToEdit, setPointOfInterestToEdit] = useState(null);
+
+  const [query, setQuery] = useState(null);
+
+  const [itemToDelete, setItemToDelete] = useState(null);
+
+  useEffect(() => {
+    getAllData();
+  }, []);
+
+  const getAllData = async () => {
+    setFloors(await fetchAllMapFloors());
+    setOverlays(await fetchAllMapOverlays());
+    setShops(await fetchAllShops());
+    setPointsOfInterest(await fetchAllPointsOfInterest());
+    setPointOfInterestCategories(await fetchAllPointOfInterestCategories());
+  };
 
   const handleCreateFloorModalOpen = () => {
     let highestFloor = 1;
@@ -92,17 +97,23 @@ const AdminMapPage = () => {
     setFloorToEdit(floor);
 
     setEditFloorModalShow(true);
-  }
+  };
 
   const handleDeleteFloorModalOpen = (floor) => {
-    setFloorToDelete(floor);
-
-    setDeleteFloorModalShow(true);
+    setItemToDelete({
+      properties: [
+        {
+          label: 'Lantai',
+          value: floor.floorNumber
+        }
+      ],
+      callback: () => {
+        alert(`deleted item ${floor.floorNumber}`);
+      }
+    });
   };
 
-  const handleCreateOverlayModalOpen = () => {
-    setCreateOverlayModalShow(true);
-  };
+  const handleCreateOverlayModalOpen = () => setCreateOverlayModalShow(true);
 
   const handleEditOverlayModalOpen = (overlay) => {
     setOverlayToEdit(overlay);
@@ -111,13 +122,98 @@ const AdminMapPage = () => {
   };
 
   const handleDeleteOverlayModalOpen = (overlay) => {
-    setOverlayToDelete(overlay);
-
-    setDeleteOverlayModalShow(true);
+    setItemToDelete({
+      properties: [
+        {
+          label: 'ID',
+          value: overlay.id
+        },
+        {
+          label: 'Nama',
+          value: overlay.name
+        }
+      ],
+      callback: () => {
+        alert(`deleted item ${overlay.name}`);
+      }
+    });
   };
 
-  const handleCreateShopModalOpen = () => {
-    setCreateShopModalShow(true);
+  const handleCreateShopModalOpen = () => setCreateShopModalShow(true);
+
+  const handleEditShopModalOpen = (shop) => {
+    setShopToEdit(shop);
+
+    setEditShopModalShow(true);
+  };
+
+  const handleDeleteShopModalOpen = (shop) => {
+    setItemToDelete({
+      properties: [
+        {
+          label: 'ID',
+          value: shop.id
+        },
+        {
+          label: 'Nama',
+          value: shop.name
+        }
+      ],
+      callback: () => {
+        alert(`deleted item ${shop.name}`);
+      }
+    });
+  };
+
+  const handleCreatePointOfInterestCategoryModalOpen = () => setCreatePointOfInterestModalShow(true);
+
+  const handleEditPointOfInterestModalOpen = (pointOfInterest) => {
+    setPointOfInterestToEdit(pointOfInterest);
+
+    setEditPointOfInterestModalShow(true);
+  };
+
+  const handleDeletePointOfInterest = (pointOfInterest) => {
+    setQuery({
+      id: 'delete-point-of-interest',
+      title: 'Hapus Point of Interest',
+      fields: [
+        {
+          id: 'id',
+          label: 'ID',
+          type: 'text',
+          defaultValue: pointOfInterest.id,
+          readOnly: true
+        }
+      ],
+      submit: {
+        label: 'Hapus',
+        danger: true,
+        callback: () => {
+          alert(`deleted item ${pointOfInterest.id}`);
+        }
+      }
+    });
+  };
+
+  const handleCreatePointOfInterestCategory = () => {
+    setQuery({
+      id: 'create-point-of-interest-category',
+      title: 'Buat Kategori Point of Interest Baru',
+      fields: [
+        {
+          id: 'name',
+          type: 'text',
+          label: 'Nama'
+        }
+      ],
+      submit: {
+        label: 'Buat',
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    });
   };
 
   return (
@@ -132,11 +228,6 @@ const AdminMapPage = () => {
         floor={floorToEdit}
         setShow={setEditFloorModalShow}
       />
-      <DeleteFloorModal 
-        show={deleteFloorModalShow}
-        floor={floorToDelete}
-        setShow={setDeleteFloorModalShow}
-      />
       <CreateOverlayModal 
         show={createOverlayModalShow}
         setShow={setCreateOverlayModalShow}
@@ -146,14 +237,29 @@ const AdminMapPage = () => {
         overlay={overlayToEdit}
         setShow={setEditOverlayModalShow}
       />
-      <DeleteOverlayModal
-        show={deleteOverlayModalShow}
-        overlay={overlayToDelete}
-        setShow={setDeleteOverlayModalShow}
-      />
       <CreateShopModal 
         show={createShopModalShow}
         setShow={setCreateShopModalShow}
+      />
+      <EditShopModal 
+        show={editShopModalShow}
+        shop={shopToEdit}
+        setShow={setEditShopModalShow}
+      />
+      <CreatePointOfInterestModal
+        show={createPointOfInterestModalShow}
+        setShow={setCreatePointOfInterestModalShow}
+      />
+      <EditPointOfInterestModal
+        show={editPointOfInterestModalShow}
+        pointOfInterest={pointOfInterestToEdit}
+        setShow={setEditPointOfInterestModalShow}
+      />
+      <DeleteItemModal
+        item={itemToDelete}
+      />
+      <ManipulateItemModal
+        query={query}
       />
       <AdminPageHeader title='Peta Digital'>
         <MapIcon />
@@ -301,12 +407,12 @@ const AdminMapPage = () => {
                         <td>
                           <span className='d-flex justify-content-end'>
                             <IconButton className='p-1 me-2' iconOnly
-                              onClick={() => {}}
+                              onClick={() => handleEditShopModalOpen(shop)}
                             >
                               <EditIcon />
                             </IconButton>
                             <IconButton className='p-1' iconOnly danger
-                              onClick={() => {}}
+                              onClick={() => handleDeleteShopModalOpen(shop)}
                             >
                               <DeleteIcon />
                             </IconButton>
@@ -323,7 +429,7 @@ const AdminMapPage = () => {
               <div className='d-flex flex-row mb-3 align-items-center flex-wrap justify-content-end'>
                 <AdminFormControl type='text' placeholder='Cari point of interest' className='mb-1' style={{maxWidth: '16rem'}} />
                 <div className='flex-grow-1' />
-                <CustomButton className='mb-1' onClick={() => {}}>Point of interest baru</CustomButton>
+                <CustomButton className='mb-1' onClick={() => handleCreatePointOfInterestCategoryModalOpen()}>Point of interest baru</CustomButton>
               </div>
               <AdminTable>
                 <thead>
@@ -351,12 +457,12 @@ const AdminMapPage = () => {
                         <td>
                           <span className='d-flex justify-content-end'>
                             <IconButton className='p-1 me-2' iconOnly
-                              onClick={() => {}}
+                              onClick={() => handleEditPointOfInterestModalOpen(pointOfInterest)}
                             >
                               <EditIcon />
                             </IconButton>
                             <IconButton className='p-1' iconOnly danger
-                              onClick={() => {}}
+                              onClick={() => handleDeletePointOfInterest(pointOfInterest)}
                             >
                               <DeleteIcon />
                             </IconButton>
@@ -370,7 +476,7 @@ const AdminMapPage = () => {
             </AdminFormContainer>
             <AdminFormContainer>
               <h1 className='mb-3'>Kategori Point of Interest</h1>
-              <CustomButton className='mb-3' onClick={() => {}}>Kategori baru</CustomButton>
+              <CustomButton className='mb-3' onClick={() => handleCreatePointOfInterestCategory()}>Kategori baru</CustomButton>
               <AdminTable>
                 <thead>
                   <tr>

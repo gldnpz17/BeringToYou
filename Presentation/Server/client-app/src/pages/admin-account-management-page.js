@@ -27,11 +27,10 @@ import AccountIdentityTableCell from '../components/account-identity-table-cell'
 import fetchAllMerchantAccounts from "../use-cases/admin/account-management/fetch-all-merchant-accounts";
 import CreateAdminAccountModal from "../modals/create-admin-account-modal";
 import EditAdminAccountModal from "../modals/edit-admin-account-modal";
-import DeleteAccountModal from '../modals/delete-account-modal';
 import CreatePermissionPresetModal from "../modals/create-permission-preset-modal";
 import VerifyMerchantModal from "../modals/verify-merchant-modal";
 import EditPermissionPresetModal from "../modals/edit-permission-preset-modal";
-import DeletePermissionPresetModal from "../modals/delete-permission-preset-modal";
+import DeleteItemModal from "../modals/delete-item-modal";
 
 const AdminAccountManagementPage = () => {
   const [adminAccounts, setAdminAccounts] = useState([]);
@@ -43,9 +42,6 @@ const AdminAccountManagementPage = () => {
   const [editAdminAccountModalShow, setEditAdminAccountModalShow] = useState(false);
   const [adminAccountToEdit, setAdminAccountToEdit] = useState(null);
 
-  const [deleteAccountModalShow, setDeleteAccountModalShow] = useState(false);
-  const [accountToDelete, setAccountToDelete] = useState(null);
-
   const [createPermissionPresetModalShow, setCreatePermissionPresetModalShow] = useState(false);
 
   const [verifyMerchantModalShow, setVerifyMerchantModalShow] = useState(false);
@@ -54,8 +50,7 @@ const AdminAccountManagementPage = () => {
   const [editPermissionPresetModalShow, setEditPermissionPresetModalShow] = useState(false);
   const [permissionPresetToEdit, setPermissionPresetToEdit] = useState(null);
 
-  const [deletePermissionPresetModalShow, setDeletePermissionPresetModalShow] = useState(false);
-  const [permissionPresetToDelete, setPermissionPresetToDelete] = useState(null);
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   useEffect(() => {
     getAllAdminAccounts();
@@ -128,9 +123,25 @@ const AdminAccountManagementPage = () => {
   };
 
   const handleDeleteAccountModalOpen = (account) => {
-    setAccountToDelete(account);
-
-    setDeleteAccountModalShow(true);
+    setItemToDelete({
+      properties: [
+        {
+          label: 'ID',
+          value: account.id
+        },
+        {
+          label: 'Nama',
+          value: account.displayName
+        },
+        {
+          label: 'Email',
+          value: account.email
+        }
+      ],
+      callback: () => {
+        alert(`deleted item ${account.id}`);
+      }
+    });
   };
 
   const handleCreatePermissionPresetModalOpen = () => {
@@ -150,9 +161,17 @@ const AdminAccountManagementPage = () => {
   };
 
   const handleDeletePermissionPresetModalOpen = (permissionPreset) => {
-    setPermissionPresetToDelete(permissionPreset);
-
-    setDeletePermissionPresetModalShow(true);
+    setItemToDelete({
+      properties: [
+        {
+          label: 'Nama',
+          value: permissionPreset.name
+        }
+      ],
+      callback: () => {
+        alert(`deleted item ${permissionPreset.name}`);
+      }
+    });
   };
 
   return (
@@ -165,11 +184,6 @@ const AdminAccountManagementPage = () => {
         show={editAdminAccountModalShow}
         account={adminAccountToEdit}
         setShow={setEditAdminAccountModalShow}
-      />
-      <DeleteAccountModal
-        show={deleteAccountModalShow}
-        account={accountToDelete}
-        setShow={setDeleteAccountModalShow}
       />
       <CreatePermissionPresetModal 
         show={createPermissionPresetModalShow}
@@ -185,10 +199,8 @@ const AdminAccountManagementPage = () => {
         permissionPreset={permissionPresetToEdit}
         setShow={setEditPermissionPresetModalShow}
       />
-      <DeletePermissionPresetModal 
-        show={deletePermissionPresetModalShow}
-        permissionPreset={permissionPresetToDelete}
-        setShow={setDeletePermissionPresetModalShow}
+      <DeleteItemModal
+        item={itemToDelete}
       />
       <AdminPageHeader title='Manajemen Akun'>
         <AccountsIcon />
