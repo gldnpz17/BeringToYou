@@ -15,57 +15,27 @@ import { useEffect, useState } from "react";
 import fetchAllMapFloors from "../use-cases/common/fetch-all-map-floors";
 import IconButton from "../components/icon-button";
 import AdminFormControl from "../components/admin-form-control";
-import CreateFloorModal from "../modals/create-floor-modal";
 import fetchAllMapOverlays from '../use-cases/common/fetch-all-map-overlays';
 import EditIcon from "../svg/edit-icon";
 import DeleteIcon from "../svg/delete-icon";
-import EditOverlayModal from "../modals/edit-overlay-modal";
 import MarketMap from "../components/market-map";
 import websiteConfiguration from "../config";
 import fetchAllShops from '../use-cases/common/fetch-all-shops';
-import CreateOverlayModal from "../modals/create-overlay-modal";
 import fetchAllPointsOfInterest from "../use-cases/common/fetch-all-points-of-interest";
 import ItemWithIdTableCell from "../components/item-with-id-table-cell";
 import fetchAllPointOfInterestCategories from '../use-cases/common/fetch-all-point-of-interest-categories';
-import EditFloorModal from "../modals/edit-floor-modal";
-import CreateShopModal from "../modals/create-shop-modal";
-import EditShopModal from "../modals/edit-shop-modal";
-import CreatePointOfInterestModal from "../modals/create-point-of-interest-modal";
-import EditPointOfInterestModal from "../modals/edit-point-of-interest-modal";
-import DeleteItemModal from "../modals/delete-item-modal";
 import ManipulateItemModal from "../modals/manipulate-item-modal";
+import fetchAllShopCategories from "../use-cases/common/fetch-all-shop-categories";
 
 const AdminMapPage = () => {
   const [floors, setFloors] = useState([]);
   const [overlays, setOverlays] = useState([]);
   const [shops, setShops] = useState([]);
+  const [shopCategories, setShopCategories] = useState([]);
   const [pointsOfInterest, setPointsOfInterest] = useState([]);
   const [pointOfInterestCategories, setPointOfInterestCategories] = useState([]);
 
-  const [createFloorModalShow, setCreateFloorModalShow] = useState(false);
-  const [floorToCreate, setFloorToCreate] = useState(null);
-
-  const [editFloorModalShow, setEditFloorModalShow] = useState(false);
-  const [floorToEdit, setFloorToEdit] = useState(null);
-
-  const [createOverlayModalShow, setCreateOverlayModalShow] = useState(false);
-
-  const [editOverlayModalShow, setEditOverlayModalShow] = useState(false);
-  const [overlayToEdit, setOverlayToEdit] = useState(null);
-
-  const [createShopModalShow, setCreateShopModalShow] = useState(false);
-
-  const [editShopModalShow, setEditShopModalShow] = useState(false);
-  const [shopToEdit, setShopToEdit] = useState(null);
-
-  const [createPointOfInterestModalShow, setCreatePointOfInterestModalShow] = useState(false);
-
-  const [editPointOfInterestModalShow, setEditPointOfInterestModalShow] = useState(false);
-  const [pointOfInterestToEdit, setPointOfInterestToEdit] = useState(null);
-
   const [query, setQuery] = useState(null);
-
-  const [itemToDelete, setItemToDelete] = useState(null);
 
   useEffect(() => {
     getAllData();
@@ -77,9 +47,10 @@ const AdminMapPage = () => {
     setShops(await fetchAllShops());
     setPointsOfInterest(await fetchAllPointsOfInterest());
     setPointOfInterestCategories(await fetchAllPointOfInterestCategories());
+    setShopCategories(await fetchAllShopCategories());
   };
 
-  const handleCreateFloorModalOpen = () => {
+  const handleCreateFloor = () => {
     let highestFloor = 1;
 
     floors.forEach(floor => {
@@ -88,89 +59,497 @@ const AdminMapPage = () => {
       }
     });
 
-    setFloorToCreate(highestFloor + 1);
-
-    setCreateFloorModalShow(true);
-  };
-
-  const handleEditFloorModalOpen = (floor) => {
-    setFloorToEdit(floor);
-
-    setEditFloorModalShow(true);
-  };
-
-  const handleDeleteFloorModalOpen = (floor) => {
-    setItemToDelete({
-      properties: [
+    setQuery({
+      id: 'create-floor',
+      title: 'Tambahkan Lantai Baru',
+      fields: [
         {
+          id: 'floorNumber',
           label: 'Lantai',
-          value: floor.floorNumber
-        }
-      ],
-      callback: () => {
-        alert(`deleted item ${floor.floorNumber}`);
-      }
-    });
-  };
-
-  const handleCreateOverlayModalOpen = () => setCreateOverlayModalShow(true);
-
-  const handleEditOverlayModalOpen = (overlay) => {
-    setOverlayToEdit(overlay);
-
-    setEditOverlayModalShow(true);
-  };
-
-  const handleDeleteOverlayModalOpen = (overlay) => {
-    setItemToDelete({
-      properties: [
-        {
-          label: 'ID',
-          value: overlay.id
+          type: 'text',
+          defaultValue: highestFloor + 1
         },
         {
-          label: 'Nama',
-          value: overlay.name
+          id: 'kmlFile',
+          label: 'File KML',
+          type: 'file'
         }
       ],
-      callback: () => {
-        alert(`deleted item ${overlay.name}`);
+      submit: {
+        label: 'Tambahkan',
+        callback: (values) => {
+          console.log(values);
+        }
       }
     });
   };
 
-  const handleCreateShopModalOpen = () => setCreateShopModalShow(true);
-
-  const handleEditShopModalOpen = (shop) => {
-    setShopToEdit(shop);
-
-    setEditShopModalShow(true);
-  };
-
-  const handleDeleteShopModalOpen = (shop) => {
-    setItemToDelete({
-      properties: [
+  const handleEditFloor = (floor) => {
+    setQuery({
+      id: 'edit-floor',
+      title: 'Ubah Lantai',
+      fields: [
         {
-          label: 'ID',
-          value: shop.id
+          id: 'floorNumber',
+          label: 'Lantai',
+          type: 'text',
+          defaultValue: floor.floorNumber
         },
         {
-          label: 'Nama',
-          value: shop.name
+          id: 'kmlFile',
+          label: 'File KML',
+          type: 'file'
         }
       ],
-      callback: () => {
-        alert(`deleted item ${shop.name}`);
+      submit: {
+        label: 'Simpan',
+        callback: (values) => {
+          console.log(values);
+        }
       }
     });
   };
 
-  const handleCreatePointOfInterestCategoryModalOpen = () => setCreatePointOfInterestModalShow(true);
+  const handleDeleteFloor = (floor) => {
+    setQuery({
+      id: 'delete-floor',
+      title: 'Hapus Lantai',
+      fields: [
+        {
+          id: 'floorNumber',
+          label: 'Lantai',
+          type: 'text',
+          readOnly: true,
+          defaultValue: floor.floorNumber
+        }
+      ],
+      submit: {
+        label: 'Hapus',
+        danger: true,
+        callback: () => {
+          alert(`deleted item ${floor.floorNumber}`);
+        }
+      }
+    });
+  };
 
-  const handleEditPointOfInterestModalOpen = (pointOfInterest) => {
-    setPointOfInterestToEdit(pointOfInterest);
+  const handleCreateOverlay = () => {
+    setQuery({
+      id: 'create-overlay',
+      title: 'Tambahkan Overlay Baru',
+      fields: [
+        {
+          id: 'name',
+          label: 'Nama',
+          type: 'text'
+        },
+        {
+          id: 'zIndex',
+          label: 'Z-Index',
+          type: 'text'
+        },
+        {
+          id: 'floorNumber',
+          label: 'Lantai',
+          type: 'select',
+          options: floors.map(floor => {
+            return (
+              {
+                value: floor.floorNumber,
+                label: `Lantai ${floor.floorNumber}`,
+                isDefault: false
+              }
+            );
+          })
+        },
+        {
+          id: 'kmlFile',
+          label: 'File KML',
+          type: 'file'
+        },
+        {
+          id: 'iconFile',
+          label: 'File Icon',
+          type: 'file'
+        }
+      ],
+      submit: {
+        label: 'Tambahkan',
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    });
+  }
 
-    setEditPointOfInterestModalShow(true);
+  const handleEditOverlay = (overlay) => {
+    setQuery({
+      id: 'edit-overlay',
+      title: 'Ubah Overlay Baru',
+      fields: [
+        {
+          id: 'id',
+          label: 'ID',
+          type: 'text',
+          readOnly: true,
+          defaultValue: overlay.id
+        },
+        {
+          id: 'name',
+          label: 'Nama',
+          type: 'text',
+          defaultValue: overlay.name
+        },
+        {
+          id: 'zIndex',
+          label: 'Z-Index',
+          type: 'text',
+          defaultValue: overlay.zIndex
+        },
+        {
+          id: 'floorNumber',
+          label: 'Lantai',
+          type: 'select',
+          options: floors.map(floor => {
+            return (
+              {
+                value: floor.floorNumber,
+                label: `Lantai ${floor.floorNumber}`,
+                isDefault: (floor.floorNumber === overlay.floorNumber)
+              }
+            );
+          })
+        },
+        {
+          id: 'kmlFile',
+          label: 'File KML',
+          type: 'file'
+        },
+        {
+          id: 'iconFile',
+          label: 'File Icon',
+          type: 'file'
+        }
+      ],
+      submit: {
+        label: 'Simpan',
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    });
+  };
+
+  const handleDeleteOverlay = (overlay) => {
+    setQuery({
+      id: 'delete-overlay',
+      title: 'Hapus Overlay',
+      fields: [
+        {
+          id: 'id',
+          label: 'ID',
+          type: 'text',
+          readOnly: true,
+          defaultValue: overlay.id
+        },
+        {
+          id: 'name',
+          label: 'Nama',
+          type: 'text',
+          readOnly: true,
+          defaultValue: overlay.name
+        }
+      ],
+      submit: { 
+        label: 'Hapus',
+        danger: true,
+        callback: (values) => {
+          alert(`deleted item ${values.name}`);
+        }
+      }
+    });
+  };
+
+  const handleCreateShop = () => {
+    setQuery({
+      id: 'create-shop',
+      title: 'Tambahkan Toko Baru',
+      fields: [
+        {
+          id: 'name',
+          label: 'Nama',
+          type: 'text'
+        },
+        {
+          id: 'description',
+          label: 'Deskripsi',
+          type: 'textarea'
+        },
+        {
+          id: 'floorNumber',
+          label: 'Lantai',
+          type: 'select',
+          options: floors.map(floor => {
+            return (
+              {
+                value: floor.floorNumber,
+                label: `Lantai ${floor.floorNumber}`,
+                isDefault: false
+              }
+            );
+          })
+        },
+        {
+          id: 'latitude',
+          label: 'Latitude',
+          type: 'text'
+        },
+        {
+          id: 'longitude',
+          label: 'Longitude',
+          type: 'text'
+        },
+        {
+          id: 'category',
+          label: 'Kategori',
+          type: 'select',
+          options: shopCategories.map(category => {
+            return (
+              {
+                value: category.id,
+                label: category.name,
+                isDefault: false
+              }
+            );
+          })
+        }
+      ],
+      submit: {
+        label: 'Tambahkan',
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    });
+  }
+
+  const handleEditShop = (shop) => {
+    setQuery({
+      id: 'edit-shop',
+      title: 'Ubah Toko',
+      fields: [
+        {
+          id: 'id',
+          label: 'Nama',
+          type: 'text',
+          readOnly: true,
+          defaultValue: shop.id
+        },
+        {
+          id: 'name',
+          label: 'Nama',
+          type: 'text',
+          defaultValue: shop.name
+        },
+        {
+          id: 'description',
+          label: 'Deskripsi',
+          type: 'textarea',
+          defaultValue: shop.description
+        },
+        {
+          id: 'floorNumber',
+          label: 'Lantai',
+          type: 'select',
+          options: floors.map(floor => {
+            return (
+              {
+                value: floor.floorNumber,
+                label: `Lantai ${floor.floorNumber}`,
+                isDefault: (floor.floorNumber === shop.floor)
+              }
+            );
+          })
+        },
+        {
+          id: 'latitude',
+          label: 'Latitude',
+          type: 'text',
+          defaultValue: shop.latitude
+        },
+        {
+          id: 'longitude',
+          label: 'Longitude',
+          type: 'text',
+          defaultValue: shop.longitude
+        },
+        {
+          id: 'category',
+          label: 'Kategori',
+          type: 'select',
+          options: shopCategories.map(category => {
+            return (
+              {
+                value: category.id,
+                label: category.name,
+                isDefault: (category.name === shop.shopCategoryName)
+              }
+            );
+          })
+        }
+      ],
+      submit: {
+        label: 'Simpan',
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    });
+  };
+
+  const handleDeleteShop = (shop) => {
+    setQuery({
+      id: 'delete-shop',
+      title: 'Hapus Toko',
+      fields: [
+        {
+          id: 'id',
+          label: 'ID',
+          type: 'text',
+          readOnly: true,
+          defaultValue: shop.id
+        },
+        {
+          id: 'name',
+          label: 'Nama',
+          type: 'text',
+          readOnly: true,
+          defaultValue: shop.name
+        }
+      ],
+      submit: {
+        label: 'Hapus',
+        danger: true,
+        callback: (values) => {
+          alert(`deleted item ${values.name}`);
+        }
+      }
+    });
+  };
+
+  const handleCreatePointOfInterest = () => {
+    setQuery({
+      id: 'create-point-of-interest',
+      title: 'Buat Point Of Interest Baru',
+      fields: [
+        {
+          id: 'floorNumber',
+          label: 'Lantai',
+          type: 'select',
+          options: floors.map(floor => {
+            return (
+              {
+                value: floor.floorNumber,
+                label: `Lantai ${floor.floorNumber}`,
+                isDefault: false
+              }
+            );
+          })
+        },
+        {
+          id: 'latitude',
+          label: 'Latitude',
+          type: 'text'
+        },
+        {
+          id: 'longitude',
+          label: 'Longitude',
+          type: 'text'
+        },
+        {
+          id: 'category',
+          label: 'Kategori',
+          type: 'select',
+          options: pointOfInterestCategories.map(category => {
+            return (
+              {
+                value: category.id,
+                label: category.name,
+                isDefault: false
+              }
+            );
+          })
+        }
+      ],
+      submit: {
+        label: 'Tambahkan',
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    });
+  };
+
+  const handleEditPointOfInterest = (pointOfInterest) => {
+    setQuery({
+      id: 'edit-point-of-interest',
+      title: 'Ubah Point Of Interest',
+      fields: [
+        {
+          id: 'id',
+          label: 'ID',
+          type: 'text',
+          readOnly: true,
+          defaultValue: pointOfInterest.id
+        },
+        {
+          id: 'floorNumber',
+          label: 'Lantai',
+          type: 'select',
+          options: floors.map(floor => {
+            return (
+              {
+                value: floor.floorNumber,
+                label: `Lantai ${floor.floorNumber}`,
+                isDefault: (floor.floorNumber === pointOfInterest.floorNumber)
+              }
+            );
+          })
+        },
+        {
+          id: 'latitude',
+          label: 'Latitude',
+          type: 'text',
+          defaultValue: pointOfInterest.latitude
+        },
+        {
+          id: 'longitude',
+          label: 'Longitude',
+          type: 'text',
+          defaultValue: pointOfInterest.longitude
+        },
+        {
+          id: 'category',
+          label: 'Kategori',
+          type: 'select',
+          options: pointOfInterestCategories.map(category => {
+            return (
+              {
+                value: category.id,
+                label: category.name,
+                isDefault: (category.id === pointOfInterest.category.id)
+              }
+            );
+          })
+        }
+      ],
+      submit: {
+        label: 'Simpan',
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    })
   };
 
   const handleDeletePointOfInterest = (pointOfInterest) => {
@@ -205,6 +584,11 @@ const AdminMapPage = () => {
           id: 'name',
           type: 'text',
           label: 'Nama'
+        },
+        {
+          id: 'iconFile',
+          type: 'file',
+          label: 'File Icon'
         }
       ],
       submit: {
@@ -216,48 +600,71 @@ const AdminMapPage = () => {
     });
   };
 
+  const handleEditPointOfInterestCategory = (pointOfInterestCategory) => {
+    setQuery({
+      id: 'edit-point-of-interest-category',
+      title: 'Ubah Kategori Point of Interest',
+      fields: [
+        {
+          id: 'id',
+          type: 'text',
+          label: 'ID',
+          readOnly: true,
+          defaultValue: pointOfInterestCategory.id
+        },
+        {
+          id: 'name',
+          type: 'text',
+          label: 'Nama',
+          defaultValue: pointOfInterestCategory.name
+        },
+        {
+          id: 'iconFile',
+          type: 'file',
+          label: 'File Icon'
+        }
+      ],
+      submit: {
+        label: 'Simpan',
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    });
+  };
+
+  const handleDeletePointOfInterestCategory = (pointOfInterestCategory) => {
+    setQuery({
+      id: 'delete-point-of-interest-category',
+      title: 'Hapus Kategori Point of Interest',
+      fields: [
+        {
+          id: 'id',
+          type: 'text',
+          label: 'ID',
+          readOnly: true,
+          defaultValue: pointOfInterestCategory.id
+        },
+        {
+          id: 'name',
+          type: 'text',
+          label: 'Nama',
+          readOnly: true,
+          defaultValue: pointOfInterestCategory.name
+        }
+      ],
+      submit: {
+        label: 'Hapus',
+        danger: true,
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    });
+  };
+
   return (
     <AdminPageContainer>
-      <CreateFloorModal
-        show={createFloorModalShow}
-        floor={floorToCreate}
-        setShow={setCreateFloorModalShow}
-      />
-      <EditFloorModal 
-        show={editFloorModalShow}
-        floor={floorToEdit}
-        setShow={setEditFloorModalShow}
-      />
-      <CreateOverlayModal 
-        show={createOverlayModalShow}
-        setShow={setCreateOverlayModalShow}
-      />
-      <EditOverlayModal 
-        show={editOverlayModalShow}
-        overlay={overlayToEdit}
-        setShow={setEditOverlayModalShow}
-      />
-      <CreateShopModal 
-        show={createShopModalShow}
-        setShow={setCreateShopModalShow}
-      />
-      <EditShopModal 
-        show={editShopModalShow}
-        shop={shopToEdit}
-        setShow={setEditShopModalShow}
-      />
-      <CreatePointOfInterestModal
-        show={createPointOfInterestModalShow}
-        setShow={setCreatePointOfInterestModalShow}
-      />
-      <EditPointOfInterestModal
-        show={editPointOfInterestModalShow}
-        pointOfInterest={pointOfInterestToEdit}
-        setShow={setEditPointOfInterestModalShow}
-      />
-      <DeleteItemModal
-        item={itemToDelete}
-      />
       <ManipulateItemModal
         query={query}
       />
@@ -291,7 +698,7 @@ const AdminMapPage = () => {
           <Tab.Pane eventKey='layers'>
             <AdminFormContainer>
               <h1 className='mb-3'>Lantai</h1>
-              <CustomButton className='mb-3' onClick={() => handleCreateFloorModalOpen()}>Lantai baru</CustomButton>
+              <CustomButton className='mb-3' onClick={() => handleCreateFloor()}>Lantai baru</CustomButton>
               <AdminTable>
                 <thead>
                   <tr>
@@ -307,12 +714,12 @@ const AdminMapPage = () => {
                         <td>
                           <span className='d-flex flex-row justify-content-end'>
                             <IconButton className='p-1 me-2' iconOnly
-                              onClick={() => handleEditFloorModalOpen(floor)}
+                              onClick={() => handleEditFloor(floor)}
                             >
                               <EditIcon />
                             </IconButton>
                             <IconButton danger className='p-1' iconOnly
-                              onClick={() => handleDeleteFloorModalOpen(floor)}
+                              onClick={() => handleDeleteFloor(floor)}
                             >
                               <DeleteIcon />
                             </IconButton>
@@ -326,7 +733,7 @@ const AdminMapPage = () => {
             </AdminFormContainer>
             <AdminFormContainer>
               <h1 className='mb-3'>Overlay</h1>
-              <CustomButton className='mb-3' onClick={() => handleCreateOverlayModalOpen()}>Overlay baru</CustomButton>
+              <CustomButton className='mb-3' onClick={() => handleCreateOverlay()}>Overlay baru</CustomButton>
               <AdminTable>
                 <thead>
                   <tr>
@@ -353,12 +760,12 @@ const AdminMapPage = () => {
                         <td>
                           <span className='d-flex justify-content-end'>
                             <IconButton className='p-1 me-2' iconOnly
-                              onClick={() => handleEditOverlayModalOpen(overlay)}
+                              onClick={() => handleEditOverlay(overlay)}
                             >
                               <EditIcon />
                             </IconButton>
                             <IconButton className='p-1' iconOnly danger
-                              onClick={() => handleDeleteOverlayModalOpen(overlay)}
+                              onClick={() => handleDeleteOverlay(overlay)}
                             >
                               <DeleteIcon />
                             </IconButton>
@@ -377,7 +784,7 @@ const AdminMapPage = () => {
               <div className='d-flex flex-row mb-3 align-items-center flex-wrap justify-content-end'>
                 <AdminFormControl type='text' placeholder='Cari toko' className='mb-1' style={{maxWidth: '16rem'}} />
                 <div className='flex-grow-1' />
-                <CustomButton className='mb-1' onClick={() => handleCreateShopModalOpen()}>Toko baru</CustomButton>
+                <CustomButton className='mb-1' onClick={() => handleCreateShop()}>Toko baru</CustomButton>
               </div>
               <AdminTable>
                 <thead>
@@ -407,12 +814,12 @@ const AdminMapPage = () => {
                         <td>
                           <span className='d-flex justify-content-end'>
                             <IconButton className='p-1 me-2' iconOnly
-                              onClick={() => handleEditShopModalOpen(shop)}
+                              onClick={() => handleEditShop(shop)}
                             >
                               <EditIcon />
                             </IconButton>
                             <IconButton className='p-1' iconOnly danger
-                              onClick={() => handleDeleteShopModalOpen(shop)}
+                              onClick={() => handleDeleteShop(shop)}
                             >
                               <DeleteIcon />
                             </IconButton>
@@ -429,7 +836,7 @@ const AdminMapPage = () => {
               <div className='d-flex flex-row mb-3 align-items-center flex-wrap justify-content-end'>
                 <AdminFormControl type='text' placeholder='Cari point of interest' className='mb-1' style={{maxWidth: '16rem'}} />
                 <div className='flex-grow-1' />
-                <CustomButton className='mb-1' onClick={() => handleCreatePointOfInterestCategoryModalOpen()}>Point of interest baru</CustomButton>
+                <CustomButton className='mb-1' onClick={() => handleCreatePointOfInterest()}>Point of interest baru</CustomButton>
               </div>
               <AdminTable>
                 <thead>
@@ -457,7 +864,7 @@ const AdminMapPage = () => {
                         <td>
                           <span className='d-flex justify-content-end'>
                             <IconButton className='p-1 me-2' iconOnly
-                              onClick={() => handleEditPointOfInterestModalOpen(pointOfInterest)}
+                              onClick={() => handleEditPointOfInterest(pointOfInterest)}
                             >
                               <EditIcon />
                             </IconButton>
@@ -499,12 +906,12 @@ const AdminMapPage = () => {
                         <td>
                           <span className='d-flex justify-content-end'>
                             <IconButton className='p-1 me-2' iconOnly
-                              onClick={() => {}}
+                              onClick={() => handleEditPointOfInterestCategory(category)}
                             >
                               <EditIcon />
                             </IconButton>
                             <IconButton className='p-1' iconOnly danger
-                              onClick={() => {}}
+                              onClick={() => handleDeletePointOfInterestCategory(category)}
                             >
                               <DeleteIcon />
                             </IconButton>

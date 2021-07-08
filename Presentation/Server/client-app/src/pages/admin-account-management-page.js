@@ -14,7 +14,6 @@ import AdminPageTabContent from "../components/admin-page-tab-content";
 import AdminFormContainer from '../components/admin-form-container';
 import CustomButton from "../components/custom-button";
 import AdminFormControl from "../components/admin-form-control";
-import AccountSearchIcon from '../svg/account-search-icon';
 import { useEffect, useState } from "react";
 import fetchAllAdminAccounts from "../use-cases/admin/account-management/fetch-all-admin-accounts";
 import styled from "styled-components";
@@ -25,24 +24,15 @@ import AdminTable from "../components/admin-table";
 import FetchAllPermissionPresets from "../use-cases/admin/account-management/fetch-all-permission-presets";
 import AccountIdentityTableCell from '../components/account-identity-table-cell';
 import fetchAllMerchantAccounts from "../use-cases/admin/account-management/fetch-all-merchant-accounts";
-import CreateAdminAccountModal from "../modals/create-admin-account-modal";
-import EditAdminAccountModal from "../modals/edit-admin-account-modal";
-import CreatePermissionPresetModal from "../modals/create-permission-preset-modal";
 import VerifyMerchantModal from "../modals/verify-merchant-modal";
 import EditPermissionPresetModal from "../modals/edit-permission-preset-modal";
-import DeleteItemModal from "../modals/delete-item-modal";
+import ManipulateItemModal from "../modals/manipulate-item-modal";
+import fetchAdminAccountPermissions from "../use-cases/admin/account-management/fetch-admin-account-permissions";
 
 const AdminAccountManagementPage = () => {
   const [adminAccounts, setAdminAccounts] = useState([]);
   const [permissionPresets, setPermissionPresets] = useState([]);
   const [merchantAccounts, setMerchantAccounts] = useState([]);
-
-  const [createAdminAccountModalShow, setCreateAdminAccountModalShow] = useState(false);
-
-  const [editAdminAccountModalShow, setEditAdminAccountModalShow] = useState(false);
-  const [adminAccountToEdit, setAdminAccountToEdit] = useState(null);
-
-  const [createPermissionPresetModalShow, setCreatePermissionPresetModalShow] = useState(false);
 
   const [verifyMerchantModalShow, setVerifyMerchantModalShow] = useState(false);
   const [merchantToVerify, setMerchantToVerify] = useState(null);
@@ -50,7 +40,7 @@ const AdminAccountManagementPage = () => {
   const [editPermissionPresetModalShow, setEditPermissionPresetModalShow] = useState(false);
   const [permissionPresetToEdit, setPermissionPresetToEdit] = useState(null);
 
-  const [itemToDelete, setItemToDelete] = useState(null);
+  const [query, setQuery] = useState(null);
 
   useEffect(() => {
     getAllAdminAccounts();
@@ -112,95 +102,185 @@ const AdminAccountManagementPage = () => {
     setMerchantAccounts(result);
   };
 
-  const handleCreateAdminAccountModalOpen = () => {
-    setCreateAdminAccountModalShow(true);
-  };
-
-  const handeEditAdminAccountModalOpen = (account) => {
-    setAdminAccountToEdit(account);
-
-    setEditAdminAccountModalShow(true);
-  };
-
-  const handleDeleteAccountModalOpen = (account) => {
-    setItemToDelete({
-      properties: [
+  const handleCreateAdminAccount = () => {
+    setQuery({
+      id: 'create-admin-account',
+      title: 'Buat Akun Admin',
+      fields: [
         {
-          label: 'ID',
-          value: account.id
-        },
-        {
-          label: 'Nama',
-          value: account.displayName
-        },
-        {
+          id: 'email',
           label: 'Email',
-          value: account.email
+          type: 'text'
+        },
+        {
+          id: 'name',
+          label: 'Nama',
+          type: 'text'
+        },
+        {
+          id: 'password',
+          label: 'Kata Sandi',
+          type: 'text'
         }
       ],
-      callback: () => {
-        alert(`deleted item ${account.id}`);
+      submit: {
+        label: 'Buat',
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    })
+  };
+
+  const handeEditAdminAccount = async (account) => {
+    let permissions = await fetchAdminAccountPermissions(account.id)
+
+    setQuery({
+      id: 'edit-admin-account',
+      title: 'Edit Akun Admin',
+      fields: [
+        {
+          id: 'id',
+          label: 'ID',
+          type: 'text',
+          readOnly: true,
+          defaultValue: account.id
+        },
+        {
+          id: 'name',
+          label: 'Nama',
+          type: 'text',
+          readOnly: true,
+          defaultValue: account.displayName
+        },
+        {
+          id: 'preset',
+          label: 'Preset Wewenang',
+          type: 'select',
+          options: permissionPresets.map(preset => {
+            return ({
+              value: preset.name,
+              label: preset.name,
+              isDefault: (preset.name === permissions.name)
+            });
+          })
+        }
+      ],
+      submit: {
+        label: 'Simpan',
+        callback: (values) => {
+          console.log(values);
+        }
       }
     });
   };
 
-  const handleCreatePermissionPresetModalOpen = () => {
-    setCreatePermissionPresetModalShow(true);
+  const handleDeleteAccount = (account) => {
+    setQuery({
+      id: 'delete-account',
+      title: 'Hapus Akun',
+      fields: [
+        {
+          id: 'id',
+          label: 'ID',
+          type: 'text',
+          defaultValue: account.id,
+          readOnly: true
+        },
+        {
+          id: 'name',
+          label: 'Nama',
+          type: 'text',
+          defaultValue: account.displayName,
+          readOnly: true
+        },
+        {
+          id: 'email',
+          label: 'Email',
+          type: 'text',
+          defaultValue: account.email,
+          readOnly: true
+        }
+      ],
+      submit: {
+        label: 'Hapus',
+        danger: true,
+        callback: () => {
+          alert(`deleted item ${account.id}`);
+        }
+      }
+    });
   };
 
-  const handleVerifyMerchantModalOpen = (merchantAccount) => {
+  const handleCreatePermissionPreset = () => {
+    setQuery({
+      id: 'create-permission-preset',
+      title: 'Buat Preset Wewenang Baru',
+      fields: [
+        {
+          id: 'name',
+          label: 'Nama Preset',
+          type: 'text'
+        }
+      ],
+      submit: {
+        label: 'Buat',
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    })
+  };
+
+  const handleVerifyMerchant = (merchantAccount) => {
     setMerchantToVerify(merchantAccount);
 
     setVerifyMerchantModalShow(true);
   };
 
-  const handleEditPermissionPresetModalOpen = (permissionPreset) => {
+  const handleEditPermissionPreset = (permissionPreset) => {
     setPermissionPresetToEdit(permissionPreset);
 
     setEditPermissionPresetModalShow(true);
   };
 
-  const handleDeletePermissionPresetModalOpen = (permissionPreset) => {
-    setItemToDelete({
-      properties: [
+  const handleDeletePermissionPreset = (permissionPreset) => {
+    setQuery({
+      id: 'delete-permission-preset',
+      title: 'Hapus Preset Wewenang',
+      fields: [
         {
+          id: 'name',
           label: 'Nama',
-          value: permissionPreset.name
+          type: 'text',
+          defaultValue: permissionPreset.name,
+          readOnly: true
         }
       ],
-      callback: () => {
-        alert(`deleted item ${permissionPreset.name}`);
+      submit: {
+        label: 'Hapus',
+        danger: true,
+        callback: (values) => {
+          alert(`deleted item ${values.name}`);
+        }
       }
     });
   };
 
   return (
     <AdminPageContainer>
-      <CreateAdminAccountModal 
-        show={createAdminAccountModalShow} 
-        setShow={setCreateAdminAccountModalShow}
-      />
-      <EditAdminAccountModal 
-        show={editAdminAccountModalShow}
-        account={adminAccountToEdit}
-        setShow={setEditAdminAccountModalShow}
-      />
-      <CreatePermissionPresetModal 
-        show={createPermissionPresetModalShow}
-        setShow={setCreatePermissionPresetModalShow}
-      />
-      <VerifyMerchantModal
+      <VerifyMerchantModal 
         show={verifyMerchantModalShow}
-        account={merchantToVerify}
-        setShow={setVerifyMerchantModalShow}
+        merchant={merchantToVerify}
+        setShow={setVerifyMerchantModalShow} 
       />
       <EditPermissionPresetModal 
         show={editPermissionPresetModalShow}
         permissionPreset={permissionPresetToEdit}
         setShow={setEditPermissionPresetModalShow}
       />
-      <DeleteItemModal
-        item={itemToDelete}
+      <ManipulateItemModal 
+        query={query}
       />
       <AdminPageHeader title='Manajemen Akun'>
         <AccountsIcon />
@@ -227,7 +307,7 @@ const AdminAccountManagementPage = () => {
               <div className='d-flex flex-row mb-3 align-items-center flex-wrap justify-content-end'>
                 <AdminFormControl type='text' placeholder='Cari akun' className='mb-1' style={{maxWidth: '16rem'}} />
                 <div className='flex-grow-1' />
-                <CustomButton className='mb-1' onClick={() => handleCreateAdminAccountModalOpen()}>Akun baru</CustomButton>
+                <CustomButton className='mb-1' onClick={() => handleCreateAdminAccount()}>Akun baru</CustomButton>
               </div>
               <AdminTable>
                 <thead>
@@ -252,12 +332,12 @@ const AdminAccountManagementPage = () => {
                         <td>
                           <span className='d-flex justify-content-end'>
                             <IconButton className='p-1 me-2' iconOnly
-                              onClick={() => handeEditAdminAccountModalOpen(account)}
+                              onClick={() => handeEditAdminAccount(account)}
                             >
                               <EditIcon />
                             </IconButton>
                             <IconButton className='p-1' iconOnly danger
-                              onClick={() => handleDeleteAccountModalOpen(account)}
+                              onClick={() => handleDeleteAccount(account)}
                             >
                               <DeleteIcon />
                             </IconButton>
@@ -272,7 +352,7 @@ const AdminAccountManagementPage = () => {
             <AdminFormContainer>
               <h1 className='mb-3'>Pengaturan Wewenang</h1>
               <div className='mb-3'>
-                <CustomButton onClick={() => handleCreatePermissionPresetModalOpen()}>Preset wewenang baru</CustomButton>
+                <CustomButton onClick={() => handleCreatePermissionPreset()}>Preset wewenang baru</CustomButton>
               </div>
               <AdminTable>
                 <thead>
@@ -291,12 +371,12 @@ const AdminAccountManagementPage = () => {
                         <td>
                           <span className='d-flex justify-content-end'>
                             <IconButton className='p-1 me-2' iconOnly
-                              onClick={() => handleEditPermissionPresetModalOpen(preset)}
+                              onClick={() => handleEditPermissionPreset(preset)}
                             >
                               <EditIcon />
                             </IconButton>
                             <IconButton className='p-1' iconOnly danger
-                              onClick={() => handleDeletePermissionPresetModalOpen(preset)}
+                              onClick={() => handleDeletePermissionPreset(preset)}
                             >
                               <DeleteIcon />
                             </IconButton>
@@ -347,14 +427,14 @@ const AdminAccountManagementPage = () => {
                             {
                               (account.verified === false) ? 
                                 <IconButton className='p-1 me-2' iconOnly
-                                  onClick={() => handleVerifyMerchantModalOpen()}
+                                  onClick={() => handleVerifyMerchant()}
                                 >
                                   <VerifiedIcon />
                                 </IconButton>
                               : null
                             }
                             <IconButton className='p-1' iconOnly danger
-                              onClick={() => handleDeleteAccountModalOpen(account)}
+                              onClick={() => handleDeleteAccount(account)}
                             >
                               <DeleteIcon />
                             </IconButton>

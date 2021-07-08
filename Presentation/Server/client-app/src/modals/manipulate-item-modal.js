@@ -34,7 +34,7 @@ const ManipulateItemModal = (props) => {
   };
 
   return (
-    <AdminModal show={show} {...props}>
+    <AdminModal show={show} setShow={setShow} {...props}>
       <Modal.Header>
         <Modal.Title>{props.query?.title}</Modal.Title>
       </Modal.Header>
@@ -71,6 +71,13 @@ const ManipulateItemModal = (props) => {
                         type='text' 
                         readOnly={field.readOnly === true} 
                         defaultValue={field.defaultValue} 
+                      />
+                    );
+                  case 'file':
+                    return (
+                      <AdminFormControl id={field.id} 
+                        className={props.query?.id}
+                        type='file' 
                       />
                     );
                   default:
