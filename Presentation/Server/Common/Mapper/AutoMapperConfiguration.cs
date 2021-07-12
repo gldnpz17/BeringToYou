@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Server.Models.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,13 +15,115 @@ namespace Server.Common.Mapper
             {
                 return new MapperConfiguration(config =>
                 {
-                    config.CreateMap<DomainModel.Structs.PasswordAuthenticationResult, PasswordAuthenticationResult>();
+                    #region Accounts
+                    config.CreateMap<DomainModel.Entities.AccountBase, Models.Response.AccountDetailed>();
 
-                    config.CreateMap<DomainModel.Structs.TwoFactorAuthenticationResult, TwoFactorAuthenticationResult>();
+                    config.CreateMap<Models.Request.UpdateAccountBody, DomainModel.Entities.AccountBase>();
+                    #endregion
 
-                    config.CreateMap<DomainModel.Entities.Shop, ShopSummary>();
+                    #region Admin
+                    config.CreateMap<DomainModel.Entities.AdminAccount, Models.Response.AdminAccountSummary>();
 
-                    config.CreateMap<DomainModel.Entities.AdminPermissionPreset, PermissionPreset>();
+                    config.CreateMap<DomainModel.Entities.AdminPermissionPreset, Models.Response.PermissionPreset>();
+
+                    config.CreateMap<Models.Request.UpdateAdminPermissionsBody, DomainModel.Entities.AdminPermissionPreset>();
+                    #endregion
+
+                    #region Auth
+                    config.CreateMap<DomainModel.Entities.AccountBase, Models.Response.UserIdentity>();
+
+                    config.CreateMap<DomainModel.Structs.PasswordAuthenticationResult, Models.Response.PasswordAuthenticationResult>();
+
+                    config.CreateMap<DomainModel.Structs.TwoFactorAuthenticationResult, Models.Response.TwoFactorAuthenticationResult>();
+                    #endregion
+
+                    #region Map
+                    config.CreateMap<Models.Request.CreateMapFloorBody, DomainModel.Entities.MapFloor>();
+
+                    config.CreateMap<DomainModel.Entities.MapFloor, Models.Response.MapFloorSummary>();
+
+                    config.CreateMap<Models.Request.UpdateMapFloorBody, DomainModel.Entities.MapFloor>();
+
+                    config.CreateMap<Models.Request.CreateMapOverlayBody, DomainModel.Entities.MapOverlay>();
+
+                    config.CreateMap<DomainModel.Entities.MapOverlay, Models.Response.MapOverlaySummary>();
+
+                    config.CreateMap<Models.Request.UpdateMapOverlayBody, DomainModel.Entities.MapOverlay>();
+
+                    config.CreateMap<Models.Request.CreatePointOfInterestCategoryBody, DomainModel.Entities.PointOfInterestCategory>();
+
+                    config.CreateMap<DomainModel.Entities.PointOfInterestCategory, Models.Response.PointOfInterestCategorySummary>();
+
+                    config.CreateMap<Models.Request.UpdatePointOfInterestCategoryBody, DomainModel.Entities.PointOfInterestCategory>();
+
+                    config.CreateMap<Models.Request.CreatePointOfInterestBody, DomainModel.Entities.PointOfInterest>();
+
+                    config.CreateMap<DomainModel.Entities.PointOfInterest, Models.Response.PointOfInterestSummary>();
+
+                    config.CreateMap<Models.Request.UpdatePointOfInterestBody, DomainModel.Entities.PointOfInterest>();
+                    #endregion
+
+                    #region Merchant
+                    config.CreateMap<DomainModel.Entities.MerchantAccount, Models.Response.MerchantAccountSummary>();
+
+                    config.CreateMap<DomainModel.Entities.Shop, Models.Response.ShopSummary>();
+
+                    config.CreateMap<DomainModel.Entities.MerchantVerificationRequest, Models.Response.MerchantVerificationRequestSummary>();
+
+                    config.CreateMap<DomainModel.Entities.MerchantVerificationRequest, Models.Response.MerchantVerificationRequestDetailed>();
+                    #endregion
+
+                    #region OnlineShopPlatforms
+                    config.CreateMap<Models.Request.CreateOnlineShopPlatformBody, DomainModel.Entities.OnlineShopPlatform>();
+
+                    config.CreateMap<DomainModel.Entities.OnlineShopPlatform, Models.Response.OnlineShopPlatformSummary>();
+
+                    config.CreateMap<Models.Request.UpdateOnlineShopBody, DomainModel.Entities.OnlineShopPlatform>();
+                    #endregion
+
+                    #region ProductCategories
+                    config.CreateMap<Models.Request.CreateProductCategoryBody, DomainModel.Entities.ProductCategory>();
+
+                    config.CreateMap<DomainModel.Entities.ProductCategory, Models.Response.ProductCategorySummary>();
+
+                    config.CreateMap<Models.Request.UpdateProductCategoryBody, DomainModel.Entities.ProductCategory>();
+                    #endregion
+
+                    #region Products
+                    config.CreateMap<DomainModel.Entities.Product, Models.Response.ProductSummary>();
+
+                    config.CreateMap<DomainModel.Entities.Product, Models.Response.ProductDetailed>();
+                    #endregion
+
+                    #region ShopCategories
+                    config.CreateMap<Models.Request.CreateShopCategoryBody, DomainModel.Entities.ShopCategory>();
+
+                    config.CreateMap<DomainModel.Entities.ShopCategory, Models.Response.ShopCategorySummary>();
+
+                    config.CreateMap<Models.Request.UpdateShopCategoryBody, DomainModel.Entities.ShopCategory>();
+                    #endregion
+
+                    #region Shops
+                    config.CreateMap<Models.Request.CreateProductBody, DomainModel.Entities.Product>();
+
+                    // NOTE: product fetching-related object mappings already configured above.
+
+                    config.CreateMap<Models.Request.UpdateProductBody, DomainModel.Entities.Product>();
+
+                    config.CreateMap<Models.Request.CreateOnlineShopInstanceBody, DomainModel.Entities.OnlineShopInstance>();
+
+                    config.CreateMap<DomainModel.Entities.OnlineShopInstance, Models.Response.OnlineShopInstanceSummary>();
+
+                    config.CreateMap<Models.Request.UpdateOnlineShopBody, DomainModel.Entities.OnlineShopInstance>();
+
+                    config.CreateMap<Models.Request.CreateShopBody, DomainModel.Entities.Shop>();
+
+                    config.CreateMap<DomainModel.Entities.Shop, Models.Response.ShopSummary>();
+
+                    config.CreateMap<DomainModel.Entities.Shop, Models.Response.ShopDetailed>();
+
+                    config.CreateMap<Models.Request.UpdateShopBody, DomainModel.Entities.Shop>();
+                    #endregion
                 });
             } 
         }

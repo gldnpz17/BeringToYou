@@ -39,6 +39,7 @@ namespace Server.Controllers.Admin.Accounts
             var defaultPermission = await _database.PermissionPresets.FirstOrDefaultAsync(preset => preset.Name == "Default");
 
             var account = new AdminAccount(
+                body.Username,
                 body.Email,
                 body.DisplayName,
                 body.Password,

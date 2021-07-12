@@ -11,15 +11,17 @@ namespace DomainModel.Entities
     public class AdminAccount : AccountBase
     {
         public AdminAccount(
-            string email, 
+            string username, 
+            string email,
             string displayName, 
             string password, 
             AdminPermissionPreset defaultPermissionPreset,
             IPasswordHasher passwordHasher, 
             IAlphanumericRng alphanumericRng, 
-            DomainModelConfiguration domainModelConfiguration) : base(email, displayName, password, passwordHasher, alphanumericRng, domainModelConfiguration)
+            DomainModelConfiguration domainModelConfiguration) : base(username, displayName, password, passwordHasher, alphanumericRng, domainModelConfiguration)
         {
             Permissions = defaultPermissionPreset;
+            Email = email;
         }
 
         public virtual AdminPermissionPreset Permissions { get; set; }

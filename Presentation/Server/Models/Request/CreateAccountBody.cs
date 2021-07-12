@@ -8,8 +8,9 @@ namespace Server.Models.Request
 {
     public class CreateAccountBody
     {
-        public virtual string Email { get; set; }
-        public virtual string DisplayName { get; set; }
-        public virtual string Password { get; set; }
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string DisplayName { get; set; }
+        public string Password { get; set; }
     }
 }

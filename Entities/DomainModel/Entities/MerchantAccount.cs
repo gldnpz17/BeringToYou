@@ -11,13 +11,13 @@ namespace DomainModel.Entities
     public class MerchantAccount : AccountBase
     {
         public MerchantAccount(
-            string email,
+            string username,
             string displayName,
             string password,
             IPasswordHasher passwordHasher,
             IAlphanumericRng alphanumericRng,
             IDateTimeService dateTimeService,
-            DomainModelConfiguration domainModelConfiguration) : base(email, displayName, password, passwordHasher, alphanumericRng, domainModelConfiguration)
+            DomainModelConfiguration domainModelConfiguration) : base(username, displayName, password, passwordHasher, alphanumericRng, domainModelConfiguration)
         {
             var now = dateTimeService.GetCurrentDateTime();
 

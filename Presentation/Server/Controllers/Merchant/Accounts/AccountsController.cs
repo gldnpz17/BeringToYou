@@ -39,7 +39,7 @@ namespace Server.Controllers.Merchant.Accounts
             [FromServices]DomainModelConfiguration configuration)
         {
             var account = new MerchantAccount(
-                body.Email,
+                body.Username,
                 body.DisplayName,
                 body.Password,
                 passwordHasher,

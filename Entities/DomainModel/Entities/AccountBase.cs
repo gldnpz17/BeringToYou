@@ -14,14 +14,14 @@ namespace DomainModel.Entities
     public abstract class AccountBase
     {
         public AccountBase(
-            string email, 
+            string username,
             string displayName, 
             string password,
             IPasswordHasher passwordHasher,
             IAlphanumericRng alphanumericRng,
             DomainModelConfiguration domainModelConfiguration)
         {
-            Email = email;
+            Username = username;
             DisplayName = displayName;
             PasswordCredential = new PasswordCredential(this, password, passwordHasher, alphanumericRng, domainModelConfiguration);
         }
@@ -30,6 +30,8 @@ namespace DomainModel.Entities
         public virtual Guid Id { get; set; }
 
         [Required]
+        public virtual string Username { get; set; }
+
         public virtual string Email { get; set; }
         
         [Required]
