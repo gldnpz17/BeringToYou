@@ -66,12 +66,12 @@ const ProductSearchPage = () => {
 
       <p className='search-result text-center m-0'>Hasil Pencarian</p>
       <div className='d-flex flex-row justify-content-end mx-2 mb-1'>
-        <RadioIconButton className='ms-2 p-1' iconOnly={true} onClick={() => changeDisplayMode('list')} 
+        <RadioIconButton className='ml-2 p-1' iconOnly={true} onClick={() => changeDisplayMode('list')} 
           id='product-search-display-list' selectedId={`product-search-display-${displayMode}`}
         >
           <ViewListIcon style={{width: '1.6rem', height: '1.6rem'}} />
         </RadioIconButton>
-        <RadioIconButton className='ms-2 p-1' iconOnly={true} onClick={() => changeDisplayMode('card')} 
+        <RadioIconButton className='ml-2 p-1' iconOnly={true} onClick={() => changeDisplayMode('card')} 
           id='product-search-display-card' selectedId={`product-search-display-${displayMode}`}
         >
           <ViewModulesIcon style={{width: '1.6rem', height: '1.6rem'}}/>

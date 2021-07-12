@@ -331,7 +331,7 @@ const AdminAccountManagementPage = () => {
                         <td>{account.permissionPresetName}</td>
                         <td>
                           <span className='d-flex justify-content-end'>
-                            <IconButton className='p-1 me-2' iconOnly
+                            <IconButton className='p-1 mr-2' iconOnly
                               onClick={() => handeEditAdminAccount(account)}
                             >
                               <EditIcon />
@@ -370,7 +370,7 @@ const AdminAccountManagementPage = () => {
                         <td style={{maxWidth: '24rem'}}>{listPermissions(preset)}</td>
                         <td>
                           <span className='d-flex justify-content-end'>
-                            <IconButton className='p-1 me-2' iconOnly
+                            <IconButton className='p-1 mr-2' iconOnly
                               onClick={() => handleEditPermissionPreset(preset)}
                             >
                               <EditIcon />
@@ -410,7 +410,7 @@ const AdminAccountManagementPage = () => {
                           <img className='profile-picture' src='/dummy-images/profile-picture.png' />
                           <div>
                             <div className='d-flex flex-row align-items-center'>
-                              <p className='me-1'>{account.displayName}</p>
+                              <p className='mr-1'>{account.displayName}</p>
                               {account.verified ? <VerifiedIcon style={{width: '1em', height: '1em'}} /> : null}
                             </div>
                             <p className='account-id'>{account.id}</p>
@@ -426,7 +426,7 @@ const AdminAccountManagementPage = () => {
                           <span className='d-flex justify-content-end'>
                             {
                               (account.verified === false) ? 
-                                <IconButton className='p-1 me-2' iconOnly
+                                <IconButton className='p-1 mr-2' iconOnly
                                   onClick={() => handleVerifyMerchant()}
                                 >
                                   <VerifiedIcon />

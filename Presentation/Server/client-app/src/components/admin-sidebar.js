@@ -120,7 +120,8 @@ const NavigationOption = styled.a`
 
   ::after {
     content: '';
-    visibility: hidden;
+
+    opacity: 0;
 
     position: absolute;
     left: 0;
@@ -135,7 +136,7 @@ const NavigationOption = styled.a`
     background-color: ${props => props.theme.primary};
   }
 
-  &.selected {
+  &.selected, &:hover {
     .option-label {
       color: white;
     }
@@ -145,9 +146,13 @@ const NavigationOption = styled.a`
     }
 
     ::after {
-      visibility: visible;
+      opacity: 100%;
       box-shadow: ${props => props.theme.shadow} 0rem 0.03rem 0.1rem;
     }
+  }
+
+  &:hover:not(.selected) {
+    opacity: 85%;
   }
 `;
 

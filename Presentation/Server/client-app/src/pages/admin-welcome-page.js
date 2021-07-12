@@ -33,7 +33,7 @@ const MessageContainer = styled.div`
 const AdminWelcomePage = () => {
   return (
     <AdminPageContainer>
-      <div className='d-flex flex-column align-items-center justify-content-center h-100 me-2'>
+      <div className='d-flex flex-column align-items-center justify-content-center h-100 mr-2'>
         <StyledLogo />
         <MessageContainer>
           <h1>Selamat Datang!</h1>

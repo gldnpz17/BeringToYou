@@ -5,6 +5,16 @@ import reportWebVitals from './reportWebVitals';
 import HomePage from './pages/home-page';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
+import 'bootstrap-select/dist/css/bootstrap-select.min.css';
+import 'bootstrap-select/dist/js/bootstrap-select.js';
+
+import 'popper.js';
+
+import './bootstrap-override.css';
+import './bootstrap-select-override.css';
+
 import { ThemeProvider } from 'react-bootstrap';
 import App from './app';
 

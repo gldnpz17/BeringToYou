@@ -4,9 +4,11 @@ import AdminModal from "../components/admin-modal";
 import AdminFormGroup from "../components/admin-form-group";
 import AdminFormControl from "../components/admin-form-control";
 import CustomButton from "../components/custom-button";
+import ImageListControl from "../components/image-list-control";
 
 const ManipulateItemModal = (props) => {
   const [show, setShow] = useState(false);
+  const [formImages, setFormImages] = useState({});
 
   useEffect(() => {
     if (props.query !== null && props.query !== undefined) {
@@ -16,18 +18,34 @@ const ManipulateItemModal = (props) => {
     }
   }, [props.query]);
 
+  const gatherInputValues = () => {
+    let inputs = document.getElementsByClassName(props.query.id);
+    
+    let values = {};
+    for (let x = 0; x < inputs.length; x++) {
+      let input = inputs[x];
+
+      values[input.id] = input.value;
+    }
+
+    return values;
+  };
+
+  const setImageList = (id) => {
+    return (newList) => {
+      let newFormSubmission = {...formImages};
+
+      newFormSubmission[id] = newList;
+
+      setFormImages(newFormSubmission);
+    };
+  };
+
   const submitForm = async () => {
     if (props.query !== null && props.query !== undefined) {
-      let inputs = document.getElementsByClassName(props.query.id);
-    
-      let values = {};
-      for (let x = 0; x < inputs.length; x++) {
-        let input = inputs[x];
-
-        values[input.id] = input.value;
-      }
+      let inputValues = gatherInputValues();
   
-      await props.query.submit.callback(values);
+      await props.query.submit.callback({...formImages, ...inputValues});
   
       setShow(false);
     }
@@ -46,7 +64,7 @@ const ManipulateItemModal = (props) => {
                 switch (field.type) {
                   case 'select':
                     return (
-                      <AdminFormControl id={field.id} as='select' className={`form-select ${props.query?.id}`}>
+                      <AdminFormControl id={field.id} as='select' className={`${props.query?.id}`}>
                         {field.options.map(option => {
                           return (
                             <option value={option.value} selected={option.isDefault === true}>{option.label}</option>
@@ -78,6 +96,14 @@ const ManipulateItemModal = (props) => {
                       <AdminFormControl id={field.id} 
                         className={props.query?.id}
                         type='file' 
+                      />
+                    );
+                  case 'image-list':
+                    return (
+                      <ImageListControl 
+                        initialImages={field.initialImages}
+                        images={formImages[field.id]}
+                        setImages={setImageList(field.id)}
                       />
                     );
                   default:

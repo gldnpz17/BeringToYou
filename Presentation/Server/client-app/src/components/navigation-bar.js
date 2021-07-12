@@ -54,13 +54,13 @@ const NavigationBar = (props) => {
 
   return (
     <StyledNavbar {...props} className='fixed-top w-100 d-flex'>
-      <a className='d-flex flex-row align-items-center flex-grow-1 ms-2'
+      <a className='d-flex flex-row align-items-center flex-grow-1 ml-2'
         href='/'
       >
         <BeringharjoLogo style={{width: '1.6rem', height: '1.6rem'}} />
-        <h1 className='m-0 ms-1'>BeringToYou</h1>
+        <h1 className='m-0 ml-1'>BeringToYou</h1>
       </a>
-      <MenuIcon id='menu-icon' className='me-2' 
+      <MenuIcon id='menu-icon' className='mr-2' 
         style={{width: '2.2rem', height: '2.2rem'}} 
         onClick={() => toggleNavigation()}
       />

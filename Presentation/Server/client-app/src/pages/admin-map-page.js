@@ -666,6 +666,7 @@ const AdminMapPage = () => {
   return (
     <AdminPageContainer>
       <ManipulateItemModal
+        size='xl'
         query={query}
       />
       <AdminPageHeader title='Peta Digital'>
@@ -713,7 +714,7 @@ const AdminMapPage = () => {
                         <td className='text-center w-100'>{floor?.floorNumber}</td>
                         <td>
                           <span className='d-flex flex-row justify-content-end'>
-                            <IconButton className='p-1 me-2' iconOnly
+                            <IconButton className='p-1 mr-2' iconOnly
                               onClick={() => handleEditFloor(floor)}
                             >
                               <EditIcon />
@@ -747,19 +748,17 @@ const AdminMapPage = () => {
                   {overlays.map(overlay => {
                     return (
                       <tr>
-                        <td>
-                          <ItemWithIdTableCell>
-                            <div>
-                              <td>{overlay?.name}</td>
-                              <p className='id'>{overlay?.id}</p>
-                            </div>
-                          </ItemWithIdTableCell>
-                        </td>
+                        <ItemWithIdTableCell>
+                          <div>
+                            <p>{overlay?.name}</p>
+                            <p className='id'>{overlay?.id}</p>
+                          </div>
+                        </ItemWithIdTableCell>
                         <td>{overlay?.floorNumber}</td>
                         <td>{overlay?.zIndex}</td>
                         <td>
                           <span className='d-flex justify-content-end'>
-                            <IconButton className='p-1 me-2' iconOnly
+                            <IconButton className='p-1 mr-2' iconOnly
                               onClick={() => handleEditOverlay(overlay)}
                             >
                               <EditIcon />
@@ -800,20 +799,18 @@ const AdminMapPage = () => {
                   {shops.map(shop => {
                     return (
                       <tr>
-                        <td>
-                          <ItemWithIdTableCell>
-                            <div>
-                              <td>{shop?.name}</td>
-                              <p className='id'>{shop?.id}</p>
-                            </div>
-                          </ItemWithIdTableCell>
-                        </td>
+                        <ItemWithIdTableCell>
+                          <div>
+                            <p>{shop?.name}</p>
+                            <p className='id'>{shop?.id}</p>
+                          </div>
+                        </ItemWithIdTableCell>
                         <td>{shop?.floor}</td>
                         <td>{`(${shop?.latitude}, ${shop?.longitude})`}</td>
                         <td>{shop?.shopCategoryName}</td>
                         <td>
                           <span className='d-flex justify-content-end'>
-                            <IconButton className='p-1 me-2' iconOnly
+                            <IconButton className='p-1 mr-2' iconOnly
                               onClick={() => handleEditShop(shop)}
                             >
                               <EditIcon />
@@ -863,7 +860,7 @@ const AdminMapPage = () => {
                         <td>{`(${pointOfInterest?.latitude}, ${pointOfInterest?.longitude})`}</td>
                         <td>
                           <span className='d-flex justify-content-end'>
-                            <IconButton className='p-1 me-2' iconOnly
+                            <IconButton className='p-1 mr-2' iconOnly
                               onClick={() => handleEditPointOfInterest(pointOfInterest)}
                             >
                               <EditIcon />
@@ -895,17 +892,15 @@ const AdminMapPage = () => {
                   {pointOfInterestCategories.map(category => {
                     return (
                       <tr>
-                        <td>
-                          <ItemWithIdTableCell>
-                            <div>
-                              <p>{category?.name}</p>
-                              <p className='id'>{category?.id}</p>
-                            </div>
-                          </ItemWithIdTableCell>
-                        </td>
+                        <ItemWithIdTableCell>
+                          <div>
+                            <p>{category?.name}</p>
+                            <p className='id'>{category?.id}</p>
+                          </div>
+                        </ItemWithIdTableCell>
                         <td>
                           <span className='d-flex justify-content-end'>
-                            <IconButton className='p-1 me-2' iconOnly
+                            <IconButton className='p-1 mr-2' iconOnly
                               onClick={() => handleEditPointOfInterestCategory(category)}
                             >
                               <EditIcon />

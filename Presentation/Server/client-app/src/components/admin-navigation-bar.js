@@ -43,7 +43,7 @@ const AdminNavigationBar = (props) => {
   return (
     <StyledNavbar {...props} className='fixed-top w-100 d-flex flex-row align-items-center'>
       <Logo />
-      <h1 className='mb-0 ms-1'><b>Beringharjo</b>Admin</h1>
+      <h1 className='mb-0 ml-1'><b>Beringharjo</b>Admin</h1>
       <div className='flex-grow-1'></div>
       <a onClick={() => {}}>Log Out</a>
     </StyledNavbar>

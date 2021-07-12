@@ -35,7 +35,7 @@ const Link = styled.a`
 const NavigateToLink = (props) => {
   return (
     <Link {...props} className='d-flex flex-row align-items-center'>
-      <p className='m-0 me-1'>{props.text}</p>
+      <p className='m-0 mr-1'>{props.text}</p>
       <NextIcon />
     </Link>
   );

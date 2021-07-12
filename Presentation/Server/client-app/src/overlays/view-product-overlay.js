@@ -76,7 +76,7 @@ const ViewProductOverlay = ({ id, productId }) => {
         <ContentContainer className='w-100 d-flex flex-column'>
           <CloseOverlayButton onClick={() => dismissViewProductOverlay()} />
           <img className='flex-grow-1' src='/dummy-images/vegetables.jpg' style={{objectFit: 'cover', maxHeight: '50vh'}} />
-          <IconButton text='Lokasi' className='align-self-start ms-2 mt-2'>
+          <IconButton text='Lokasi' className='align-self-start ml-2 mt-2'>
             <LocationIcon style={{width: '1.6rem', height: '1.6rem'}} />
           </IconButton>
           <div className='p-2'>

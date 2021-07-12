@@ -85,7 +85,7 @@ const ProductSearchOptionsOverlay = ({ setVisible, visible }) => {
         left: visible ? '0rem' : '18rem'
       }} className='d-flex flex-column'>
         <h1 className='text-center m-1 d-flex align-items-center'>
-          <TuneIcon className='me-1' />
+          <TuneIcon className='mr-1' />
           Filter & Urutkan
         </h1>
         <section className='p-2 pt-0'>
@@ -94,7 +94,7 @@ const ProductSearchOptionsOverlay = ({ setVisible, visible }) => {
             {
               ['lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur'].map((item, index) => {
                 return (
-                  <Chip className='ms-1 mb-1' categoryName={item} />
+                  <Chip className='ml-1 mb-1' categoryName={item} />
                 );
               })
             }
@@ -113,14 +113,14 @@ const ProductSearchOptionsOverlay = ({ setVisible, visible }) => {
           <Form.Group className='mb-3'>
             <Form.Label>Minimal</Form.Label>
             <div className='d-flex flex-row align-items-center'>
-              <p className='m-0 me-2'>Rp</p>
+              <p className='m-0 mr-2'>Rp</p>
               <Form.Control size='sm' className='flex-grow-1' placeholder='10000' />
             </div>
           </Form.Group>
           <Form.Group>
             <Form.Label>Maksimal</Form.Label>
             <div className='d-flex flex-row align-items-center'>
-              <p className='m-0 me-2'>Rp</p>
+              <p className='m-0 mr-2'>Rp</p>
               <Form.Control size='sm' className='flex-grow-1' placeholder='50000' />
             </div>
           </Form.Group>

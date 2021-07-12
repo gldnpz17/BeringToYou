@@ -1,6 +1,937 @@
+import { useEffect, useState } from "react";
+import React from 'react';
+import AdminPageContainer from "../components/admin-page-container";
+import AdminPageHeader from "../components/admin-page-header";
+import AdminPageNav from "../components/admin-page-nav";
+import AdminPageTabContainer from "../components/admin-page-tab-container";
+import ManipulateItemModal from "../modals/manipulate-item-modal";
+import ShopIcon from "../svg/shop-icon";
+import ProductIcon from '../svg/product-icon';
+import ViewIcon from '../svg/view-icon';
+import CogsIcon from '../svg/cogs-icon';
+import { Nav, Tab, Form } from 'react-bootstrap';
+import AdminPageNavLink from "../components/admin-page-nav-link";
+import AdminPageTabContent from "../components/admin-page-tab-content";
+import AdminFormControl from "../components/admin-form-control";
+import styled from "styled-components";
+import fetchAllShops from '../use-cases/common/fetch-all-shops';
+import CustomButton from "../components/custom-button";
+import AdminFormContainer from "../components/admin-form-container";
+import AdminTable from "../components/admin-table";
+import fetchOnlineShops from '../use-cases/common/fetch-online-shops';
+import ItemWithIdTableCell from "../components/item-with-id-table-cell";
+import IconButton from "../components/icon-button";
+import EditIcon from "../svg/edit-icon";
+import DeleteIcon from "../svg/delete-icon";
+import fetchShopProducts from "../use-cases/common/fetch-shop-products";
+import fetchAllShopCategories from "../use-cases/common/fetch-all-shop-categories";
+import fetchAllProductCategories from "../use-cases/common/fetch-all-product-categories";
+import fetchAllOnlineShopPlatforms from '../use-cases/common/fetch-all-online-shop-platforms';
+import ImageListControl from "../components/image-list-control";
+
+const StoreSelectContainer = styled.div`
+  max-width: 28rem;
+  max-height: 3rem;
+  transition: max-width 0.5s 0.6s, opacity 0.5s 0.6s, max-height 0.5s, margin-bottom 0.5s;
+
+  &.hidden {
+    transition: max-width 0.5s, opacity 0.5s, max-height 0.5s 0.6s, margin-bottom 0.5s 0.6s; 
+
+    opacity: 0%;
+    max-width: 0rem;
+    max-height: 0rem;
+    margin-bottom: 0 !important;
+  }
+`;
+
+const ShopBanner = styled.img`
+  max-height: 15rem;
+  max-width: 100%;
+`;
+
 const AdminShopPage = () => {
+  const [shops, setShops] = useState([]);
+  const [selectedShop, setSelectedShop] = useState(null);
+
+  const [onlineShops, setOnlineShops] = useState([]);
+  const [products, setProducts] = useState([]);
+
+  const [shopCategories, setShopCategories] = useState([]);
+  const [productCategories, setProductCategories] = useState([]);
+  const [onlineShopPlatforms, setOnlineShopPlatforms] = useState([]);
+
+  const [tabActiveKey, setTabActiveKey] = useState('shop-profile');
+
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    setShops(await fetchAllShops());
+    setShopCategories(await fetchAllShopCategories());
+    setProductCategories(await fetchAllProductCategories());
+    setOnlineShopPlatforms(await fetchAllOnlineShopPlatforms());
+  };
+
+  useEffect(() => {
+    getShopData(selectedShop?.id);
+  }, [selectedShop])
+
+  const getShopData = async (shopId) => {
+    setOnlineShops(await fetchOnlineShops(shopId));
+    setProducts(await fetchShopProducts(shopId));
+  };
+
+  const selectShop = (shopId) => {
+    let shop = shops.find(shop => shop.id === shopId);
+
+    setSelectedShop(shop);
+  } 
+
+  const [query, setQuery] = useState(null);
+
+  const handleAddOnlineShop = () => {
+    setQuery({
+      id: 'add-online-shop',
+      title: 'Tambah Toko Online',
+      fields: [
+        {
+          id: 'platform',
+          label: 'Platform',
+          type: 'select',
+          options: onlineShopPlatforms.map(platform => {
+            return (
+              {
+                value: platform.id,
+                label: platform.name,
+                isDefault: false
+              }
+            );
+          })
+        }, 
+        {
+          id: 'name',
+          label: 'Nama Toko',
+          type: 'text'
+        },
+        {
+          id: 'url',
+          label: 'URL',
+          type: 'text'
+        }
+      ],
+      submit: {
+        label: 'Tambahkan',
+        callback: (values) => {
+          console.log(values)
+        }
+      }
+    });
+  };
+
+  const handleEditOnlineShop = (onlineShop) => {
+    setQuery({
+      id: 'edit-online-shop',
+      title: 'Ubah Toko Online',
+      fields: [
+        {
+          id: 'id',
+          label: 'ID',
+          type: 'text',
+          readOnly: true,
+          defaultValue: onlineShop.id
+        },
+        {
+          id: 'platform',
+          label: 'Platform',
+          type: 'select',
+          options: onlineShopPlatforms.map(platform => {
+            return (
+              {
+                value: platform.id,
+                label: platform.name,
+                isDefault: (onlineShop.platform.id === platform.id)
+              }
+            );
+          })
+        }, 
+        {
+          id: 'name',
+          label: 'Nama Toko',
+          type: 'text',
+          defaultValue: onlineShop.name
+        },
+        {
+          id: 'url',
+          label: 'URL',
+          type: 'text',
+          defaultValue: onlineShop.url
+        }
+      ],
+      submit: {
+        label: 'Simpan',
+        callback: (values) => {
+          console.log(values)
+        }
+      }
+    });
+  };
+
+  const handleDeleteOnlineShop = (onlineShop) => {
+    setQuery({
+      id: 'deleye-online-shop',
+      title: 'Hapus Toko Online',
+      fields: [
+        {
+          id: 'id',
+          label: 'ID',
+          type: 'text',
+          readOnly: true,
+          defaultValue: onlineShop.id
+        },
+        {
+          id: 'platform',
+          label: 'Platform',
+          type: 'text',
+          readOnly: true,
+          defaultValue: onlineShop.platform.name
+        },
+        {
+          id: 'name',
+          label: 'Nama Toko',
+          type: 'text',
+          readOnly: true,
+          defaultValue: onlineShop.name
+        }
+      ],
+      submit: {
+        label: 'Hapus',
+        danger: true,
+        callback: (values) => {
+          console.log(values)
+        }
+      }
+    });
+  };
+
+  const handleCreateProduct = () => {
+    setQuery({
+      id: 'create-product',
+      title: 'Tambahkan Produk Baru',
+      fields: [
+        {
+          id: 'name',
+          label: 'Nama',
+          type: 'text'
+        },
+        {
+          id: 'description',
+          label: 'Deskripsi',
+          type: 'textarea'
+        },
+        {
+          id: 'minimumPrice',
+          label: 'Harga Minimum',
+          type: 'text'
+        },
+        {
+          id: 'maximumPrice',
+          label: 'Harga Maximum',
+          type: 'text'
+        },
+        {
+          id: 'category',
+          label: 'Kategori',
+          type: 'select',
+          options: productCategories.map(category => {
+            return (
+              {
+                value: category.id,
+                label: category.name,
+                isDefault: false
+              }
+            );
+          })
+        },
+        {
+          id: 'images',
+          label: 'Foto Produk',
+          type: 'image-list'
+        }
+      ],
+      submit: {
+        label: 'Tambahkan',
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    });
+  };
+
+  const handleEditProduct = (product) => {
+    setQuery({
+      id: 'edit-product',
+      title: 'Ubah Produk',
+      fields: [
+        {
+          id: 'id',
+          label: 'ID',
+          type: 'text',
+          readOnly: true,
+          defaultValue: product.id
+        },
+        {
+          id: 'name',
+          label: 'Nama',
+          type: 'text',
+          defaultValue: product.name
+        },
+        {
+          id: 'description',
+          label: 'Deskripsi',
+          type: 'textarea',
+          defaultValue: product.description
+        },
+        {
+          id: 'minimumPrice',
+          label: 'Harga Minimum',
+          type: 'text',
+          defaultValue: product.minimumPrice
+        },
+        {
+          id: 'maximumPrice',
+          label: 'Harga Maximum',
+          type: 'text',
+          defaultValue: product.maximumPrice
+        },
+        {
+          id: 'category',
+          label: 'Kategori',
+          type: 'select',
+          options: productCategories.map(category => {
+            return (
+              {
+                value: category.id,
+                label: category.name,
+                isDefault: (product.categoryName === category.name)
+              }
+            );
+          })
+        },
+        {
+          id: 'images',
+          label: 'Foto Produk',
+          type: 'image-list',
+          initialImages: [
+            '/dummy-images/fruits.jpg',
+            '/dummy-images/meat.jpg',
+            '/dummy-images/vegetables.jpg'
+          ]
+        }
+      ],
+      submit: {
+        label: 'Simpan',
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    });
+  };
+
+  const handleDeleteProduct = (product) => {
+    setQuery({
+      id: 'delete-product',
+      title: 'Hapus Produk',
+      fields: [
+        {
+          id: 'id',
+          label: 'ID',
+          type: 'text',
+          readOnly: true,
+          defaultValue: product.id
+        },
+        {
+          id: 'name',
+          label: 'Nama',
+          type: 'text',
+          readOnly: true,
+          defaultValue: product.name
+        }
+      ],
+      submit: {
+        label: 'Hapus',
+        danger: true,
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    })
+  };
+
+  const handleCreateShopCategory = () => {
+    setQuery({
+      id: 'create-shop-category',
+      title: 'Buat Kategori Toko Baru',
+      fields: [
+        {
+          id: 'name',
+          label: 'Nama',
+          type: 'text'
+        }
+      ],
+      submit: {
+        label: 'Buat',
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    });
+  }
+
+  const handleEditShopCategory = (shopCategory) => {
+    setQuery({
+      id: 'edit-shop-category',
+      title: 'Ubah Kategori Toko',
+      fields: [
+        {
+          id: 'id',
+          label: 'ID',
+          type: 'text',
+          readOnly: true,
+          defaultValue: shopCategory.id
+        },
+        {
+          id: 'name',
+          label: 'Nama',
+          type: 'text',
+          defaultValue: shopCategory.name
+        },
+        {
+          id: 'iconFile',
+          label: 'File Icon',
+          type: 'file'
+        }
+      ],
+      submit: {
+        label: 'Simpan',
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    });
+  };
+
+  const handleDeleteShopCategory = (shopCategory) => {
+    setQuery({
+      id: 'delete-shop-category',
+      title: 'Hapus Kategori Toko',
+      fields: [
+        {
+          id: 'id',
+          label: 'ID',
+          type: 'text',
+          readOnly: true,
+          defaultValue: shopCategory.id
+        },
+        {
+          id: 'name',
+          label: 'Nama',
+          type: 'text',
+          readOnly: true,
+          defaultValue: shopCategory.name
+        }
+      ],
+      submit: {
+        label: 'Hapus',
+        danger: true,
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    })
+  };
+
+  const handleCreateProductCategory = () => {
+    setQuery({
+      id: 'create-product-category',
+      title: 'Buat Kategori Produk Baru',
+      fields: [
+        {
+          id: 'name',
+          label: 'Nama',
+          type: 'text'
+        }
+      ],
+      submit: {
+        label: 'Buat',
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    })
+  };
+
+  const handleEditProductCategory = (productCategory) => {
+    setQuery({
+      id: 'edit-product-category',
+      title: 'Ubah Kategori Produk',
+      fields: [
+        {
+          id: 'id',
+          label: 'ID',
+          type: 'text',
+          readOnly: true,
+          defaultValue: productCategory.id
+        },
+        {
+          id: 'name',
+          label: 'Nama',
+          type: 'text',
+          defaultValue: productCategory.name
+        },
+        {
+          id: 'thumbnailFile',
+          label: 'Thumbnail Kategori',
+          type: 'file'
+        }
+      ],
+      submit: (values) => {
+        console.log(values)
+      }
+    })
+  };
+
+  const handleDeleteProductCategory = (productCategory) => {
+    setQuery({
+      id: 'delete-product-category',
+      title: 'Hapus Kategori Produk',
+      fields: [
+        {
+          id: 'id',
+          label: 'ID',
+          type: 'text',
+          readOnly: true,
+          defaultValue: productCategory.id
+        }, 
+        {
+          id: 'name',
+          label: 'Nama',
+          type: 'text',
+          readOnly: true,
+          defaultValue: productCategory.name
+        }
+      ],
+      submit: {
+        label: 'Hapus',
+        danger: true,
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    });
+  };
+
+  const handleCreateOnlineShopPlatform = () => {
+    setQuery({
+      id: 'create-online-shop-platform',
+      title: 'Buat Platform Toko Online Baru',
+      fields: [
+        {
+          id: 'name',
+          label: 'Nama',
+          type: 'text'
+        }
+      ],
+      submit: {
+        label: 'Buat',
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    });
+  };
+
+  const handleEditOnlineShopPlatform = (onlineShopPlatform) => {
+    setQuery({
+      id: 'edit-online-shop-platform',
+      title: 'Ubah Platform Toko Online',
+      fields: [
+        {
+          id: 'id',
+          label: 'ID',
+          type: 'text',
+          readOnly: true,
+          defaultValue: onlineShopPlatform.id
+        },
+        {
+          id: 'name',
+          label: 'Nama',
+          type: 'text',
+          defaultValue: onlineShopPlatform.name
+        },
+        {
+          id: 'iconFile',
+          label: 'File Icon',
+          type: 'file'
+        }
+      ],
+      submit: {
+        label: 'Simpan',
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    });
+  };
+
+  const handleDeleteOnlineShopPlatform = (onlineShopPlatform) => {
+    setQuery({
+      id: 'delete-online-shop-platform',
+      title: 'Ubah Platform Toko Online',
+      fields: [
+        {
+          id: 'id',
+          label: 'ID',
+          type: 'text',
+          readOnly: true,
+          defaultValue: onlineShopPlatform.id
+        },
+        {
+          id: 'name',
+          label: 'Nama',
+          type: 'text',
+          readOnly: true,
+          defaultValue: onlineShopPlatform.name
+        }
+      ],
+      submit: {
+        label: 'Hapus',
+        danger: true,
+        callback: (values) => {
+          console.log(values);
+        }
+      }
+    });
+  };
+
   return (
-    <h1>Shop</h1>
+    <AdminPageContainer>
+      <ManipulateItemModal
+        size='xl'
+        query={query}
+      />
+      <AdminPageHeader title='Toko'>
+        <ShopIcon />
+      </AdminPageHeader>
+      <StoreSelectContainer className={`d-flex flex-row align-items-center mb-3 ${(tabActiveKey === 'shop-management') ? 'hidden' : ''}`}>
+        <p className='m-0 mr-2'>Toko:</p>
+        <AdminFormControl as='select' title='Pilih toko' data-live-search='true' onChange={(event) => selectShop(event.target.value)}>
+          {shops.map(shop => {
+            return (
+              <option value={shop.id}>{shop.name}</option>
+            );
+          })}
+        </AdminFormControl>
+      </StoreSelectContainer>
+      <AdminPageTabContainer>
+        <AdminPageNav>
+          <Nav.Item>
+            <AdminPageNavLink 
+              onClick={() => setTabActiveKey('shop-profile')}
+              active={tabActiveKey === 'shop-profile'}
+            >
+              <ShopIcon />
+              <p>Profil</p>
+            </AdminPageNavLink>
+          </Nav.Item>
+          <Nav.Item>
+            <AdminPageNavLink 
+              onClick={() => setTabActiveKey('shop-products')}
+              active={tabActiveKey === 'shop-products'}
+            >
+              <ProductIcon />
+              <p>Produk</p>
+            </AdminPageNavLink>
+          </Nav.Item>
+          <Nav.Item>
+            <AdminPageNavLink 
+              onClick={() => setTabActiveKey('shop-preview')}
+              active={tabActiveKey === 'shop-preview'}
+            >
+              <ViewIcon />
+              <p>Preview</p>
+            </AdminPageNavLink>
+          </Nav.Item>
+          <Nav.Item>
+            <AdminPageNavLink 
+              onClick={() => setTabActiveKey('shop-management')}
+              active={tabActiveKey === 'shop-management'}
+            >
+              <CogsIcon />
+              <p>Manajemen</p>
+            </AdminPageNavLink>
+          </Nav.Item>
+        </AdminPageNav>
+        <AdminPageTabContent>
+          <Tab.Pane active={tabActiveKey === 'shop-profile'}>
+            <AdminFormContainer>
+              <h1 className='mb-3'>Tentang</h1>
+              <Form className='mb-3'>
+                <Form.Group>
+                  <Form.Label>ID Toko</Form.Label>
+                  <AdminFormControl type='text' readOnly defaultValue={selectedShop?.id} />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>Nama Toko</Form.Label>
+                  <AdminFormControl type='text' defaultValue={selectedShop?.name} />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>Deskripsi</Form.Label>
+                  <AdminFormControl as='textarea' rows={5} className='form-control' defaultValue={selectedShop?.description} />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>Gambar Banner</Form.Label>
+                  <div className='d-flex align-items-end flex-wrap'>
+                    <ShopBanner className='mb-2 mr-2' src='/dummy-images/food-stall.jpg' />
+                    <CustomButton className='mb-2'>Unggah gambar baru</CustomButton>
+                  </div>
+                </Form.Group>
+                <CustomButton disabled>Simpan</CustomButton>
+              </Form>
+            </AdminFormContainer>
+            <AdminFormContainer>
+              <h1 className='mb-3'>Platform E-Commerce</h1>
+              <CustomButton className='mb-3' onClick={() => handleAddOnlineShop()}>Toko online baru</CustomButton>
+              <AdminTable>
+                <thead>
+                  <tr>
+                    <th>Nama</th>
+                    <th>URL</th>
+                    <th>Plaform</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {onlineShops.map((onlineShop) => {
+                    return (
+                      <tr>
+                        <ItemWithIdTableCell>
+                          <div>
+                            <p>{onlineShop?.name}</p>
+                            <p className='id'>{onlineShop?.id}</p>
+                          </div>
+                        </ItemWithIdTableCell>
+                        <td>{onlineShop?.url}</td>
+                        <ItemWithIdTableCell>
+                          <div>
+                            <p>{onlineShop?.platform.name}</p>
+                            <p className='id'>{onlineShop?.platform.id}</p>
+                          </div>
+                        </ItemWithIdTableCell>
+                        <td>
+                          <span className='d-flex flex-row justify-content-end'>
+                            <IconButton className='p-1 mr-2' iconOnly
+                              onClick={() => handleEditOnlineShop(onlineShop)}
+                            >
+                              <EditIcon />
+                            </IconButton>
+                            <IconButton danger className='p-1' iconOnly
+                              onClick={() => handleDeleteOnlineShop(onlineShop)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </AdminTable>
+            </AdminFormContainer>
+          </Tab.Pane>
+          <Tab.Pane active={(tabActiveKey === 'shop-products')}>
+            <AdminFormContainer>
+              <h1 className='mb-3'>Produk</h1>
+              <div className='d-flex flex-row mb-3 align-items-center flex-wrap justify-content-end'>
+                <AdminFormControl type='text' placeholder='Cari produk' className='mb-1' style={{maxWidth: '16rem'}} />
+                <div className='flex-grow-1' />
+                <CustomButton className='mb-1' onClick={() => handleCreateProduct()}>Produk baru</CustomButton>
+              </div>
+              <AdminTable tableHeight='32rem'>
+                <thead>
+                  <tr>
+                    <th>Nama</th>
+                    <th>Kategori</th>
+                    <th>Harga</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {products.map(product => {
+                    return (
+                      <tr>
+                        <ItemWithIdTableCell>
+                          <div>
+                            <p>{product.name}</p>
+                            <p className='id'>{product.id}</p>
+                          </div>
+                        </ItemWithIdTableCell>
+                        <td>{product.categoryName}</td>
+                        <td>{`${product.minimumPrice} - ${product.maximumPrice}`}</td>
+                        <td>
+                          <span className='d-flex flex-row justify-content-end'>
+                            <IconButton className='p-1 mr-2' iconOnly
+                              onClick={() => handleEditProduct(product)}
+                            >
+                              <EditIcon />
+                            </IconButton>
+                            <IconButton danger className='p-1' iconOnly
+                              onClick={() => handleDeleteProduct(product)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </AdminTable>
+            </AdminFormContainer>
+          </Tab.Pane>
+          <Tab.Pane active={(tabActiveKey === 'shop-preview')}>
+            <AdminFormContainer>
+              <h1>Preview</h1>
+              <CustomButton>Menuju halaman toko</CustomButton>
+            </AdminFormContainer>
+          </Tab.Pane>
+          <Tab.Pane active={tabActiveKey === 'shop-management'}>
+            <AdminFormContainer>
+              <h1>Kategori Toko</h1>
+              <CustomButton className='mb-3' onClick={() => handleCreateShopCategory()}>Kategori toko baru</CustomButton>
+              <AdminTable>
+                <thead>
+                  <tr>
+                    <th>Nama</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {shopCategories.map(category => {
+                    return (
+                      <tr>
+                        <ItemWithIdTableCell className='w-100' style={{display: 'table-cell'}}>
+                          <div>
+                            <p>{category.name}</p>
+                            <p className='id'>{category.id}</p>
+                          </div>
+                        </ItemWithIdTableCell>
+                        <td>
+                          <span className='d-flex justify-content-end'>
+                            <IconButton className='p-1 mr-2' iconOnly
+                              onClick={() => handleEditShopCategory(category)}
+                            >
+                              <EditIcon />
+                            </IconButton>
+                            <IconButton className='p-1' iconOnly danger
+                              onClick={() => handleDeleteShopCategory(category)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </AdminTable>
+            </AdminFormContainer>
+            <AdminFormContainer>
+              <h1>Kategori Produk</h1>
+              <CustomButton className='mb-3' onClick={() => handleCreateProductCategory()}>Kategori produk baru</CustomButton>
+              <AdminTable>
+                <thead>
+                  <tr>
+                    <th>Nama</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {productCategories.map(category => {
+                    return (
+                      <tr>
+                        <ItemWithIdTableCell className='w-100' style={{display: 'table-cell'}}>
+                          <div>
+                            <p>{category.name}</p>
+                            <p className='id'>{category.id}</p>
+                          </div>
+                        </ItemWithIdTableCell>
+                        <td>
+                          <span className='d-flex justify-content-end'>
+                            <IconButton className='p-1 mr-2' iconOnly
+                              onClick={() => handleEditProductCategory(category)}
+                            >
+                              <EditIcon />
+                            </IconButton>
+                            <IconButton className='p-1' iconOnly danger
+                              onClick={() => handleDeleteProductCategory(category)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </AdminTable>
+            </AdminFormContainer>
+            <AdminFormContainer>
+              <h1>Platform Toko Online</h1>
+              <CustomButton className='mb-3' onClick={() => handleCreateOnlineShopPlatform()}>Platform baru</CustomButton>
+              <AdminTable>
+                <thead>
+                  <tr>
+                    <th>Nama</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {onlineShopPlatforms.map(platform => {
+                    return (
+                      <tr>
+                        <ItemWithIdTableCell className='w-100' style={{display: 'table-cell'}}>
+                          <div>
+                            <p>{platform.name}</p>
+                            <p className='id'>{platform.id}</p>
+                          </div>
+                        </ItemWithIdTableCell>
+                        <td>
+                          <span className='d-flex justify-content-end'>
+                            <IconButton className='p-1 mr-2' iconOnly
+                              onClick={() => handleEditOnlineShopPlatform(platform)}
+                            >
+                              <EditIcon />
+                            </IconButton>
+                            <IconButton className='p-1' iconOnly danger
+                              onClick={() => handleDeleteOnlineShopPlatform(platform)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </AdminTable>
+            </AdminFormContainer>
+          </Tab.Pane>
+        </AdminPageTabContent>
+      </AdminPageTabContainer>
+    </AdminPageContainer>
   );
 };
 

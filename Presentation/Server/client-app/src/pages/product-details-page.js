@@ -40,7 +40,7 @@ const ProductDetailsPage = () => {
           <IconButton text='Toko' className='align-self-start'>
             <ShopIcon style={{width: '1.6rem', height: '1.6rem'}} />
           </IconButton>
-          <IconButton text='Lokasi' className='align-self-start ms-2'>
+          <IconButton text='Lokasi' className='align-self-start ml-2'>
             <LocationIcon style={{width: '1.6rem', height: '1.6rem'}} />
           </IconButton>
         </div>

@@ -5,7 +5,7 @@ import AdminWelcomePage from "../pages/admin-welcome-page";
 import AdminAccountPage from '../pages/admin-account-page';
 import AdminAdminPage from '../pages/admin-account-management-page';
 import AdminMapPage from '../pages/admin-map-page';
-import AdminShopPage from '../pages/admin-map-page';
+import AdminShopPage from '../pages/admin-shop-page';
 import AdminMiscPage from '../pages/admin-misc-page';
 import { useContext, useEffect, useState } from "react";
 import checkAuthStatus from "../use-cases/check-auth-status";
