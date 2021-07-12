@@ -8,10 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DomainModel.Entities
 {
-    public abstract class AccountBase
+    public class AccountBase
     {
         public AccountBase(
             string username,
@@ -23,10 +24,13 @@ namespace DomainModel.Entities
         {
             Username = username;
             DisplayName = displayName;
-            PasswordCredential = new PasswordCredential(this, password, passwordHasher, alphanumericRng, domainModelConfiguration);
+            PasswordCredential = new PasswordCredential(password, passwordHasher, alphanumericRng, domainModelConfiguration);
         }
 
+        public AccountBase() { }
+
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public virtual Guid Id { get; set; }
 
         [Required]
@@ -39,7 +43,6 @@ namespace DomainModel.Entities
         
         public virtual string ProfilePictureFilename { get; set; }
 
-        [Required]
         public virtual PasswordCredential PasswordCredential { get; set; }
         
         public virtual TotpCredential TotpCredential { get; set; }
@@ -78,7 +81,7 @@ namespace DomainModel.Entities
                     return new PasswordAuthenticationResult()
                     {
                         Token = token.Token,
-                        NeedsTwoFactor = false
+                        NeedsTwoFactor = true
                     };
                 } 
                 else

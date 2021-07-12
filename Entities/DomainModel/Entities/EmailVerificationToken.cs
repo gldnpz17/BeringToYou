@@ -25,7 +25,11 @@ namespace DomainModel.Entities
             SendEmail(emailSender);
         }
 
-        public AccountBase Account { get; set; }
+        public EmailVerificationToken() { }
+
+        [Key]
+        public virtual Guid AccountId { get; set; }
+        public virtual AccountBase Account { get; set; }
         
         [Required]
         public string Token { get; set; }

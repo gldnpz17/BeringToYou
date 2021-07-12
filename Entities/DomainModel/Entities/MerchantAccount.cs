@@ -28,6 +28,8 @@ namespace DomainModel.Entities
             };
         }
 
+        public MerchantAccount() { }
+
         public virtual IList<Shop> OwnedShops { get; set; }
         
         public virtual MerchantVerificationRequest VerificationRequest { get; set; }

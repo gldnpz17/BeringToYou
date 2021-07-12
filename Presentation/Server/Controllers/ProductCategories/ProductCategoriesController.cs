@@ -87,7 +87,7 @@ namespace Server.Controllers.ProductCategories
         [Authorize(PolicyNameConstants.Admin.CanManageShops)]
         public async Task<IActionResult> UpdateProductCategoryThumbnailImage(
             [FromRoute]Guid categoryId,
-            [FromForm]IFormFile thumbnailImage,
+            [FromForm(Name = "thumbnail")]IFormFile thumbnailImage,
             [FromServices]IFileSystemService fileSystemService,
             [FromServices]ApplicationConfiguration applicationConfiguration)
         {

@@ -19,9 +19,12 @@ namespace DomainModel.Entities
             Expired = dateTimeService.GetCurrentDateTime();
         }
 
+        public AuthenticationToken() { }
+
         public virtual AccountBase Account { get; set; }
 
         [Required]
+        [Key]
         public virtual string Token { get; set; }
         
         [Required]

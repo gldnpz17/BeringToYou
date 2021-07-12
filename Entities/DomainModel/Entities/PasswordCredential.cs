@@ -2,6 +2,7 @@
 using DomainModel.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,14 +12,11 @@ namespace DomainModel.Entities
     public class PasswordCredential
     {
         public PasswordCredential(
-            AccountBase account, 
             string password, 
             IPasswordHasher passwordHasher,
             IAlphanumericRng alphanumericRng,
             DomainModelConfiguration configuration)
         {
-            Account = account;
-
             Salt = alphanumericRng.GenerateRandomString(
                 configuration.PasswordSaltLength,
                 cryptographicallySecure: true);
@@ -26,6 +24,10 @@ namespace DomainModel.Entities
             passwordHasher.Hash(password, Salt);
         }
 
+        public PasswordCredential() { }
+
+        [Key]
+        public virtual Guid AccountId { get; set; }
         public virtual AccountBase Account { get; set; }
         
         public virtual string Hash { get; set; }

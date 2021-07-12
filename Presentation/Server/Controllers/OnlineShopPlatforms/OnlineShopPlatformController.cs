@@ -86,7 +86,7 @@ namespace Server.Controllers.OnlineShopPlatforms
         [Authorize(PolicyNameConstants.Admin.CanManageShops)]
         public async Task<IActionResult> UpdateOnlineShopPlatformIcon(
             [FromRoute]Guid platformId, 
-            [FromForm]IFormFile icon,
+            [FromForm(Name = "icon")]IFormFile icon,
             [FromServices]IFileSystemService fileSystemService,
             [FromServices]ApplicationConfiguration applicationConfiguration)
         {

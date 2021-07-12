@@ -43,22 +43,22 @@ namespace Server.Controllers.Accounts
             return PhysicalFile(filePath, MimeTypes.GetMimeType(filePath));
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize]
         public async Task<IActionResult> UploadProfilePicture(
             [FromRoute]Guid accountId,
-            [FromBody]IFormFile file,
+            [FromForm(Name = "picture")]IFormFile profilePicture,
             [FromServices]IFileSystemService fileSystemService)
         {
             await AuthorizeAccountOwner(accountId);
 
             fileSystemService.ValidateExtension(
-                Path.GetExtension(file.FileName),
+                Path.GetExtension(profilePicture.FileName),
                 _applicationConfiguration.Account.AllowedProfilePictureExtensions);
 
             var account = await _database.Accounts.FirstOrDefaultAsync(account => account.Id == accountId);
 
-            var generatedFilename = await fileSystemService.SaveFileAsync(file, _applicationConfiguration.Account.ProfilePictureDirectory);
+            var generatedFilename = await fileSystemService.SaveFileAsync(profilePicture, _applicationConfiguration.Account.ProfilePictureDirectory);
 
             account.ProfilePictureFilename = generatedFilename;
 
