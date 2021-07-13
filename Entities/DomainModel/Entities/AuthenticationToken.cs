@@ -11,21 +11,24 @@ namespace DomainModel.Entities
 {
     public class AuthenticationToken
     {
-        public AuthenticationToken(AccountBase account, string token, IDateTimeService dateTimeService)
+        public AuthenticationToken(string token, IDateTimeService dateTimeService)
         {
-            Account = account;
             Token = token;
 
             Expired = dateTimeService.GetCurrentDateTime();
         }
 
+        public AuthenticationToken() { }
+
+        [Key]
+        public virtual Guid AccountId { get; set; }
         public virtual AccountBase Account { get; set; }
 
         [Required]
-        public virtual string Token { get; set; }
+        public string Token { get; set; }
         
         [Required]
-        public virtual DateTime Expired { get; set; }
+        public DateTime Expired { get; set; }
 
         public bool Verify(IDateTimeService dateTimeService)
         {

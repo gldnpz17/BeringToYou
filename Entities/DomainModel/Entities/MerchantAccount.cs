@@ -13,19 +13,23 @@ namespace DomainModel.Entities
         public MerchantAccount(
             string username,
             string displayName,
+            string password,
             IDateTimeService dateTimeService,
-            DomainModelConfiguration domainModelConfiguration) : base(username, displayName)
+            IPasswordHasher passwordHasher,
+            IAlphanumericRng alphanumericRng,
+            DomainModelConfiguration domainModelConfiguration) : base(username, displayName, password, passwordHasher, alphanumericRng, domainModelConfiguration)
         {
             var now = dateTimeService.GetCurrentDateTime();
 
             VerificationRequest = new MerchantVerificationRequest()
             {
-                MerchantAccount = this,
                 Expired = now + domainModelConfiguration.MerchantSignUpRequestLifespan
             };
         }
 
-        public virtual IList<Shop> OwnedShops { get; set; }
+        public MerchantAccount() { }
+
+        public virtual IList<Shop> OwnedShops { get; set; } = new List<Shop>();
         
         public virtual MerchantVerificationRequest VerificationRequest { get; set; }
     }

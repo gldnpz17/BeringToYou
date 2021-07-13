@@ -2,6 +2,7 @@
 using DomainModel.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,20 +14,22 @@ namespace DomainModel.Entities
         public TotpCredential(
             ITotpService secretGenerator,
             IAesEncryptionService encryptionService,
-            DomainModelConfiguration configuration,
-            AccountBase account)
+            DomainModelConfiguration configuration)
         {
-            Account = account;
             GenerateSharedSecret(secretGenerator, encryptionService, configuration);
         }
 
+        public TotpCredential() { }
+
+        [Key]
+        public virtual Guid AccountId { get; set; }
         public virtual AccountBase Account { get; set; }
 
-        public virtual string AesEncryptedSharedSecret { get; set; }
+        public string AesEncryptedSharedSecret { get; set; }
         
-        public virtual string Base32EncodedInitializationVector { get; set; }
+        public string Base32EncodedInitializationVector { get; set; }
         
-        public virtual DateTime VerificationTimeoutEnd { get; set; }
+        public DateTime VerificationTimeoutEnd { get; set; }
 
         public string RevealSharedSecret(
             IAesEncryptionService aesEncryptionService,

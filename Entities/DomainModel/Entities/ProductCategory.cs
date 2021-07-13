@@ -10,11 +10,11 @@ namespace DomainModel.Entities
     public class ProductCategory
     {
         [Key]
-        public virtual Guid Id { get; set; }
+        public Guid Id { get; set; }
         
         [Required]
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
         
-        public virtual string ThumbnailFilename { get; set; }
+        public string ThumbnailFilename { get; set; }
     }
 }

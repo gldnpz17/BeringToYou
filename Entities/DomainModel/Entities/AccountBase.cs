@@ -15,25 +15,31 @@ namespace DomainModel.Entities
     {
         public AccountBase(
             string username,
-            string displayName)
+            string displayName,
+            string password,
+            IPasswordHasher passwordHasher,
+            IAlphanumericRng alphanumericRng,
+            DomainModelConfiguration domainModelConfiguration)
         {
             Username = username;
             DisplayName = displayName;
-            PasswordCredential = new PasswordCredential(this, password, passwordHasher, alphanumericRng, domainModelConfiguration);
+            PasswordCredential = new PasswordCredential(password, passwordHasher, alphanumericRng, domainModelConfiguration);
         }
 
+        public AccountBase() { }
+
         [Key]
-        public virtual Guid Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
-        public virtual string Username { get; set; }
+        public string Username { get; set; }
 
-        public virtual string Email { get; set; }
+        public string Email { get; set; }
         
         [Required]
-        public virtual string DisplayName { get; set; }
+        public string DisplayName { get; set; }
         
-        public virtual string ProfilePictureFilename { get; set; }
+        public string ProfilePictureFilename { get; set; }
 
         [Required]
         public virtual PasswordCredential PasswordCredential { get; set; }
@@ -46,7 +52,7 @@ namespace DomainModel.Entities
 
         public virtual IList<AuthenticationToken> AuthenticationTokens { get; set; } = new List<AuthenticationToken>();
 
-        public virtual bool EmailVerified { get; set; } = false;
+        public bool EmailVerified { get; set; } = false;
 
         public virtual EmailVerificationToken EmailVerificationToken { get; set; }
 
@@ -214,7 +220,6 @@ namespace DomainModel.Entities
             DomainModelConfiguration configuration)
         {
             var token = new AuthenticationToken(
-                this, 
                 alphanumericRng.GenerateRandomString(
                     configuration.AuthenticationTokenLength,
                     cryptographicallySecure: true),

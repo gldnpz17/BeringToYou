@@ -2,6 +2,7 @@
 using DomainModel.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,15 +11,12 @@ namespace DomainModel.Entities
 {
     public class PasswordCredential
     {
-        public PasswordCredential(
-            AccountBase account, 
+        public PasswordCredential( 
             string password, 
             IPasswordHasher passwordHasher,
             IAlphanumericRng alphanumericRng,
             DomainModelConfiguration configuration)
         {
-            Account = account;
-
             Salt = alphanumericRng.GenerateRandomString(
                 configuration.PasswordSaltLength,
                 cryptographicallySecure: true);
@@ -26,28 +24,31 @@ namespace DomainModel.Entities
             Hash = passwordHasher.Hash(password, Salt);
         }
 
-        public virtual AccountBase Account { get; set; }
+        public PasswordCredential() { }
 
         [Key]
-        public virtual string Hash { get; set; }
-        
-        public virtual string Salt { get; set; }
+        public virtual Guid AccountId { get; set; }
+        public virtual AccountBase Account { get; set; }
 
-        public virtual DateTime PasswordAttemptMistakeClear { get; set; }
+        public string Hash { get; set; }
         
-        public virtual int PasswordAttemptMistakeCounter { get; set; }
-        
-        public virtual DateTime PasswordAttemptTimeoutExpired { get; set; }
+        public string Salt { get; set; }
 
-        public virtual string ResetToken { get; set; }
+        public DateTime PasswordAttemptMistakeClear { get; set; }
         
-        public virtual DateTime ResetTokenExpired { get; set; }
+        public int PasswordAttemptMistakeCounter { get; set; }
+        
+        public DateTime PasswordAttemptTimeoutExpired { get; set; }
 
-        public virtual DateTime ResetAttemptMistakeClear { get; set; }
+        public string ResetToken { get; set; }
         
-        public virtual int ResetAttemptMistakeCounter { get; set; }
+        public DateTime ResetTokenExpired { get; set; }
+
+        public DateTime ResetAttemptMistakeClear { get; set; }
         
-        public virtual DateTime ResetAttemptTimeoutExpired { get; set; }
+        public int ResetAttemptMistakeCounter { get; set; }
+        
+        public DateTime ResetAttemptTimeoutExpired { get; set; }
 
         public bool VerifyPassword(
             string password,

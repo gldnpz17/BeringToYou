@@ -10,17 +10,17 @@ namespace DomainModel.Entities
     public class MapOverlay : MapLayer
     {
         [Key]
-        public virtual Guid Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
-        public virtual int FloorNumber { get; set; }
+        public int FloorNumber { get; set; }
 
         [Required]
-        public virtual int ZIndex { get; set; }
+        public int ZIndex { get; set; }
         
         [Required]
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
         
-        public virtual string IconFilename { get; set; }
+        public string IconFilename { get; set; }
     }
 }

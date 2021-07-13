@@ -16,16 +16,16 @@ namespace DomainModel.Entities
         public virtual Shop Shop { get; set; }
 
         [Required]
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
 
         [MaxLength(1024)]
-        public virtual string Description { get; set; }
+        public string Description { get; set; }
         
         [Required]
-        public virtual int MinimumPrice { get; set; }
+        public int MinimumPrice { get; set; }
         
         [Required]
-        public virtual int MaximumPrice { get; set; }
+        public int MaximumPrice { get; set; }
         
         public virtual ProductCategory Category { get; set; }
         

@@ -34,7 +34,7 @@ namespace Server.Controllers.Auth
         {
             var account = await GetLoggedInAccount();
 
-            var totpCredential = new TotpCredential(totpService, aesEncryptionService, domainModelConfiguration, account);
+            var totpCredential = new TotpCredential(totpService, aesEncryptionService, domainModelConfiguration);
             account.TotpCredential = totpCredential;
 
             await _database.SaveChangesAsync();

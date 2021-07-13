@@ -10,11 +10,11 @@ namespace DomainModel.Entities
     public class ShopCategory
     {
         [Key]
-        public virtual Guid Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
 
-        public virtual string IconFilename { get; set; }
+        public string IconFilename { get; set; }
     }
 }

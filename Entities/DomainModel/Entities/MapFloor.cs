@@ -10,6 +10,6 @@ namespace DomainModel.Entities
     public class MapFloor : MapLayer
     {
         [Key]
-        public virtual int FloorNumber { get; set; }
+        public int FloorNumber { get; set; }
     }
 }

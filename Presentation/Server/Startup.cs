@@ -19,7 +19,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Server.Common.Auth;
 using Server.Common.Auth.AuthorizationHandlers;
+using Server.Common.Configuration;
+using Server.Common.Mapper;
 using Server.Common.Middlewares.ApplicationExceptionHandler;
+using Server.ServiceImplementation;
+using Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -94,14 +98,11 @@ namespace Server
                     "admin",
                     "mail@mail.com",
                     "THE Admin",
-                    permission)
-                {
-                    PasswordCredential = new PasswordCredential(
-                        "password123", 
-                        new PasswordHasher(), 
-                        new AlphanumericRng(), 
-                        new DomainModelConfiguration(totpSecretEncryptionKey: "ChangeThisInProd"))
-                };
+                    "password",
+                    new PasswordHasher(),
+                    new AlphanumericRng(),
+                    new DomainModelConfiguration(totpSecretEncryptionKey: "ChangeThisInProd"),
+                    permission);
 
                 database.AdminAccounts.Add(account);
 

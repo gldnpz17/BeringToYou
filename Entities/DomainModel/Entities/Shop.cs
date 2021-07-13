@@ -11,26 +11,26 @@ namespace DomainModel.Entities
     public class Shop
     {
         [Key]
-        public virtual Guid Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
 
         public virtual ThumbnailedImage BannerImage { get; set; }
 
         [MaxLength(1024)]
-        public virtual string Description { get; set; }
+        public string Description { get; set; }
 
         public virtual IList<MerchantAccount> ShopOwners { get; set; }
 
         [Required]
-        public virtual int Floor { get; set; }
+        public int Floor { get; set; }
 
         [Required]
-        public virtual double Latitude { get; set; }
+        public double Latitude { get; set; }
 
         [Required]
-        public virtual double Longitude { get; set; }
+        public double Longitude { get; set; }
         
         public virtual ShopCategory Category { get; set; }
         

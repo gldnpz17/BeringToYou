@@ -10,17 +10,17 @@ namespace DomainModel.Entities
     public class PointOfInterest
     {
         [Key]
-        public virtual Guid Id { get; set; }
+        public Guid Id { get; set; }
         
         public virtual PointOfInterestCategory Category { get; set; }
         
         [Required]
-        public virtual int FloorNumber { get; set; }
+        public int FloorNumber { get; set; }
         
         [Required]
-        public virtual double Latitude { get; set; }
+        public double Latitude { get; set; }
         
         [Required]
-        public virtual double Longitude { get; set; }
+        public double Longitude { get; set; }
     }
 }

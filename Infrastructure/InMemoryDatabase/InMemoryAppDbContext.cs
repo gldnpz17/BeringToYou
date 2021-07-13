@@ -15,7 +15,7 @@ namespace InMemoryDatabase
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseLazyLoadingProxies();
+            base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseInMemoryDatabase(databaseName: _databaseName);
         }
     }

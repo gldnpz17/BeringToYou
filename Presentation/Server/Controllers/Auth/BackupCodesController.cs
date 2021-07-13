@@ -50,7 +50,7 @@ namespace Server.Controllers.Auth
         {
             var account = await GetLoggedInAccount();
 
-            var backupCodeCredential = new BackupCodeCredential(account);
+            var backupCodeCredential = new BackupCodeCredential();
             account.BackupCodeCredential = backupCodeCredential;
 
             var backupCodes = backupCodeCredential.GenerateBackupCodes(passwordHasher, alphanumericRng, domainModelConfiguration);

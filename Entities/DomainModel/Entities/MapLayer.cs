@@ -8,6 +8,6 @@ namespace DomainModel.Entities
 {
     public class MapLayer
     {
-        public virtual string KmlFilename { get; set; }
+        public string KmlFilename { get; set; }
     }
 }
