@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DomainModel.Common;
+using DomainModel.Entities;
 using DomainModel.Services;
 using EFCoreDatabase;
 using Microsoft.AspNetCore.Authorization;
@@ -46,7 +47,7 @@ namespace Server.Controllers.Auth
             [FromServices] IPasswordHasher passwordHasher,
             [FromServices] DomainModelConfiguration domainModelConfiguration)
         {
-            var account = await _database.Accounts.FirstOrDefaultAsync(account => account.Username == body.Username);
+            var account = await _database.MerchantAccounts.FirstOrDefaultAsync(account => account.Username == body.Username);
 
             var loginResult = account.PasswordLogin(
                 body.Password,

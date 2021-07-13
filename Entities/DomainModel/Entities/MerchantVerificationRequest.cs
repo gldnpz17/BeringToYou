@@ -8,8 +8,8 @@ namespace DomainModel.Entities
     public class MerchantVerificationRequest
     {
         [Key]
-        public virtual Guid AccountId { get; set; }
-        public virtual MerchantAccount Account { get; set; }
+        public virtual Guid MerchantAccountId { get; set; }
+        public virtual MerchantAccount MerchantAccount { get; set; }
         
         public virtual bool Accepted { get; set; } = false;
         
@@ -22,7 +22,7 @@ namespace DomainModel.Entities
         public void AcceptVerification()
         {
             Accepted = true;
-            Account.OwnedShops = OwnedShops;
+            MerchantAccount.OwnedShops = OwnedShops;
         }
     }
 }

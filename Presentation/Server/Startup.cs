@@ -1,5 +1,6 @@
 using AutoMapper;
 using DomainModel.Common;
+using DomainModel.Entities;
 using DomainModel.Services;
 using DomainModelServiceImplementations.AesEncryptionService;
 using DomainModelServiceImplementations.AlphanumericRng;
@@ -119,15 +120,18 @@ namespace Server
 
                 var permission = database.PermissionPresets.FirstOrDefault(permission => permission.Name == "SuperAdmin");
 
-                var account = new DomainModel.Entities.AdminAccount(
+                var account = new AdminAccount(
                     "admin",
                     "mail@mail.com",
                     "THE Admin",
-                    "password123",
-                    permission,
-                    new PasswordHasher(),
-                    new AlphanumericRng(),
-                    new DomainModelConfiguration(totpSecretEncryptionKey: "ChangeThisInProd"));
+                    permission)
+                {
+                    PasswordCredential = new PasswordCredential(
+                        "password123", 
+                        new PasswordHasher(), 
+                        new AlphanumericRng(), 
+                        new DomainModelConfiguration(totpSecretEncryptionKey: "ChangeThisInProd"))
+                };
 
                 database.AdminAccounts.Add(account);
 

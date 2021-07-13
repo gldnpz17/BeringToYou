@@ -42,11 +42,10 @@ namespace Server.Controllers.Admin.Accounts
                 body.Username,
                 body.Email,
                 body.DisplayName,
-                body.Password,
-                defaultPermission,
-                passwordHasher,
-                alphanumericRng,
-                domainModelConfiguration);
+                defaultPermission)
+            {
+                PasswordCredential = new PasswordCredential(body.Password, passwordHasher, alphanumericRng, domainModelConfiguration)
+            };
 
             await _database.Accounts.AddAsync(account);
 

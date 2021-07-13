@@ -41,13 +41,14 @@ namespace Server.Controllers.Merchant.Accounts
             var account = new MerchantAccount(
                 body.Username,
                 body.DisplayName,
-                body.Password,
-                passwordHasher,
-                alphanumericRng,
                 dateTimeService,
                 configuration);
 
             await _database.MerchantAccounts.AddAsync(account);
+
+            await _database.SaveChangesAsync();
+
+            account.PasswordCredential = new PasswordCredential(body.Password, passwordHasher, alphanumericRng, configuration);
 
             await _database.SaveChangesAsync();
 

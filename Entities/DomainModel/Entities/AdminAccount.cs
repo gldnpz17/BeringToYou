@@ -14,11 +14,7 @@ namespace DomainModel.Entities
             string username, 
             string email,
             string displayName, 
-            string password, 
-            AdminPermissionPreset defaultPermissionPreset,
-            IPasswordHasher passwordHasher, 
-            IAlphanumericRng alphanumericRng, 
-            DomainModelConfiguration domainModelConfiguration) : base(username, displayName, password, passwordHasher, alphanumericRng, domainModelConfiguration)
+            AdminPermissionPreset defaultPermissionPreset) : base(username, displayName)
         {
             Permissions = defaultPermissionPreset;
             Email = email;

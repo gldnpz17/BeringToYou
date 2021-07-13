@@ -21,15 +21,15 @@ namespace DomainModel.Entities
                 configuration.PasswordSaltLength,
                 cryptographicallySecure: true);
 
-            passwordHasher.Hash(password, Salt);
+            Hash = passwordHasher.Hash(password, Salt);
         }
 
         public PasswordCredential() { }
 
-        [Key]
         public virtual Guid AccountId { get; set; }
         public virtual AccountBase Account { get; set; }
-        
+
+        [Key]
         public virtual string Hash { get; set; }
         
         public virtual string Salt { get; set; }

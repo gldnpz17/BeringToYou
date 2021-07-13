@@ -16,15 +16,10 @@ namespace DomainModel.Entities
     {
         public AccountBase(
             string username,
-            string displayName, 
-            string password,
-            IPasswordHasher passwordHasher,
-            IAlphanumericRng alphanumericRng,
-            DomainModelConfiguration domainModelConfiguration)
+            string displayName)
         {
             Username = username;
             DisplayName = displayName;
-            PasswordCredential = new PasswordCredential(password, passwordHasher, alphanumericRng, domainModelConfiguration);
         }
 
         public AccountBase() { }
