@@ -103,7 +103,7 @@ namespace Server.Controllers.Shops.Products
             return Ok();
         }
 
-        [HttpPut("{productId}/main-image")]
+        [HttpPut("{productId}")]
         [Authorize]
         public async Task<IActionResult> UpdateMainImage(
             [FromRoute]Guid shopId,

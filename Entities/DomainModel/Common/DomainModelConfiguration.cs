@@ -93,18 +93,18 @@ namespace DomainModel.Common
         /// <summary>
         /// The number of backup code submission retries a user is able to submit in a given time interval.
         /// </summary>
-        public int BackupCodeMaxRetries { get; set; } = 3;
+        public int BackupCodeMaxRetries { get; set; }
         /// <summary>
         /// How long before a user's backup code submission counter is reset to 0.
         /// </summary>
-        public TimeSpan TimeBeforeBackupCodeRetryClear { get; set; } = new TimeSpan(0, 0, 0, 30);
+        public TimeSpan TimeBeforeBackupCodeRetryClear { get; set; }
         /// <summary>
-        /// How long before a user could submit another backup code request after they have submitted too much.
+        /// How long before a user could submit anothe backup code request after they have submitted too much.
         /// </summary>
-        public TimeSpan BackupCodeAttemptTimeoutDuration { get; set; } = new TimeSpan(0, 0, 0, 30);
+        public TimeSpan BackupCodeAttemptTimeoutDuration { get; set; }
 
-        public int EmailVerificationTokenLength { get; set; } = 64;
-        public TimeSpan EmailVerificationTokenDuration { get; set; } = new TimeSpan(1, 0, 0, 0);
+        public int EmailVerificationTokenLength { get; set; }
+        public TimeSpan EmailVerificationTokenDuration { get; set; }
 
         public TimeSpan MerchantSignUpRequestLifespan { get; set; } = new TimeSpan(30, 0, 0, 0);
     }

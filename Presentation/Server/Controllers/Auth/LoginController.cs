@@ -47,7 +47,7 @@ namespace Server.Controllers.Auth
             [FromServices] IPasswordHasher passwordHasher,
             [FromServices] DomainModelConfiguration domainModelConfiguration)
         {
-            var account = await _database.MerchantAccounts.FirstOrDefaultAsync(account => account.Username == body.Username);
+            var account = await _database.Accounts.FirstOrDefaultAsync(account => account.Email == body.Email);
 
             var loginResult = account.PasswordLogin(
                 body.Password,

@@ -91,7 +91,7 @@ namespace Server.Controllers.Map
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
         public async Task<IActionResult> UpdateKml(
             [FromRoute]Guid overlayId, 
-            [FromForm(Name = "kml")]IFormFile kml,
+            [FromForm]IFormFile kml,
             [FromServices]IFileSystemService fileSystemService,
             [FromServices]ApplicationConfiguration applicationConfiguration)
         {
@@ -112,7 +112,7 @@ namespace Server.Controllers.Map
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
         public async Task<IActionResult> UpdateIcon(
             [FromRoute]Guid overlayId,
-            [FromForm(Name = "icon")]IFormFile icon,
+            [FromForm]IFormFile icon,
             [FromServices]IFileSystemService fileSystemService,
             [FromServices]ApplicationConfiguration applicationConfiguration)
         {

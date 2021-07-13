@@ -10,7 +10,6 @@ namespace DomainModel.Entities
     public class AdminPermissionPreset
     {
         [Key]
-        [Required]
         public string Name { get; set; }
         
         [Required]

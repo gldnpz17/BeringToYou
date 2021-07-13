@@ -35,7 +35,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="NSwag.AspNetCore" Version="13.11.3" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
   </ItemGroup>
 
@@ -45,7 +44,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Entities\DomainModel\DomainModel.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\DomainModelServiceImplementations\DomainModelServiceImplementations.csproj" />
     <ProjectReference Include="..\..\Infrastructure\EFCoreDatabase\EFCoreDatabase.csproj" />
     <ProjectReference Include="..\..\Infrastructure\InMemoryDatabase\InMemoryDatabase.csproj" />
   </ItemGroup>

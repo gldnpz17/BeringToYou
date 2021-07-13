@@ -3,7 +3,6 @@ using DomainModel.Services;
 using DomainModel.ValueObjects;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,14 +13,9 @@ namespace DomainModel.Entities
     {
         public BackupCodeCredential(AccountBase account)
         {
-            AccountId = account.Id;
             Account = account;
         }
 
-        public BackupCodeCredential() { }
-
-        [Key]
-        public virtual Guid AccountId { get; set; }
         public virtual AccountBase Account { get; set; }
 
         public virtual IList<BackupCode> BackupCodes { get; set; } = new List<BackupCode>();

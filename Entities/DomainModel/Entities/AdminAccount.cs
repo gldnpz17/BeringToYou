@@ -20,8 +20,6 @@ namespace DomainModel.Entities
             Email = email;
         }
 
-        public AdminAccount() { }
-
         public virtual AdminPermissionPreset Permissions { get; set; }
     }
 }

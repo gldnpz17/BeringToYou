@@ -30,11 +30,6 @@ namespace EFCoreDatabase
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<AccountBase>(entityBuilder =>
-            {
-                entityBuilder.OwnsMany(entity => entity.TwoFactorTokens);
-            });
-
             builder.Entity<AdminPermissionPreset>(entityBuilder =>
             {
                 entityBuilder.HasData(new AdminPermissionPreset[]
@@ -72,13 +67,7 @@ namespace EFCoreDatabase
 
             builder.Entity<Product>(entityBuilder =>
             {
-                entityBuilder.OwnsOne(entity => entity.MainImage);
                 entityBuilder.OwnsMany(entity => entity.Images);
-            });
-
-            builder.Entity<MerchantVerificationRequest>(entityBuilder =>
-            {
-                entityBuilder.OwnsMany(entity => entity.VerificationPhotos);
             });
         }
     }

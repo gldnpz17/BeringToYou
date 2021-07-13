@@ -1,5 +1,4 @@
-﻿using DomainModel.Entities;
-using EFCoreDatabase;
+﻿using EFCoreDatabase;
 using Microsoft.EntityFrameworkCore;
 using System;
 
