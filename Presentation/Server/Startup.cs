@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NSwag.Generation.Processors.Security;
 using Server.Common.Auth;
 using Server.Common.Auth.AuthorizationHandlers;
 using Server.Common.Configuration;
@@ -44,6 +45,31 @@ namespace Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // Register swagger.
+            services.AddSwaggerDocument((config) =>
+            {
+                config.DocumentProcessors.Add(
+                new SecurityDefinitionAppender("AuthToken",
+                new NSwag.OpenApiSecurityScheme
+                {
+                    Type = NSwag.OpenApiSecuritySchemeType.ApiKey,
+                    Name = "Auth-Token",
+                    In = NSwag.OpenApiSecurityApiKeyLocation.Header,
+                }));
+                config.OperationProcessors.Add(new OperationSecurityScopeProcessor("AuthToken"));
+
+                config.PostProcess = (document) =>
+                {
+                    document.Info.Version = "v1";
+                    document.Info.Title = "BeringToYou API";
+                    document.Info.Contact = new NSwag.OpenApiContact()
+                    {
+                        Name = "Firdaus Bisma Suryakusuma",
+                        Email = "firdausbismasuryakusuma@mail.ugm.ac.id"
+                    };
+                };
+            });
+
             // Register controllers.
             services.AddControllers();
 
@@ -148,6 +174,12 @@ namespace Server
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            if (_environment.IsDevelopment())
+            {
+                app.UseOpenApi();
+                app.UseSwaggerUi3();
+            }
 
             app.UseApplicationExceptionHandler();
 

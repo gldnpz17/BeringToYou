@@ -43,7 +43,7 @@ namespace Server.Controllers.Accounts
             return PhysicalFile(filePath, MimeTypes.GetMimeType(filePath));
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize]
         public async Task<IActionResult> UploadProfilePicture(
             [FromRoute]Guid accountId,
