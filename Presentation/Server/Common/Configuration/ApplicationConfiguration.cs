@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,18 +17,18 @@ namespace Server.Common.Configuration
         public ProductConfiguration Product { get; set; } = new ProductConfiguration();
         public FileSystemServiceConfiguration FileSystemService { get; set; } = new FileSystemServiceConfiguration();
 
-        public string PublicAssetsDirectory { get; set; } = Path.Combine(Directory.GetCurrentDirectory(), "public-assets");
+        public string PublicAssetsDirectory { get; set; } = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "application-files", "public-assets");
 
         public class AccountConfiguration
         {
-            public string ProfilePictureDirectory { get; set; } = Path.Combine(Directory.GetCurrentDirectory(), "profile-pictures");
+            public string ProfilePictureDirectory { get; set; } = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "application-files", "profile-pictures");
             public string[] AllowedProfilePictureExtensions { get; set; } = new string[] { ".bmp", ".png", ".jpg", ".jpeg" };
             public int MaxProfilePictureFileSize { get; set; } = 1024 * 1024 * 5;
         }
 
         public class MerchantVerificationConfiguration
         {
-            public string PhotosDirectory { get; set; } = Path.Combine(Directory.GetCurrentDirectory(), "merchant-verification-photos");
+            public string PhotosDirectory { get; set; } = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "application-files", "merchant-verification-photos");
             public string[] AllowedPhotoExtensions { get; set; } = new string[] { ".bmp", ".png", ".jpg", ".jpeg" };
             public int MaxPhotoFileSize = 1024 * 1024 * 10;
         }

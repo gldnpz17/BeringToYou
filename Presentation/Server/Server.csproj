@@ -48,6 +48,7 @@
     <ProjectReference Include="..\..\Infrastructure\DomainModelServiceImplementations\DomainModelServiceImplementations.csproj" />
     <ProjectReference Include="..\..\Infrastructure\EFCoreDatabase\EFCoreDatabase.csproj" />
     <ProjectReference Include="..\..\Infrastructure\InMemoryDatabase\InMemoryDatabase.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\PostgresDatabase\PostgresDatabase.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

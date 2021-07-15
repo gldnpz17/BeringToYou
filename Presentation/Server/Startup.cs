@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NSwag.Generation.Processors.Security;
+using PostgresDatabase;
 using Server.Common.Auth;
 using Server.Common.Auth.AuthorizationHandlers;
 using Server.Common.Configuration;
@@ -122,63 +123,24 @@ namespace Server
             services.AddSingleton<IAuthorizationHandler, ShopOwnerAuthorizationHandler>();
                 
             // Register configuration.
-            if (_environment.IsDevelopment())
-            {
-                services.AddSingleton(new DomainModelConfiguration(totpSecretEncryptionKey: "ChangeThisInProd"));
-                services.AddSingleton(new ApplicationConfiguration());
-            }
+            services.AddSingleton(new DomainModelConfiguration(
+                totpSecretEncryptionKey: SecretsConfiguration.GetSecrets().TotpEncryptionSecret));
+            services.AddSingleton(new ApplicationConfiguration());
 
             // Register database.
             if (_environment.IsDevelopment())
             {
-                var database = new InMemoryAppDbContext("TestDatabase");
-                    
-                database.PermissionPresets.Add(new AdminPermissionPreset()
-                {
-                    Name = "Default",
-                    CanManageAccounts = false,
-                    CanManageBackups = false,
-                    CanManagePermissions = false,
-                    CanManageShops = false,
-                    CanManageMap = false
-                });
-
-                database.PermissionPresets.Add(new AdminPermissionPreset()
-                {
-                    Name = "SuperAdmin",
-                    CanManageAccounts = true,
-                    CanManageBackups = true,
-                    CanManagePermissions = true,
-                    CanManageShops = true,
-                    CanManageMap = true
-                });
-
-                database.SaveChanges();
-
-                var permission = database.PermissionPresets.FirstOrDefault(permission => permission.Name == "SuperAdmin");
-
-                var account = new AdminAccount(
-                    "admin",
-                    "mail@mail.com",
-                    "THE Admin",
-                    "password",
-                    new PasswordHasher(),
-                    new AlphanumericRng(),
-                    new DomainModelConfiguration(totpSecretEncryptionKey: "ChangeThisInProd"),
-                    permission);
-
-                database.AdminAccounts.Add(account);
-
-                database.SaveChanges();
-
                 services.AddTransient<AppDbContext, InMemoryAppDbContext>(serviceProvider => 
                 {
-                    return new InMemoryAppDbContext("TestDatabase");
+                    return new InMemoryAppDbContext("BeringToYouTestDatabase");
                 });
             }
             if (_environment.IsProduction())
             {
-
+                services.AddTransient<AppDbContext, PostgresAppDbContext>(serviceProvider =>
+                {
+                    return new PostgresAppDbContext(SecretsConfiguration.GetSecrets().DatabaseConnectionString);
+                });
             }
 
             // Register domain model services.
