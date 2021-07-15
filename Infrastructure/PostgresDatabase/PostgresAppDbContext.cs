@@ -18,7 +18,7 @@ namespace PostgresDatabase
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseNpgsql(_connectionString);
+            optionsBuilder.UseNpgsql(_connectionString ?? Environment.GetEnvironmentVariable("MIGRATION_CONNECTION_STRING"));
         }
     }
 }
