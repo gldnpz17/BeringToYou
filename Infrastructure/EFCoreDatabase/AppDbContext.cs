@@ -41,34 +41,11 @@ namespace EFCoreDatabase
                 entityBuilder.OwnsMany(entity => entity.TwoFactorTokens);
             });
 
+            builder.Entity<MapFloor>().HasIndex(entity => entity.FloorNumber).IsUnique();
+
             builder.Entity<MerchantVerificationRequest>(entityBuilder =>
             {
                 entityBuilder.OwnsMany(entity => entity.VerificationPhotos);
-            });
-
-            builder.Entity<AdminPermissionPreset>(entityBuilder =>
-            {
-                entityBuilder.HasData(new AdminPermissionPreset[]
-                {
-                    new AdminPermissionPreset()
-                    {
-                        Name = "SuperAdmin",
-                        CanManageAccounts = true,
-                        CanManageBackups = true,
-                        CanManagePermissions = true,
-                        CanManageShops = true,
-                        CanManageMap = true
-                    },
-                    new AdminPermissionPreset()
-                    {
-                        Name = "Default",
-                        CanManageAccounts = false,
-                        CanManageBackups = false,
-                        CanManagePermissions = false,
-                        CanManageShops = false,
-                        CanManageMap = false
-                    }
-                });
             });
 
             builder.Entity<BackupCodeCredential>(entityBuilder =>

@@ -24,7 +24,7 @@ namespace Server.ServiceImplementation
 
         public void CheckFilename(string filename)
         {
-            var validationRegex = new Regex(@"/[(a-z)(A-Z)(\d).-_]*/g");
+            var validationRegex = new Regex(@"^([(a-z)(A-Z)(\d).\-_]+)$");
 
             if (validationRegex.Matches(filename).Count == 0)
             {
@@ -34,15 +34,22 @@ namespace Server.ServiceImplementation
 
         public Task DeleteFileAsync(string directory, string filename)
         {
-            return Task.Run(() =>
+            if (filename != null && filename != "")
             {
-                File.Delete(Path.Combine(directory, filename));
-            });
+                return Task.Run(() =>
+                {
+                    File.Delete(Path.Combine(directory, filename));
+                });
+            }
+            else
+            {
+                return Task.CompletedTask;
+            }
         }
 
         public async Task<string> SaveFileAsync(IFormFile file, string directory)
         {
-            var generatedPath = await CreateNewFile(directory, Path.GetExtension(file.FileName));
+            var generatedPath = await GenerateNewFilename(directory, Path.GetExtension(file.FileName));
 
             using (var fileStream = File.Create(generatedPath))
             {
@@ -62,7 +69,7 @@ namespace Server.ServiceImplementation
             }
         }
 
-        public async Task<string> CreateNewFile(string directory, string extension)
+        public async Task<string> GenerateNewFilename(string directory, string extension)
         {
             var characterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -74,14 +81,14 @@ namespace Server.ServiceImplementation
                     Enumerable.Repeat(characterSet, _applicationConfiguration.FileSystemService.GeneratedFilenameLength)
                     .Select(s => s[random.Next(s.Length)]).ToArray());
 
-                var filename = $"{generatedString}.{extension}";
+                var filename = $"{generatedString}{extension}";
 
                 newFilePath = Path.Combine(directory, filename);
-            } while (File.Exists(newFilePath) == false);
+            } while (File.Exists(newFilePath) == true);
 
             await Task.Run(() =>
             {
-                File.Create(Path.Combine(newFilePath));
+                Directory.CreateDirectory(directory);
             });
 
             return newFilePath;

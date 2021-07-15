@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.ProductCategories
 {
-    [Route("product-categories")]
+    [Route("api/product-categories")]
     [ApiController]
     public class ProductCategoriesController : ApiControllerBase
     {

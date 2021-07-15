@@ -12,6 +12,9 @@ namespace Server.Models.Response
         public string Email { get; set; }
         public string DisplayName { get; set; }
         public string ProfilePictureFilename { get; set; }
-        public PermissionPreset Permissions { get; set; }
+        public bool IsAdmin { get; set; } = false;
+        public PermissionPreset AdminPermissions { get; set; }
+        public bool IsMerchant { get; set; } = false;
+        public List<ShopSummary> OwnedShops { get; set; }
     }
 }

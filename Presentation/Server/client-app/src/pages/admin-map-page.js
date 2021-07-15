@@ -26,6 +26,23 @@ import ItemWithIdTableCell from "../components/item-with-id-table-cell";
 import fetchAllPointOfInterestCategories from '../use-cases/common/fetch-all-point-of-interest-categories';
 import ManipulateItemModal from "../modals/manipulate-item-modal";
 import fetchAllShopCategories from "../use-cases/common/fetch-all-shop-categories";
+import createOverlay from "../use-cases/admin/map/create-overlay";
+import createFloor from "../use-cases/admin/map/create-floor";
+import updateFloor from "../use-cases/admin/map/update-floor";
+import deleteFloor from "../use-cases/admin/map/delete-floor";
+import updateOverlay from "../use-cases/admin/map/update-overlay";
+import deleteOverlay from "../use-cases/admin/map/delete-overlay";
+import createShop from '../use-cases/admin/map/create-shop';
+import updateShop from '../use-cases/admin/map/update-shop';
+import deleteShop from '../use-cases/admin/map/delete-shop';
+import createPointOfInterest from '../use-cases/admin/map/create-point-of-interest';
+import updatePointOfInterest from '../use-cases/admin/map/update-point-of-interest';
+import deletePointOfInterest from '../use-cases/admin/map/delete-point-of-interest';
+import createPointOfInterestCategory from '../use-cases/admin/map/create-point-of-interest-category';
+import updatePointOfInterestCategory from '../use-cases/admin/map/update-point-of-interest-category';
+import deletePointOfInterestCategory from '../use-cases/admin/map/delete-point-of-interest-category';
+import updateShopCategory from "../use-cases/admin/shop/update-shop-category";
+import fetchShopDetails from '../use-cases/common/fetch-shop-details';
 
 const AdminMapPage = () => {
   const [floors, setFloors] = useState([]);
@@ -51,7 +68,7 @@ const AdminMapPage = () => {
   };
 
   const handleCreateFloor = () => {
-    let highestFloor = 1;
+    let highestFloor = 0;
 
     floors.forEach(floor => {
       if (floor.floorNumber > highestFloor) {
@@ -77,8 +94,10 @@ const AdminMapPage = () => {
       ],
       submit: {
         label: 'Tambahkan',
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await createFloor(values.floorNumber);
+
+          await getAllData();
         }
       }
     });
@@ -89,6 +108,13 @@ const AdminMapPage = () => {
       id: 'edit-floor',
       title: 'Ubah Lantai',
       fields: [
+        {
+          id: 'id',
+          label: 'ID',
+          type: 'text',
+          readOnly: true,
+          defaultValue: floor.id
+        },
         {
           id: 'floorNumber',
           label: 'Lantai',
@@ -103,8 +129,10 @@ const AdminMapPage = () => {
       ],
       submit: {
         label: 'Simpan',
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await updateFloor(values.id, values.floorNumber);
+
+          await getAllData();
         }
       }
     });
@@ -116,6 +144,13 @@ const AdminMapPage = () => {
       title: 'Hapus Lantai',
       fields: [
         {
+          id: 'id',
+          label: 'ID',
+          type: 'text',
+          readOnly: true,
+          defaultValue: floor.id
+        },
+        {
           id: 'floorNumber',
           label: 'Lantai',
           type: 'text',
@@ -126,8 +161,10 @@ const AdminMapPage = () => {
       submit: {
         label: 'Hapus',
         danger: true,
-        callback: () => {
-          alert(`deleted item ${floor.floorNumber}`);
+        callback: async (values) => {
+          await deleteFloor(values.id);
+
+          await getAllData();
         }
       }
     });
@@ -175,8 +212,14 @@ const AdminMapPage = () => {
       ],
       submit: {
         label: 'Tambahkan',
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await createOverlay(
+            values.floorNumber,
+            values.zIndex,
+            values.name
+          );
+
+          await getAllData();
         }
       }
     });
@@ -233,8 +276,15 @@ const AdminMapPage = () => {
       ],
       submit: {
         label: 'Simpan',
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await updateOverlay(
+            values.id,
+            values.floorNumber,
+            values.zIndex,
+            values.name
+          );
+
+          await getAllData();
         }
       }
     });
@@ -263,8 +313,10 @@ const AdminMapPage = () => {
       submit: { 
         label: 'Hapus',
         danger: true,
-        callback: (values) => {
-          alert(`deleted item ${values.name}`);
+        callback: async (values) => {
+          await deleteOverlay(values.id);
+
+          await getAllData(); 
         }
       }
     });
@@ -326,14 +378,24 @@ const AdminMapPage = () => {
       ],
       submit: {
         label: 'Tambahkan',
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await createShop(
+            values.name, 
+            values.description,
+            values.floorNumber,
+            values.latitude,
+            values.longitude, 
+            values.category);
+
+          await getAllData();
         }
       }
     });
   }
 
-  const handleEditShop = (shop) => {
+  const handleEditShop = async (shop) => {
+    let shopDetails = await fetchShopDetails(shop.id);
+
     setQuery({
       id: 'edit-shop',
       title: 'Ubah Toko',
@@ -343,19 +405,19 @@ const AdminMapPage = () => {
           label: 'Nama',
           type: 'text',
           readOnly: true,
-          defaultValue: shop.id
+          defaultValue: shopDetails.id
         },
         {
           id: 'name',
           label: 'Nama',
           type: 'text',
-          defaultValue: shop.name
+          defaultValue: shopDetails.name
         },
         {
           id: 'description',
           label: 'Deskripsi',
           type: 'textarea',
-          defaultValue: shop.description
+          defaultValue: shopDetails.description
         },
         {
           id: 'floorNumber',
@@ -366,7 +428,7 @@ const AdminMapPage = () => {
               {
                 value: floor.floorNumber,
                 label: `Lantai ${floor.floorNumber}`,
-                isDefault: (floor.floorNumber === shop.floor)
+                isDefault: (floor.floorNumber === shopDetails.floor)
               }
             );
           })
@@ -375,13 +437,13 @@ const AdminMapPage = () => {
           id: 'latitude',
           label: 'Latitude',
           type: 'text',
-          defaultValue: shop.latitude
+          defaultValue: shopDetails.latitude
         },
         {
           id: 'longitude',
           label: 'Longitude',
           type: 'text',
-          defaultValue: shop.longitude
+          defaultValue: shopDetails.longitude
         },
         {
           id: 'category',
@@ -392,7 +454,7 @@ const AdminMapPage = () => {
               {
                 value: category.id,
                 label: category.name,
-                isDefault: (category.name === shop.shopCategoryName)
+                isDefault: (category.id === shopDetails.category.id)
               }
             );
           })
@@ -400,8 +462,17 @@ const AdminMapPage = () => {
       ],
       submit: {
         label: 'Simpan',
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await updateShop(
+            values.id,
+            values.name,
+            values.description,
+            values.floorNumber,
+            values.latitude,
+            values.longitude,
+            values.category);
+
+          await getAllData();
         }
       }
     });
@@ -430,8 +501,10 @@ const AdminMapPage = () => {
       submit: {
         label: 'Hapus',
         danger: true,
-        callback: (values) => {
-          alert(`deleted item ${values.name}`);
+        callback: async (values) => {
+          await deleteShop(values.id);
+
+          await getAllData();
         }
       }
     });
@@ -483,8 +556,15 @@ const AdminMapPage = () => {
       ],
       submit: {
         label: 'Tambahkan',
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await createPointOfInterest(
+            values.category,
+            values.floorNumber,
+            values.latitude,
+            values.longitude
+          );
+
+          await getAllData();
         }
       }
     });
@@ -545,8 +625,16 @@ const AdminMapPage = () => {
       ],
       submit: {
         label: 'Simpan',
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await updatePointOfInterest(
+            values.id,
+            values.category,
+            values.floorNumber,
+            values.latitude,
+            values.longitude
+          );
+
+          await getAllData();
         }
       }
     })
@@ -568,8 +656,10 @@ const AdminMapPage = () => {
       submit: {
         label: 'Hapus',
         danger: true,
-        callback: () => {
-          alert(`deleted item ${pointOfInterest.id}`);
+        callback: async (values) => {
+          await deletePointOfInterest(values.id);
+
+          await getAllData();
         }
       }
     });
@@ -593,8 +683,12 @@ const AdminMapPage = () => {
       ],
       submit: {
         label: 'Buat',
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await createPointOfInterestCategory(
+            values.name
+          );
+
+          await getAllData();
         }
       }
     });
@@ -626,8 +720,13 @@ const AdminMapPage = () => {
       ],
       submit: {
         label: 'Simpan',
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await updatePointOfInterestCategory(
+            values.id,
+            values.name
+          );
+
+          await getAllData();
         }
       }
     });
@@ -656,8 +755,10 @@ const AdminMapPage = () => {
       submit: {
         label: 'Hapus',
         danger: true,
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await deletePointOfInterestCategory(values.id);
+
+          await getAllData();
         }
       }
     });
@@ -674,8 +775,12 @@ const AdminMapPage = () => {
       </AdminPageHeader>
       <div className='d-flex flex-row justify-content-center pe-2 pe-md-3'>
         <AdminFormContainer className='w-100 p-1 mb-3'>
-          <div style={{position: 'relative', height: '24rem'}}>
+          <div style={{position: 'relative', height: '65vh'}}>
             <MarketMap
+              shops={shops}
+              pointsOfInterest={pointsOfInterest}
+              floors={floors}
+              overlays={overlays}
               style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}}
               accessToken={websiteConfiguration.mapAccessToken}
             />
@@ -711,7 +816,12 @@ const AdminMapPage = () => {
                   {floors.map(floor => {
                     return (
                       <tr>
-                        <td className='text-center w-100'>{floor?.floorNumber}</td>
+                        <ItemWithIdTableCell>
+                          <div>
+                            <p>{floor?.floorNumber}</p>
+                            <p className='id'>{floor?.id}</p>
+                          </div>
+                        </ItemWithIdTableCell>
                         <td>
                           <span className='d-flex flex-row justify-content-end'>
                             <IconButton className='p-1 mr-2' iconOnly

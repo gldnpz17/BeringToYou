@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.Shops
 {
-    [Route("shops/{shopId}/online-shops")]
+    [Route("api/shops/{shopId}/online-shops")]
     [ApiController]
     public class OnlineShopsController : ApiControllerBase
     {
@@ -25,7 +25,6 @@ namespace Server.Controllers.Shops
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> CreateOnlineShopInstance(
             [FromRoute]Guid shopId,
             [FromBody]CreateOnlineShopInstanceBody body,
@@ -60,7 +59,6 @@ namespace Server.Controllers.Shops
         }
 
         [HttpPut("{onlineShopId}")]
-        [Authorize]
         public async Task<IActionResult> UpdateOnlineShopInstance(
             [FromRoute]Guid shopId,
             [FromRoute]Guid onlineShopId,
@@ -80,7 +78,6 @@ namespace Server.Controllers.Shops
         }
 
         [HttpDelete("{onlineShopId}")]
-        [Authorize]
         public async Task<IActionResult> DeleteOnlineShopInstance([FromRoute]Guid shopId, [FromRoute]Guid onlineShopId)
         {
             var shop = await _database.Shops.FirstOrDefaultAsync(shop => shop.Id == shopId);

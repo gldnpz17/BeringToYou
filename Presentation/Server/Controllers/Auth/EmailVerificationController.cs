@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.Common;
+using Server.Common.Auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.Auth
 {
-    [Route("/api/auth/email-verification")]
+    [Route("api/auth/email-verification")]
     [ApiController]
     public class EmailVerificationController : ApiControllerBase
     {
@@ -28,7 +29,7 @@ namespace Server.Controllers.Auth
         }
 
         [HttpPost("send-email")]
-        [AllowAnonymous]
+        [Authorize(PolicyNameConstants.AuthenticatedUsers)]
         public async Task<IActionResult> SendEmailVerificationMail(
             [FromServices] IAlphanumericRng alphanumericRng,
             [FromServices] IEmailSender emailSender,

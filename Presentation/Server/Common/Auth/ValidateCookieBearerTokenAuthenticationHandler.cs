@@ -1,4 +1,5 @@
-﻿using DomainModel.Entities;
+﻿using DomainModel.Common;
+using DomainModel.Entities;
 using DomainModel.Services;
 using EFCoreDatabase;
 using Microsoft.AspNetCore.Authentication;
@@ -19,10 +20,12 @@ namespace Server.Common.Auth
     {
         private readonly AppDbContext _database;
         private readonly IDateTimeService _dateTimeService;
+        private readonly DomainModelConfiguration _domainModelConfiguration;
 
         public ValidateCookieBearerTokenAuthenticationHandler(
             AppDbContext database,
             IDateTimeService dateTimeService,
+            DomainModelConfiguration domainModelConfiguration,
             IOptionsMonitor<CookieBearerTokenAuthenticationSchemeOptions> options, 
             ILoggerFactory logger, 
             UrlEncoder encoder, 
@@ -30,6 +33,7 @@ namespace Server.Common.Auth
         {
             _database = database;
             _dateTimeService = dateTimeService;
+            _domainModelConfiguration = domainModelConfiguration;
         }
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -49,7 +53,7 @@ namespace Server.Common.Auth
                 return AuthenticateResult.Fail("Token not found.");
             }
 
-            var tokenIsValid = tokenQueryResult.Verify(_dateTimeService);
+            var tokenIsValid = tokenQueryResult.Verify(_dateTimeService, _domainModelConfiguration);
 
             if (tokenIsValid)
             {

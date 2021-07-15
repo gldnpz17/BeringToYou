@@ -6,10 +6,12 @@ import MapIcon from '../svg/map-icon';
 import ShopIcon from '../svg/shop-icon';
 import MiscIcon  from '../svg/misc-icon';
 import ChevronDoubleLeftIcon from '../svg/chevron-double-left-icon';
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import AdminSidebarDisplay from '../helpers/admin-sidebar-display';
 import AccountsIcon from "../svg/accounts-icon";
+import { IdentityContext } from "../app";
+import FailSafeImg from "./fail-safe-img";
 
 const Container = styled.div`
   z-index: 10;
@@ -45,6 +47,7 @@ const Container = styled.div`
       #profile-picture {
         left: 0.5rem;
         transform: translateX(0%);
+        box-shadow: ${props => props.theme.shadow} 0.07rem 0rem 0.2rem;
 
         height: 2.8rem;
         width: 2.8rem;
@@ -71,6 +74,7 @@ const Container = styled.div`
 
   #profile-picture {
     transition-duration: 0.5s;
+    box-shadow: ${props => props.theme.shadow} 0.03rem 0.075rem 0.1rem;
 
     position: absolute;
     left: 50%;
@@ -179,6 +183,7 @@ const MinimizeSidebarButton = styled.div`
 
 const AdminSidebar = (props) => {
   const [minimized, setMinimized] = useState(AdminSidebarDisplay.minimized);
+  const identityContext = useContext(IdentityContext);
 
   const toggleMinimized = () => {
     if (minimized) {
@@ -198,11 +203,14 @@ const AdminSidebar = (props) => {
         <ChevronDoubleLeftIcon className='icon' onClick={() => toggleMinimized()} />
       </MinimizeSidebarButton>
       <div id='profile-picture-container'>
-        <img id='profile-picture' src='/dummy-images/profile-picture.png' />
+        <FailSafeImg id='profile-picture' 
+          src={`/api/accounts/${identityContext.identity.accountId}/profile-picture`}
+          altsrc='/admin-assets/no-profile-picture.png'
+        />
       </div>
       <div id='greeting-message' className='mb-2'>
         <p className='text-center m-0 w-100'>Selamat datang,</p>
-        <p id='account-display-name' className='text-center m-0 w-100'>Lorem Ipsum</p>
+        <p id='account-display-name' className='text-center m-0 w-100'>{identityContext?.identity.displayName}</p>
       </div>
       <div>
         <NavigationOption className={`${(props.page === 'akun-pribadi') ? 'selected' : ''}`}

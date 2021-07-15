@@ -15,5 +15,6 @@ namespace Server.Models.Response
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public string ShopCategoryName { get; set; }
+        public ShopCategorySummary Category { get; set; }
     }
 }

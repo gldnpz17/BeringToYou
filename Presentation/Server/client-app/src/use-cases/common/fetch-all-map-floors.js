@@ -1,22 +1,11 @@
 import delay from "../../helpers/delay";
 
 const fetchAllMapFloors = async () => {
-  delay(100);
+  let response = await fetch('/api/map/floors', {
+    method: 'GET'
+  });
 
-  return ([
-    {
-      floorNumber: 1,
-      kmlFilename: 'floor1.kml'
-    },
-    {
-      floorNumber: 2,
-      kmlFilename: 'floor2.kml'
-    },
-    {
-      floorNumber: 3,
-      kmlFilename: 'floor3.kml'
-    }
-  ]);
+  return (await response.json());
 };
 
 export default fetchAllMapFloors;

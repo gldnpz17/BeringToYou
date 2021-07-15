@@ -27,7 +27,7 @@ namespace Server.Controllers.Accounts
         }
 
         [HttpGet("{accountId}")]
-        [Authorize]
+        [Authorize(PolicyNameConstants.AuthenticatedUsers)]
         public async Task<AccountDetailed> GetAccountDetails(
             [FromRoute]Guid accountId,
             [FromServices]IMapper mapper)
@@ -39,14 +39,13 @@ namespace Server.Controllers.Accounts
             return accountDetails;
         }
 
-        [HttpPut]
-        [Authorize]
+        [HttpPut("{accountId}")]
         public async Task<IActionResult> UpdateAccountDetails(
             [FromRoute]Guid accountId,
             [FromBody]UpdateAccountBody body,
             [FromServices]IMapper mapper)
         {
-            await AuthorizeAccountOwner(accountId);
+            await AuthorizeAccountOwner(accountId, PermissionNameConstants.CanManageAccounts);
 
             var account = await _database.Accounts.FirstOrDefaultAsync(account => account.Id == accountId);
 
@@ -57,8 +56,7 @@ namespace Server.Controllers.Accounts
             return Ok();
         }
 
-        [HttpDelete]
-        [Authorize]
+        [HttpDelete("{accountId}")]
         public async Task<IActionResult> DeleteAccount(
             [FromRoute]Guid accountId)
         {

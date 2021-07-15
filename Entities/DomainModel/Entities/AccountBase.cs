@@ -223,7 +223,8 @@ namespace DomainModel.Entities
                 alphanumericRng.GenerateRandomString(
                     configuration.AuthenticationTokenLength,
                     cryptographicallySecure: true),
-                dateTimeService);
+                dateTimeService,
+                configuration);
 
             AuthenticationTokens.Add(token);
 

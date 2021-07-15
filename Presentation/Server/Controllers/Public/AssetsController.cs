@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.Public
 {
-    [Route("public/assets")]
+    [Route("api/public/assets")]
     [ApiController]
     public class AssetsController : ControllerBase
     {
@@ -26,7 +26,14 @@ namespace Server.Controllers.Public
 
             var path = Path.Combine(applicationConfiguration.PublicAssetsDirectory, filename);
 
-            return PhysicalFile(path, MimeTypes.GetMimeType(filename));
+            if (System.IO.File.Exists(path))
+            {
+                return PhysicalFile(path, MimeTypes.GetMimeType(filename));
+            }
+            else
+            {
+                return NotFound();
+            }
         }
     }
 }

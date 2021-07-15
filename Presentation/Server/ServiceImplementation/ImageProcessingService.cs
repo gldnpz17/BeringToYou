@@ -46,7 +46,7 @@ namespace Server.ServiceImplementation
                     operation.Resize(resizedWidth, resizedHeight);
                 });
 
-                var generatedPath = await _fileSystemService.CreateNewFile(
+                var generatedPath = await _fileSystemService.GenerateNewFilename(
                     thumbnailDirectory, 
                     Path.GetExtension(originalImagePath));
 

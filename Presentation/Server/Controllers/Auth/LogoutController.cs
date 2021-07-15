@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Server.Common;
+using Server.Common.Auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +23,12 @@ namespace Server.Controllers.Auth
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(PolicyNameConstants.AuthenticatedUsers)]
         public async Task<IActionResult> Logout()
         {
             var account = await GetLoggedInAccount();
 
-            var authenticationToken = HttpContext.Request.Headers["Auth-Token"];
+            var authenticationToken = HttpContext.Request.Headers["Auth-Token"].FirstOrDefault() ?? HttpContext.Request.Cookies["auth-token"];
 
             account.Logout(authenticationToken);
 

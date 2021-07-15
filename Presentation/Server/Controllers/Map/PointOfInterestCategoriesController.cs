@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.Map
 {
-    [Route("map/points-of-interest")]
+    [Route("api/map/point-of-interest-categories")]
     [ApiController]
     public class PointOfInterestCategoriesController : ApiControllerBase
     {

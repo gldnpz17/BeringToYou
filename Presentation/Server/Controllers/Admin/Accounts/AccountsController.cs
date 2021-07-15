@@ -50,6 +50,8 @@ namespace Server.Controllers.Admin.Accounts
 
             await _database.Accounts.AddAsync(account);
 
+            await _database.SaveChangesAsync();
+
             return Ok();
         }
 

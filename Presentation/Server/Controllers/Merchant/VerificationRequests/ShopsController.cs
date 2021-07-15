@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.Merchant.VerificationRequests
 {
-    [Route("/merchant/verification-requests/{accountId}/shops")]
+    [Route("api/merchant/verification-requests/{accountId}/shops")]
     [ApiController]
     public class ShopsController : ApiControllerBase
     {
@@ -27,7 +27,6 @@ namespace Server.Controllers.Merchant.VerificationRequests
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> AddShopToMerchantVerificationRequest(
             [FromRoute]Guid accountId,
             [FromBody]AddShopToMerchantVerificationRequestBody body)
@@ -38,7 +37,7 @@ namespace Server.Controllers.Merchant.VerificationRequests
 
             var shopToAdd = await _database.Shops.FirstOrDefaultAsync(shop => shop.Id == body.ShopId);
 
-            account.OwnedShops.Add(shopToAdd);
+            account.VerificationRequest.OwnedShops.Add(shopToAdd);
 
             await _database.SaveChangesAsync();
 
@@ -46,7 +45,6 @@ namespace Server.Controllers.Merchant.VerificationRequests
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IList<ShopSummary>> GetAllMerchantVerificationShops(
             [FromRoute]Guid accountId,
             [FromServices]IMapper mapper)
@@ -55,13 +53,17 @@ namespace Server.Controllers.Merchant.VerificationRequests
 
             var account = await _database.MerchantAccounts.FirstOrDefaultAsync(account => account.Id == accountId);
 
-            var shops = account.OwnedShops.ToList();
+            if (account == null)
+            {
+                return null;
+            }
+
+            var shops = account.VerificationRequest.OwnedShops.ToList();
 
             return mapper.Map<List<Shop>, List<ShopSummary>>(shops);
         }
 
         [HttpDelete("{shopId}")]
-        [Authorize]
         public async Task<IActionResult> RemoveMerchantVerificationShop(
             [FromRoute]Guid accountId,
             [FromRoute]Guid shopId)
@@ -70,9 +72,9 @@ namespace Server.Controllers.Merchant.VerificationRequests
 
             var account = await _database.MerchantAccounts.FirstOrDefaultAsync(account => account.Id == accountId);
 
-            var shopToRemove = account.OwnedShops.FirstOrDefault(shop => shop.Id == shopId);
+            var shopToRemove = account.VerificationRequest.OwnedShops.FirstOrDefault(shop => shop.Id == shopId);
 
-            account.OwnedShops.Remove(shopToRemove);
+            account.VerificationRequest.OwnedShops.Remove(shopToRemove);
 
             await _database.SaveChangesAsync();
 

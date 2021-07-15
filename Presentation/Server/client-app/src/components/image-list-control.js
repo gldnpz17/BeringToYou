@@ -5,6 +5,8 @@ import CustomButton from "./custom-button";
 import IconButton from "./icon-button";
 import UploadIcon from '../svg/upload-icon';
 import AddIcon from '../svg/add-icon';
+import uploadImage from "../use-cases/common/upload-image";
+import { Spinner } from "react-bootstrap";
 
 const ImageList = styled.ul`
   display: flex;
@@ -37,6 +39,33 @@ const ImageItem = styled.li`
     height: 4rem;
     width: 6rem;
   }
+
+  &.upload-pending {
+    position: relative;
+
+    img {
+      filter: brightness(75%);
+    }
+
+    &>div {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      #image-upload-spinner {
+        color: whitesmoke;
+
+        width: 2rem;
+        height: 2rem;
+      }
+    }
+  }
 `;
 
 const AddImageButton = styled(IconButton)`
@@ -46,50 +75,64 @@ const AddImageButton = styled(IconButton)`
   width: 6rem;
 `;
 
-const ImageListControl = ({initialImages, images, setImages, ...props}) => {
+const ImageListControl = ({images, loadImages, onUpload, onSwap, onRemove, ...props}) => {
   const fileInput = useRef();
 
+  const [pendingImages, setPendingImages] = useState([]);
+
   useEffect(() => {
-    if (initialImages) {
-      setImages(initialImages?.map(url => {
-        return ({
-          isNew: false,
-          source: url
-        });
-      }));
-    } else {
-      setImages([]);
-    }
+    initialize();
   }, []);
+
+  useEffect(() => {
+    removeCompletedUploads();
+  }, [images])
+
+  const initialize = async () => {
+    await loadImages();
+  };
 
   let imageList = React.createRef();
 
-  const addImage = (file) => {
-    const newImages = [...images];
+  const pushImage = async (file) => {
+    fileInput.current.value = null;
 
-    newImages.push({
-      isNew: true,
+    let newPendingImages = [...pendingImages];
+
+    let newImage = {
+      finished: false,
       source: file
-    });
-    
-    setImages(newImages);
+    };
+
+    newPendingImages.push(newImage);
+
+    setPendingImages(newPendingImages);
+
+    await onUpload(file);
+
+    newImage.finished = true;
+
+    await loadImages();
   };
 
-  const deleteImage = (index) => {
-    const newImages = [...images];
+  const removeCompletedUploads = () => {
+    let newPendingImages = pendingImages.filter(image => !image.finished);
 
-    newImages.splice(index, 1);
+    console.log(newPendingImages);
 
-    setImages(newImages);
+    setPendingImages(newPendingImages);
+  }
+
+  const deleteImage = async (filename) => {
+    await onRemove(filename);
+
+    await loadImages();
   };
 
-  const swapImages = (index1, index2) => {
-    const newImages = [...images];
+  const swapImages = async (filename1, filename2) => {
+    await onSwap(filename1, filename2);
 
-    newImages[index1] = images[index2];
-    newImages[index2] = images[index1];
-
-    setImages(newImages);
+    await loadImages();
   };
 
   const getElementIndex = (element) => {
@@ -108,7 +151,7 @@ const ImageListControl = ({initialImages, images, setImages, ...props}) => {
     let dragIndex = Number.parseInt(event.dataTransfer.getData('text/plain'));
     let dropIndex = getElementIndex(event.currentTarget);
     
-    swapImages(dragIndex, dropIndex);
+    swapImages(images[dragIndex], images[dropIndex]);
   };
 
   const cancelDefault = (event) => {
@@ -119,25 +162,34 @@ const ImageListControl = ({initialImages, images, setImages, ...props}) => {
   return (
     <div>
       <ImageList ref={imageList} className='d-flex flex-row flex-wrap'>
-        {images?.map((image, index) => {
+        {images?.map((image) => {
           return (
             <ImageItem draggable={true}
               onDragStart={handleDrag}
               onDrop={handleDrop}
-              onDoubleClick={() => deleteImage(index)}
+              onDoubleClick={() => deleteImage(image)}
               onDragOver={cancelDefault}
               onDragEnter={cancelDefault}
             >
-              <img src={(image.isNew ? URL.createObjectURL(image?.source) : image?.source)}
-              />
+              <img src={image} />
             </ImageItem>
           );
+        })}
+        {pendingImages?.map(image => {
+          return (
+            <ImageItem className='upload-pending'>
+              <img src={URL.createObjectURL(image?.source)} />
+              <div>
+                <Spinner animation="border" id='image-upload-spinner' />
+              </div>
+            </ImageItem>
+          )
         })}
         <AddImageButton iconOnly onClick={() => fileInput.current.click()}>
           <AddIcon />
         </AddImageButton>
       </ImageList>
-      <input ref={fileInput} style={{display: 'none'}} type='file' accept='image/*' onChange={(event) => addImage(event.target.files[0])} />
+      <input ref={fileInput} style={{display: 'none'}} type='file' accept='image/*' onChange={(event) => pushImage(event.target.files[0])} />
     </div>
   );
 };

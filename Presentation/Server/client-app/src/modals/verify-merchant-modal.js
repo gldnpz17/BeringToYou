@@ -4,8 +4,26 @@ import AdminFormControl from "../components/admin-form-control";
 import AdminFormGroup from "../components/admin-form-group";
 import ImageSlideshow from '../components/image-slideshow';
 import CustomButton from "../components/custom-button";
+import verifyMerchant from '../use-cases/admin/account-management/verify-merchant';
+import rejectMerchant from '../use-cases/admin/account-management/reject-merchant';
 
-const VerifyMerchantModal = (props) => {
+const VerifyMerchantModal = ({verificationRequest, callback, ...props}) => {
+  const handleVerify = async () => {
+    await verifyMerchant(verificationRequest.account.id);
+
+    await callback();
+
+    props.setShow(false);
+  };
+
+  const handleReject = async () => {
+    await rejectMerchant(verificationRequest.account.id);
+
+    await callback();
+
+    props.setShow(false);
+  };
+
   return (
     <AdminModal size='lg' {...props}>
       <Modal.Header>
@@ -13,29 +31,33 @@ const VerifyMerchantModal = (props) => {
       </Modal.Header>
       <Modal.Body>
         <AdminFormGroup label='ID'>
-          <AdminFormControl readOnly type='text' defaultValue='Lorem Ipsum' />
-        </AdminFormGroup>
-        <AdminFormGroup label='Verifikasi sebelum'>
-          <AdminFormControl readOnly type='text' defaultValue='1 April 2021' />
+          <AdminFormControl readOnly type='text' defaultValue={verificationRequest?.account.id} />
         </AdminFormGroup>
         <AdminFormGroup label='Nama'>
-          <AdminFormControl readOnly type='text' defaultValue='Lorem Ipsum' />
+          <AdminFormControl readOnly type='text' defaultValue={verificationRequest?.account.displayName} />
+        </AdminFormGroup>
+        <AdminFormGroup label='Verifikasi sebelum'>
+          <AdminFormControl readOnly type='text' defaultValue={verificationRequest?.expired} />
         </AdminFormGroup>
         <AdminFormGroup label='Toko'>
           <ul>
-            <li>Toko Lorem Ipsum</li>
-            <li>Warung Dolor Sit Amet</li>
+            {verificationRequest?.ownedShops.map(shop => {
+              return (
+                <li>{shop.name}</li>
+              );
+            })}
           </ul>
         </AdminFormGroup>
         <AdminFormGroup label='Foto bukti'>
-          <ImageSlideshow height='16rem' images={[
-            '/dummy-images/person-1.jpg',
-            '/dummy-images/person-2.jpg'
-          ]}/>
+          <ImageSlideshow height='16rem' 
+            images={verificationRequest?.verificationPhotoFilenames.map(filename => {
+              return (`/api/merchant/verification-requests/${verificationRequest.account.id}/photos/${filename}`);
+            })}/>
         </AdminFormGroup>
       </Modal.Body>
       <Modal.Footer>
-        <CustomButton>Verifikasi</CustomButton>
+        <CustomButton onClick={handleVerify}>Verifikasi</CustomButton>
+        <CustomButton danger onClick={handleReject}>Tolak</CustomButton>
         <CustomButton secondary onClick={() => props.setShow(false)}>Batal</CustomButton>
       </Modal.Footer>
     </AdminModal>

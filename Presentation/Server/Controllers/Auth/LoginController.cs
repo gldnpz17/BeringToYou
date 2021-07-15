@@ -4,6 +4,7 @@ using DomainModel.Entities;
 using DomainModel.Services;
 using EFCoreDatabase;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.Common;
@@ -59,6 +60,19 @@ namespace Server.Controllers.Auth
             var authenticationResult = _mapper.Map<PasswordAuthenticationResult>(loginResult);
 
             await _database.SaveChangesAsync();
+
+            if (authenticationResult.NeedsTwoFactor == false)
+            {
+                HttpContext.Response.Cookies.Append(
+                    "auth-token",
+                    authenticationResult.Token,
+                    new CookieOptions()
+                    {
+                        HttpOnly = true,
+                        SameSite = SameSiteMode.Strict,
+                        Secure = true
+                    });
+            }
 
             return authenticationResult;
         }

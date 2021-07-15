@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.Products
 {
-    [Route("products")]
+    [Route("api/products")]
     [ApiController]
     public class ProductsController : ApiControllerBase
     {

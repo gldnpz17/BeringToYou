@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.Shops.Products
 {
-    [Route("shops/{shopId}/products/{productId}/images")]
+    [Route("api/shops/{shopId}/products/{productId}/images")]
     [ApiController]
     public class ImagesController : ApiControllerBase
     {
@@ -25,7 +25,6 @@ namespace Server.Controllers.Shops.Products
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> CreateImage(
             [FromRoute]Guid shopId,
             [FromRoute]Guid productId,
@@ -57,7 +56,6 @@ namespace Server.Controllers.Shops.Products
         }
 
         [HttpDelete("{filename}")]
-        [Authorize]
         public async Task<IActionResult> DeleteImage(
             [FromRoute]Guid shopId,
             [FromRoute]Guid productId,

@@ -37,7 +37,6 @@ namespace Server.Controllers.Merchant.VerificationRequests
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> UploadMerchantVerificationPhoto(
             [FromRoute]Guid accountId,
             [FromForm(Name = "photo")]IFormFile photo)
@@ -63,7 +62,6 @@ namespace Server.Controllers.Merchant.VerificationRequests
         }
 
         [HttpGet("{filename}")]
-        [Authorize]
         public async Task<IActionResult> DownloadMerchantVerificationPhoto(
             [FromRoute]Guid accountId,
             [FromRoute]string filename)
@@ -76,11 +74,17 @@ namespace Server.Controllers.Merchant.VerificationRequests
                 _applicationConfiguration.MerchantVerification.PhotosDirectory,
                 filename);
 
-            return PhysicalFile(filePath, MimeTypes.GetMimeType(filename));
+            if (System.IO.File.Exists(filePath))
+            {
+                return PhysicalFile(filePath, MimeTypes.GetMimeType(filename));
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         [HttpDelete("{filename}")]
-        [Authorize]
         public async Task<IActionResult> DeleteMerchantVerificationPhoto([FromRoute]string filename, [FromRoute]Guid accountId)
         {
             await AuthorizeAccountOwner(accountId);

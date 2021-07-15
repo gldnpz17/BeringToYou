@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.Shops
 {
-    [Route("shops/{shopId}/banner-image")]
+    [Route("api/shops/{shopId}/banner-image")]
     [ApiController]
     public class BannerImageController : ApiControllerBase
     {

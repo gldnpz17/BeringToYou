@@ -1,20 +1,11 @@
 import delay from "../../helpers/delay";
 
 const fetchAllShopCategories = async () => {
-  await delay(100);
+  let response = await fetch('/api/shops/shop-categories', {
+    method: 'GET'
+  });
 
-  return ([
-    {
-      id: 'Sh0P-Cat3g0ry-1',
-      name: 'Pakaian',
-      iconFilename: 'icon1.svg'
-    },
-    {
-      id: 'Sh0P-Cat3g0ry-2',
-      name: 'Makanan',
-      iconFilename: 'icon2.svg'
-    }
-  ]);
+  return (await response.json());
 };
 
 export default fetchAllShopCategories;

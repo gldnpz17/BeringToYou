@@ -15,7 +15,7 @@ namespace Server.Models.Response
         public int Floor { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public string ShopCategoryName { get; set; }
+        public ShopCategorySummary Category { get; set; }
         public IList<OnlineShopInstanceSummary> OnlineShopInstances { get; set; }
         public IList<ProductSummary> Products { get; set; }
     }

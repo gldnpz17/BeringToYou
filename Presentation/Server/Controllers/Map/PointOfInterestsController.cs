@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.Map
 {
-    [Route("map/point-of-interest")]
+    [Route("api/map/points-of-interest")]
     [ApiController]
     public class PointOfInterestsController : ApiControllerBase
     {
@@ -63,7 +63,14 @@ namespace Server.Controllers.Map
         {
             var pointOfInterest = await _database.PointOfInterests.FirstOrDefaultAsync(pointOfInterest => pointOfInterest.Id == pointOfInterestId);
 
-            mapper.Map(body, pointOfInterestId);
+            if (pointOfInterest.Category.Id != body.CategoryId)
+            {
+                var category = await _database.PointOfInterestCategories.FirstOrDefaultAsync(category => category.Id == body.CategoryId);
+
+                pointOfInterest.Category = category;
+            }
+
+            mapper.Map(body, pointOfInterest);
 
             await _database.SaveChangesAsync();
 

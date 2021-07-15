@@ -11,11 +11,11 @@ namespace DomainModel.Entities
 {
     public class AuthenticationToken
     {
-        public AuthenticationToken(string token, IDateTimeService dateTimeService)
+        public AuthenticationToken(string token, IDateTimeService dateTimeService, DomainModelConfiguration domainModelConfiguration)
         {
             Token = token;
 
-            Expired = dateTimeService.GetCurrentDateTime();
+            Expired = dateTimeService.GetCurrentDateTime() + domainModelConfiguration.AuthenticationTokenMaxUnusedDuration;
         }
 
         public AuthenticationToken() { }
@@ -30,7 +30,7 @@ namespace DomainModel.Entities
         [Required]
         public DateTime Expired { get; set; }
 
-        public bool Verify(IDateTimeService dateTimeService)
+        public bool Verify(IDateTimeService dateTimeService, DomainModelConfiguration domainModelConfiguration)
         {
             var now = dateTimeService.GetCurrentDateTime();
 
@@ -38,6 +38,8 @@ namespace DomainModel.Entities
             {
                 throw new DomainModelException(ExceptionCode.AUTHENTICATION_CODE_EXPIRED, "The authentication token has expired");
             }
+
+            Expired = dateTimeService.GetCurrentDateTime() + domainModelConfiguration.AuthenticationTokenMaxUnusedDuration;
 
             return true;
         }

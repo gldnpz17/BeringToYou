@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.ShopCategories
 {
-    [Route("shops/shop-categories")]
+    [Route("api/shops/shop-categories")]
     [ApiController]
     public class ShopCategoriesController : ApiControllerBase
     {
@@ -93,7 +93,7 @@ namespace Server.Controllers.ShopCategories
         {
             var shopCategory = await _database.ShopCategories.FirstOrDefaultAsync(category => category.Id == categoryId);
 
-            var generatedFilename = await fileSystemService.SaveFileAsync(icon, applicationConfiguration.ShopCategory.IconDirectory);
+            var generatedFilename = await fileSystemService.SaveFileAsync(icon, applicationConfiguration.PublicAssetsDirectory);
 
             shopCategory.IconFilename = generatedFilename;
 

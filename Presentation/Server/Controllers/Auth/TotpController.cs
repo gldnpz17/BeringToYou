@@ -5,6 +5,7 @@ using EFCoreDatabase;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Server.Common;
+using Server.Common.Auth;
 using Server.Models.Response;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace Server.Controllers.Auth
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(PolicyNameConstants.AuthenticatedUsers)]
         public async Task<TotpSharedSecret> SetTotp(
             [FromServices] ITotpService totpService,
             [FromServices] IAesEncryptionService aesEncryptionService,
@@ -46,7 +47,7 @@ namespace Server.Controllers.Auth
         }
 
         [HttpDelete]
-        [Authorize]
+        [Authorize(PolicyNameConstants.AuthenticatedUsers)]
         public async Task<IActionResult> RemoveTotp()
         {
             var account = await GetLoggedInAccount();

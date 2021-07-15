@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.Accounts
 {
-    [Route("accounts/{accountId}/profile-picture")]
+    [Route("api/accounts/{accountId}/profile-picture")]
     [ApiController]
     public class ProfilePictureController : ApiControllerBase
     {
@@ -32,33 +32,44 @@ namespace Server.Controllers.Accounts
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(PolicyNameConstants.AuthenticatedUsers)]
         public async Task<IActionResult> DownloadProfilePicture(
             [FromRoute]Guid accountId)
         {
             var account = await _database.Accounts.FirstOrDefaultAsync(account => account.Id == accountId);
 
+            if (account.ProfilePictureFilename == null)
+            {
+                return null;
+            }
+
             var filePath = Path.Combine(_applicationConfiguration.Account.ProfilePictureDirectory, account.ProfilePictureFilename);
 
-            return PhysicalFile(filePath, MimeTypes.GetMimeType(filePath));
+            if (System.IO.File.Exists(filePath))
+            {
+                return PhysicalFile(filePath, MimeTypes.GetMimeType(filePath));
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> UploadProfilePicture(
             [FromRoute]Guid accountId,
-            [FromBody]IFormFile file,
+            [FromForm(Name = "profile-picture")]IFormFile profilePicture,
             [FromServices]IFileSystemService fileSystemService)
         {
             await AuthorizeAccountOwner(accountId);
 
             fileSystemService.ValidateExtension(
-                Path.GetExtension(file.FileName),
+                profilePicture.FileName,
                 _applicationConfiguration.Account.AllowedProfilePictureExtensions);
 
             var account = await _database.Accounts.FirstOrDefaultAsync(account => account.Id == accountId);
 
-            var generatedFilename = await fileSystemService.SaveFileAsync(file, _applicationConfiguration.Account.ProfilePictureDirectory);
+            var generatedFilename = await fileSystemService.SaveFileAsync(profilePicture, _applicationConfiguration.Account.ProfilePictureDirectory);
 
             account.ProfilePictureFilename = generatedFilename;
 
@@ -68,7 +79,6 @@ namespace Server.Controllers.Accounts
         }
 
         [HttpDelete]
-        [Authorize]
         public async Task<IActionResult> DeleteProfilePicture(
             [FromRoute]Guid accountId,
             [FromServices]IFileSystemService fileSystemService)

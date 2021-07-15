@@ -28,6 +28,16 @@ import fetchAllShopCategories from "../use-cases/common/fetch-all-shop-categorie
 import fetchAllProductCategories from "../use-cases/common/fetch-all-product-categories";
 import fetchAllOnlineShopPlatforms from '../use-cases/common/fetch-all-online-shop-platforms';
 import ImageListControl from "../components/image-list-control";
+import createShopCategory from '../use-cases/admin/shop/create-shop-category';
+import updateShopCategory from '../use-cases/admin/shop/update-shop-category';
+import deleteShopCategory from '../use-cases/admin/shop/delete-shop-category';
+import createProductCategory from '../use-cases/admin/shop/create-product-category';
+import updateProductCategory from '../use-cases/admin/shop/update-shop-category';
+import deleteProductCategory from '../use-cases/admin/shop/delete-product-category';
+import createOnlineShopPlatform from '../use-cases/admin/shop/create-online-shop-platform';
+import updateOnlineShopPlatform from '../use-cases/admin/shop/update-online-shop-platform';
+import deleteOnlineShopPlatform from '../use-cases/admin/shop/delete-online-shop-platform';
+import uploadFile from "../use-cases/common/upload-file";
 
 const StoreSelectContainer = styled.div`
   max-width: 28rem;
@@ -62,13 +72,11 @@ const AdminShopPage = () => {
 
   const [tabActiveKey, setTabActiveKey] = useState('shop-profile');
 
-  const [images, setImages] = useState([]);
-
   useEffect(() => {
-    getData();
+    getAllData();
   }, []);
 
-  const getData = async () => {
+  const getAllData = async () => {
     setShops(await fetchAllShops());
     setShopCategories(await fetchAllShopCategories());
     setProductCategories(await fetchAllProductCategories());
@@ -181,7 +189,7 @@ const AdminShopPage = () => {
 
   const handleDeleteOnlineShop = (onlineShop) => {
     setQuery({
-      id: 'deleye-online-shop',
+      id: 'delete-online-shop',
       title: 'Hapus Toko Online',
       fields: [
         {
@@ -383,8 +391,10 @@ const AdminShopPage = () => {
       ],
       submit: {
         label: 'Buat',
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await createShopCategory(values.name);
+
+          await getAllData();
         }
       }
     });
@@ -411,13 +421,25 @@ const AdminShopPage = () => {
         {
           id: 'iconFile',
           label: 'File Icon',
-          type: 'file'
+          type: 'file',
+          preview: `/api/public/assets/${shopCategory.iconFilename}`
         }
       ],
       submit: {
         label: 'Simpan',
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await updateShopCategory(values.id, values.name);
+
+          if (values.iconFile !== null && values.iconFile !== undefined) {
+            await uploadFile(
+              `/api/shops/shop-categories/${values.id}/icon`,
+              'icon',
+              values.iconFile,
+              values.iconFile.name,
+              'PUT');
+          }
+
+          await getAllData();
         }
       }
     });
@@ -446,8 +468,10 @@ const AdminShopPage = () => {
       submit: {
         label: 'Hapus',
         danger: true,
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await deleteShopCategory(values.id);
+
+          await getAllData();
         }
       }
     })
@@ -466,8 +490,10 @@ const AdminShopPage = () => {
       ],
       submit: {
         label: 'Buat',
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await createProductCategory(values.name);
+
+          await getAllData();
         }
       }
     })
@@ -497,8 +523,13 @@ const AdminShopPage = () => {
           type: 'file'
         }
       ],
-      submit: (values) => {
-        console.log(values)
+      submit: {
+        label: 'Simpan',
+        callback: async (values) => {
+          await updateProductCategory(values.id, values.name);
+  
+          await getAllData();
+        }
       }
     })
   };
@@ -526,8 +557,10 @@ const AdminShopPage = () => {
       submit: {
         label: 'Hapus',
         danger: true,
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await deleteProductCategory(values.id);
+
+          await getAllData();
         }
       }
     });
@@ -546,8 +579,10 @@ const AdminShopPage = () => {
       ],
       submit: {
         label: 'Buat',
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await createOnlineShopPlatform(values.name);
+
+          await getAllData();
         }
       }
     });
@@ -579,8 +614,10 @@ const AdminShopPage = () => {
       ],
       submit: {
         label: 'Simpan',
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await updateOnlineShopPlatform(values.id, values.name);
+
+          await getAllData();
         }
       }
     });
@@ -609,8 +646,10 @@ const AdminShopPage = () => {
       submit: {
         label: 'Hapus',
         danger: true,
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await deleteOnlineShopPlatform(values.id);
+
+          await getAllData();
         }
       }
     });

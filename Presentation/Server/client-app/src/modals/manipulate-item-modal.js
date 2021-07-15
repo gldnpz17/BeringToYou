@@ -24,8 +24,14 @@ const ManipulateItemModal = (props) => {
     let values = {};
     for (let x = 0; x < inputs.length; x++) {
       let input = inputs[x];
-
-      values[input.id] = input.value;
+      switch(input.type) {
+        case 'file':
+          values[input.id] = input.files[0];
+          break;      
+        default:
+          values[input.id] = input.value;
+          break;
+      }
     }
 
     return values;
@@ -91,12 +97,22 @@ const ManipulateItemModal = (props) => {
                         defaultValue={field.defaultValue} 
                       />
                     );
-                  case 'file':
+                  case 'password':
                     return (
                       <AdminFormControl id={field.id} 
                         className={props.query?.id}
-                        type='file' 
+                        type='password' 
                       />
+                    );
+                  case 'file':
+                    return (
+                      <div className='d-flex flex-column'>
+                        {(field.preview !== null && field.preview !== undefined) ? <a href={field.preview} target="_blank">Old file</a> : null}
+                        <AdminFormControl id={field.id} 
+                          className={props.query?.id}
+                          type='file' 
+                        />
+                      </div>
                     );
                   case 'image-list':
                     return (

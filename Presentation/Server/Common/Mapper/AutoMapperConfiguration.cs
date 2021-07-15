@@ -16,21 +16,35 @@ namespace Server.Common.Mapper
                 return new MapperConfiguration(config =>
                 {
                     #region Accounts
+                    config.CreateMap<DomainModel.Entities.AccountBase, Models.Response.AccountSummary>();
+
                     config.CreateMap<DomainModel.Entities.AccountBase, Models.Response.AccountDetailed>();
 
                     config.CreateMap<Models.Request.UpdateAccountBody, DomainModel.Entities.AccountBase>();
                     #endregion
 
                     #region Admin
-                    config.CreateMap<DomainModel.Entities.AdminAccount, Models.Response.AdminAccountSummary>();
+                    config.CreateMap<DomainModel.Entities.AdminAccount, Models.Response.AdminAccountSummary>()
+                        .ForMember(
+                            destination => destination.PermissionPresetName,
+                            options => options.MapFrom(source => source.Permissions.Name ?? null));
 
-                    config.CreateMap<DomainModel.Entities.AdminPermissionPreset, Models.Response.PermissionPreset>();
+                    config.CreateMap<DomainModel.Entities.AdminPermissionPreset, Models.Response.PermissionPreset>()
+                        .ForMember(
+                            destination => destination.CanBackupData,
+                            options => options.MapFrom(source => source.CanManageBackups));
 
-                    config.CreateMap<Models.Request.UpdateAdminPermissionsBody, DomainModel.Entities.AdminPermissionPreset>();
+                    config.CreateMap<Models.Request.UpdatePermissionPresetBody, DomainModel.Entities.AdminPermissionPreset>()
+                        .ForMember(
+                            destination => destination.CanManageBackups,
+                            options => options.MapFrom(source => source.CanBackupData));
                     #endregion
 
                     #region Auth
-                    config.CreateMap<DomainModel.Entities.AccountBase, Models.Response.UserIdentity>();
+                    config.CreateMap<DomainModel.Entities.AccountBase, Models.Response.UserIdentity>()
+                        .ForMember(
+                            destination => destination.AccountId,
+                            options => options.MapFrom(source => source.Id));
 
                     config.CreateMap<DomainModel.Structs.PasswordAuthenticationResult, Models.Response.PasswordAuthenticationResult>();
 
@@ -64,13 +78,20 @@ namespace Server.Common.Mapper
                     #endregion
 
                     #region Merchant
-                    config.CreateMap<DomainModel.Entities.MerchantAccount, Models.Response.MerchantAccountSummary>();
-
-                    config.CreateMap<DomainModel.Entities.Shop, Models.Response.ShopSummary>();
+                    config.CreateMap<DomainModel.Entities.MerchantAccount, Models.Response.MerchantAccountSummary>()
+                        .ForMember(
+                            destination => destination.Verified,
+                            options => options.MapFrom(source => source.VerificationRequest.Accepted));
 
                     config.CreateMap<DomainModel.Entities.MerchantVerificationRequest, Models.Response.MerchantVerificationRequestSummary>();
 
-                    config.CreateMap<DomainModel.Entities.MerchantVerificationRequest, Models.Response.MerchantVerificationRequestDetailed>();
+                    config.CreateMap<DomainModel.Entities.MerchantVerificationRequest, Models.Response.MerchantVerificationRequestDetailed>()
+                        .ForMember(
+                            destination => destination.VerificationPhotoFilenames,
+                            options => options.MapFrom(source => source.VerificationPhotos));
+
+                    config.CreateMap<DomainModel.ValueObjects.MerchantVerificationPhoto, string>()
+                        .ConvertUsing(source => source.Filename);
                     #endregion
 
                     #region OnlineShopPlatforms
@@ -118,7 +139,10 @@ namespace Server.Common.Mapper
 
                     config.CreateMap<Models.Request.CreateShopBody, DomainModel.Entities.Shop>();
 
-                    config.CreateMap<DomainModel.Entities.Shop, Models.Response.ShopSummary>();
+                    config.CreateMap<DomainModel.Entities.Shop, Models.Response.ShopSummary>()
+                        .ForMember(
+                            destination => destination.ShopCategoryName,
+                            options => options.MapFrom(source => source.Category.Name));
 
                     config.CreateMap<DomainModel.Entities.Shop, Models.Response.ShopDetailed>();
 

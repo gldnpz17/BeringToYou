@@ -13,6 +13,6 @@ namespace Server.Models.Request
         public int Floor { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public string CategoryName { get; set; }
+        public Guid CategoryId { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using EFCoreDatabase;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Server.Common;
+using Server.Common.Auth;
 using Server.Models.Response;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace Server.Controllers.Auth
         }
 
         [HttpGet("exists")]
-        [Authorize]
+        [Authorize(PolicyNameConstants.AuthenticatedUsers)]
         public async Task<bool> CheckBackupCodeExistence()
         {
             var account = await GetLoggedInAccount();
@@ -42,7 +43,7 @@ namespace Server.Controllers.Auth
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(PolicyNameConstants.AuthenticatedUsers)]
         public async Task<BackupCodesList> GenerateBackupCodes(
             [FromServices] IPasswordHasher passwordHasher,
             [FromServices] IAlphanumericRng alphanumericRng,
@@ -64,7 +65,7 @@ namespace Server.Controllers.Auth
         }
 
         [HttpDelete]
-        [Authorize]
+        [Authorize(PolicyNameConstants.AuthenticatedUsers)]
         public async Task<IActionResult> DeleteBackupCodes()
         {
             var account = await GetLoggedInAccount();

@@ -3,6 +3,9 @@ import styled from "styled-components";
 import BeringharjoLogo from '../svg/beringharjo-logo';
 import IconButton from "./icon-button";
 import WebIcon from '../svg/web-icon';
+import { useContext } from "react";
+import { IdentityContext } from "../app";
+import logout from '../use-cases/admin/auth/logout';
 
 const StyledNavbar = styled.div`
   background-color: ${props => props.theme.whitespace};
@@ -40,12 +43,20 @@ const Logo = styled(BeringharjoLogo)`
 `;
 
 const AdminNavigationBar = (props) => {
+  const identityContext = useContext(IdentityContext);
+
+  const handleLogout = async () => {
+    await logout();
+
+    await identityContext.refreshIdentity();
+  };
+
   return (
     <StyledNavbar {...props} className='fixed-top w-100 d-flex flex-row align-items-center'>
       <Logo />
       <h1 className='mb-0 ml-1'><b>Beringharjo</b>Admin</h1>
       <div className='flex-grow-1'></div>
-      <a onClick={() => {}}>Log Out</a>
+      {identityContext.identity?.isAuthenticated ? <a onClick={handleLogout}>Log Out</a> : null}
     </StyledNavbar>
   );
 };

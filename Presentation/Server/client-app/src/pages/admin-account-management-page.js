@@ -28,6 +28,13 @@ import VerifyMerchantModal from "../modals/verify-merchant-modal";
 import EditPermissionPresetModal from "../modals/edit-permission-preset-modal";
 import ManipulateItemModal from "../modals/manipulate-item-modal";
 import fetchAdminAccountPermissions from "../use-cases/admin/account-management/fetch-admin-account-permissions";
+import createAdminAccount from "../use-cases/admin/account-management/create-admin-account";
+import deleteAccount from '../use-cases/admin/account-management/delete-account';
+import updateAdminAccountPermissions from "../use-cases/admin/account-management/update-admin-account";
+import createPermissionPreset from "../use-cases/admin/account-management/create-permission-preset";
+import deletePermissionPreset from "../use-cases/admin/account-management/delete-permission-preset";
+import fetchMerchantVerificationDetails from "../use-cases/admin/fetch-merchant-verification-details";
+import FailSafeImg from "../components/fail-safe-img";
 
 const AdminAccountManagementPage = () => {
   const [adminAccounts, setAdminAccounts] = useState([]);
@@ -35,7 +42,7 @@ const AdminAccountManagementPage = () => {
   const [merchantAccounts, setMerchantAccounts] = useState([]);
 
   const [verifyMerchantModalShow, setVerifyMerchantModalShow] = useState(false);
-  const [merchantToVerify, setMerchantToVerify] = useState(null);
+  const [requestToverify, setRequestToVerify] = useState(null);
 
   const [editPermissionPresetModalShow, setEditPermissionPresetModalShow] = useState(false);
   const [permissionPresetToEdit, setPermissionPresetToEdit] = useState(null);
@@ -43,21 +50,19 @@ const AdminAccountManagementPage = () => {
   const [query, setQuery] = useState(null);
 
   useEffect(() => {
-    getAllAdminAccounts();
-    getAllPermissionPresets();
-    getAllMerchantAccounts();
-  }, [])
+    getAllData();
+  }, []);
 
-  const getAllAdminAccounts = async () => {
-    let result = await fetchAllAdminAccounts();
+  useEffect(() => {
+    if (editPermissionPresetModalShow === false) {
+      getAllData();
+    }
+  }, [editPermissionPresetModalShow]);
 
-    setAdminAccounts(result);
-  };
-
-  const getAllPermissionPresets = async () => {
-    let result = await FetchAllPermissionPresets();
-
-    setPermissionPresets(result);
+  const getAllData = async () => {
+    setAdminAccounts(await fetchAllAdminAccounts());
+    setPermissionPresets(await FetchAllPermissionPresets());
+    setMerchantAccounts(await fetchAllMerchantAccounts());
   };
 
   const listPermissions = (preset) => {
@@ -96,24 +101,23 @@ const AdminAccountManagementPage = () => {
     return listString;
   };
 
-  const getAllMerchantAccounts = async () => {
-    let result = await fetchAllMerchantAccounts();
-
-    setMerchantAccounts(result);
-  };
-
   const handleCreateAdminAccount = () => {
     setQuery({
       id: 'create-admin-account',
       title: 'Buat Akun Admin',
       fields: [
         {
+          id: 'username',
+          label: 'Username',
+          type: 'text'
+        },
+        {
           id: 'email',
           label: 'Email',
           type: 'text'
         },
         {
-          id: 'name',
+          id: 'displayName',
           label: 'Nama',
           type: 'text'
         },
@@ -125,8 +129,15 @@ const AdminAccountManagementPage = () => {
       ],
       submit: {
         label: 'Buat',
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await createAdminAccount(
+            values.username,
+            values.email,
+            values.displayName,
+            values.password
+          );
+
+          getAllData();
         }
       }
     })
@@ -168,8 +179,10 @@ const AdminAccountManagementPage = () => {
       ],
       submit: {
         label: 'Simpan',
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await updateAdminAccountPermissions(values.id, values.preset);
+
+          await getAllData();
         }
       }
     });
@@ -205,8 +218,10 @@ const AdminAccountManagementPage = () => {
       submit: {
         label: 'Hapus',
         danger: true,
-        callback: () => {
-          alert(`deleted item ${account.id}`);
+        callback: async (values) => {
+          await deleteAccount(values.id);
+
+          await getAllData();
         }
       }
     });
@@ -225,17 +240,23 @@ const AdminAccountManagementPage = () => {
       ],
       submit: {
         label: 'Buat',
-        callback: (values) => {
-          console.log(values);
+        callback: async (values) => {
+          await createPermissionPreset(values.name);
+
+          await getAllData();
         }
       }
     })
   };
 
-  const handleVerifyMerchant = (merchantAccount) => {
-    setMerchantToVerify(merchantAccount);
+  const handleVerifyMerchant = async (merchantAccount) => {
+    setRequestToVerify(await fetchMerchantVerificationDetails(merchantAccount.id));
 
     setVerifyMerchantModalShow(true);
+  };
+
+  const merchantVerificationCallback = async () => {
+    await getAllData();
   };
 
   const handleEditPermissionPreset = (permissionPreset) => {
@@ -260,8 +281,10 @@ const AdminAccountManagementPage = () => {
       submit: {
         label: 'Hapus',
         danger: true,
-        callback: (values) => {
-          alert(`deleted item ${values.name}`);
+        callback: async (values) => {
+          await deletePermissionPreset(values.name);
+
+          await getAllData();
         }
       }
     });
@@ -270,8 +293,9 @@ const AdminAccountManagementPage = () => {
   return (
     <AdminPageContainer>
       <VerifyMerchantModal 
+        callback={merchantVerificationCallback}
         show={verifyMerchantModalShow}
-        merchant={merchantToVerify}
+        verificationRequest={requestToverify}
         setShow={setVerifyMerchantModalShow} 
       />
       <EditPermissionPresetModal 
@@ -322,7 +346,10 @@ const AdminAccountManagementPage = () => {
                     return (
                       <tr>
                         <AccountIdentityTableCell>
-                          <img className='profile-picture' src='/dummy-images/profile-picture.png' />
+                          <FailSafeImg className='profile-picture'
+                            src={`/api/accounts/${account.id}/profile-picture`}
+                            altsrc='/admin-assets/no-profile-picture.png'
+                          />
                           <div>
                             <p>{account.displayName}</p>
                             <p className='account-id'>{account.id}</p>
@@ -407,7 +434,10 @@ const AdminAccountManagementPage = () => {
                     return (
                       <tr>
                         <AccountIdentityTableCell>
-                          <img className='profile-picture' src='/dummy-images/profile-picture.png' />
+                          <FailSafeImg className='profile-picture'
+                            src={`/api/accounts/${account.id}/profile-picture`}
+                            altsrc='/admin-assets/no-profile-picture.png'
+                          />
                           <div>
                             <div className='d-flex flex-row align-items-center'>
                               <p className='mr-1'>{account.displayName}</p>
@@ -417,7 +447,23 @@ const AdminAccountManagementPage = () => {
                           </div>
                         </AccountIdentityTableCell>
                         <td>
-                          Lorem ipsum, Dolor, Sit Amet
+                          {(() => {
+                            if (account.ownedShops.length === 0) {
+                              return "Pedagang tidak memiliki toko."
+                            }
+
+                            let shopList = "";
+
+                            account.ownedShops.forEach((shop, index) => {
+                              shopList += shop.name;
+
+                              if ((index + 1) < account.ownedShops.length) {
+                                shopList += ", ";
+                              }
+                            })
+
+                            return shopList;
+                          })()}
                         </td>
                         <td>
                           {account.verified ? 'Sudah diverifikasi' : 'Belum diverifikasi'}
@@ -427,7 +473,7 @@ const AdminAccountManagementPage = () => {
                             {
                               (account.verified === false) ? 
                                 <IconButton className='p-1 mr-2' iconOnly
-                                  onClick={() => handleVerifyMerchant()}
+                                  onClick={() => handleVerifyMerchant(account)}
                                 >
                                   <VerifiedIcon />
                                 </IconButton>

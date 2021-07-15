@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.Auth
 {
-    [Route("/api/auth/reset-password")]
+    [Route("api/auth/reset-password")]
     public class ResetPasswordController : ApiControllerBase
     {
         private readonly IDateTimeService _dateTimeService;

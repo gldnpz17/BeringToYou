@@ -73,39 +73,54 @@ namespace Server
             // Register controllers.
             services.AddControllers();
 
+            // Register authentication.
+            services.AddAuthentication(config =>
+            {
+                config.DefaultScheme = "CookieBearer";
+            }).AddScheme<CookieBearerTokenAuthenticationSchemeOptions, ValidateCookieBearerTokenAuthenticationHandler>("CookieBearer", options => { });
+
             // Register authorization.
             services.AddAuthorization(config =>
             {
+                config.AddPolicy(
+                    PolicyNameConstants.AuthenticatedUsers,
+                    policy => policy.RequireClaim("AccountId"));
+
                 config.AddPolicy(
                     PolicyNameConstants.AccountOwner,
                     policy => policy.Requirements.Add(new AccountOwnerRequirement()));
 
                 config.AddPolicy(
+                    PolicyNameConstants.ShopOwner,
+                    policy => policy.Requirements.Add(new ShopOwnerRequirement()));
+
+                config.AddPolicy(
                     PolicyNameConstants.AdminsOnly,
-                    policy => policy.RequireClaim("IsAdmin", new string[] { "true" }));
+                    policy => policy.RequireClaim("IsAdmin", new string[] { true.ToString() }));
 
                 config.AddPolicy(
                     PolicyNameConstants.Admin.CanManageAccounts,
-                    policy => policy.RequireClaim("CanManageAccounts", new string[] { "true" }));
+                    policy => policy.RequireClaim("CanManageAccounts", new string[] { true.ToString() }));
 
                 config.AddPolicy(
                     PolicyNameConstants.Admin.CanManagePermissions,
-                    policy => policy.RequireClaim("CanManagePermissions", new string[] { "true" }));
+                    policy => policy.RequireClaim("CanManagePermissions", new string[] { true.ToString() }));
 
                 config.AddPolicy(
                     PolicyNameConstants.Admin.CanManageMap,
-                    policy => policy.RequireClaim("CanManageMap", new string[] { "true" }));
+                    policy => policy.RequireClaim("CanManageMap", new string[] { true.ToString() }));
 
                 config.AddPolicy(
                     PolicyNameConstants.Admin.CanManageShops,
-                    policy => policy.RequireClaim("CanManageShops", new string[] { "true" }));
+                    policy => policy.RequireClaim("CanManageShops", new string[] { true.ToString() }));
                 
                 config.AddPolicy(
                     PolicyNameConstants.Admin.CanManageBackups,
-                    policy => policy.RequireClaim("CanManageBackups", new string[] { "true" }));
+                    policy => policy.RequireClaim("CanManageBackups", new string[] { true.ToString() }));
             });
             services.AddSingleton<IAuthorizationHandler, AccountOwnerAuthorizationHandler>();
-
+            services.AddSingleton<IAuthorizationHandler, ShopOwnerAuthorizationHandler>();
+                
             // Register configuration.
             if (_environment.IsDevelopment())
             {
@@ -117,6 +132,28 @@ namespace Server
             if (_environment.IsDevelopment())
             {
                 var database = new InMemoryAppDbContext("TestDatabase");
+                    
+                database.PermissionPresets.Add(new AdminPermissionPreset()
+                {
+                    Name = "Default",
+                    CanManageAccounts = false,
+                    CanManageBackups = false,
+                    CanManagePermissions = false,
+                    CanManageShops = false,
+                    CanManageMap = false
+                });
+
+                database.PermissionPresets.Add(new AdminPermissionPreset()
+                {
+                    Name = "SuperAdmin",
+                    CanManageAccounts = true,
+                    CanManageBackups = true,
+                    CanManagePermissions = true,
+                    CanManageShops = true,
+                    CanManageMap = true
+                });
+
+                database.SaveChanges();
 
                 var permission = database.PermissionPresets.FirstOrDefault(permission => permission.Name == "SuperAdmin");
 
@@ -138,6 +175,10 @@ namespace Server
                 {
                     return new InMemoryAppDbContext("TestDatabase");
                 });
+            }
+            if (_environment.IsProduction())
+            {
+
             }
 
             // Register domain model services.
@@ -180,6 +221,10 @@ namespace Server
                 app.UseOpenApi();
                 app.UseSwaggerUi3();
             }
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseApplicationExceptionHandler();
 

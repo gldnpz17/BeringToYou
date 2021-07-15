@@ -62,5 +62,18 @@ namespace Server.Controllers.Merchant.Accounts
 
             return mapper.Map<List<MerchantAccount>, List<MerchantAccountSummary>>(accounts);
         }
+
+        [HttpGet("{accountId}")]
+        [Authorize(PolicyNameConstants.AuthenticatedUsers)]
+        public async Task<MerchantAccountDetailed> GetMerchantAccountDetails(
+            [FromRoute] Guid accountId,
+            [FromServices] IMapper mapper)
+        {
+            await AuthorizeAccountOwner(accountId, "CanManageAccounts");
+
+            var account = await _database.MerchantAccounts.FirstOrDefaultAsync(account => account.Id == accountId);
+
+            return mapper.Map<MerchantAccountDetailed>(account);
+        }
     }
 }

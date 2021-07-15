@@ -26,6 +26,6 @@ namespace Server.Services
         /// Creates a new uniquely-named file in the directory.
         /// </summary>
         /// <returns>The path of the new file.</returns>
-        public Task<string> CreateNewFile(string directory, string extension);
+        public Task<string> GenerateNewFilename(string directory, string extension);
     }
 }

@@ -11,6 +11,7 @@ namespace Server.Common.Auth
         public const string AccountOwner = "AccountOwnerPolicy";
         public const string ShopOwner = "ShopOwnerPolicy";
         public const string AdminsOnly = "AdminsOnlyPolicy";
+        public const string AuthenticatedUsers = "AuthenticatedUsersOnlyPolicy";
 
         public static class Admin
         {

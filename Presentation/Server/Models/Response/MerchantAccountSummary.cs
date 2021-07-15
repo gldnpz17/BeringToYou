@@ -12,6 +12,7 @@ namespace Server.Models.Response
         public string Email { get; set; }
         public string DisplayName { get; set; }
         public string ProfilePictureFilename { get; set; }
+        public List<ShopSummary> OwnedShops { get; set; }
         public bool Verified { get; set; }
     }
 }

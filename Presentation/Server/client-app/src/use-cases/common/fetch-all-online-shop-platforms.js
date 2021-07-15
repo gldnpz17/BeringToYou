@@ -1,20 +1,11 @@
 import delay from "../../helpers/delay"
 
 const fetchAllOnlineShopPlatforms = async () => {
-  await delay(100);
+  let response = await fetch('/api/online-shop-platforms', {
+    method: 'GET'
+  });
 
-  return ([
-    {
-      id: 'T0k0p3d1A',
-      name: 'Tokopedia',
-      iconFilename: 'icon1.png'
-    },
-    {
-      id: 'Amaz0N',
-      name: 'Amazon',
-      iconFilename: 'icon1.png'
-    }
-  ])
+  return (await response.json());
 };
 
 export default fetchAllOnlineShopPlatforms;

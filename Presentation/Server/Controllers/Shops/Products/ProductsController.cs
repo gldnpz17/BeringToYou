@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.Shops.Products
 {
-    [Route("shops/{shopId}/products/")]
+    [Route("api/shops/{shopId}/products/")]
     [ApiController]
     public class ProductsController : ApiControllerBase
     {
@@ -29,7 +29,6 @@ namespace Server.Controllers.Shops.Products
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> CreateProduct(
             [FromRoute]Guid shopId,
             [FromBody]CreateProductBody body,
@@ -66,7 +65,6 @@ namespace Server.Controllers.Shops.Products
         }
 
         [HttpPut("{productId}")]
-        [Authorize]
         public async Task<IActionResult> UpdateProduct(
             [FromRoute]Guid shopId,
             [FromRoute]Guid productId,
@@ -86,7 +84,6 @@ namespace Server.Controllers.Shops.Products
         }
 
         [HttpDelete("{productId}")]
-        [Authorize]
         public async Task<IActionResult> DeleteProduct(
             [FromRoute]Guid shopId,
             [FromRoute]Guid productId)
@@ -104,7 +101,6 @@ namespace Server.Controllers.Shops.Products
         }
 
         [HttpPut("{productId}/main-image")]
-        [Authorize]
         public async Task<IActionResult> UpdateMainImage(
             [FromRoute]Guid shopId,
             [FromRoute]Guid productId,

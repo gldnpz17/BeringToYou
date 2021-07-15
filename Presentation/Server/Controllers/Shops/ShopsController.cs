@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.Shops
 {
-    [Route("shops")]
+    [Route("api/shops")]
     [ApiController]
     public class ShopsController : ApiControllerBase
     {
@@ -37,7 +37,7 @@ namespace Server.Controllers.Shops
         {
             var newShop = mapper.Map<Shop>(body);
 
-            var category = await _database.ShopCategories.FirstOrDefaultAsync(category => category.Name == body.CategoryName);
+            var category = await _database.ShopCategories.FirstOrDefaultAsync(category => category.Id == body.CategoryId);
 
             if (category == null)
             {
@@ -67,11 +67,13 @@ namespace Server.Controllers.Shops
             [FromServices]IMapper mapper)
         {
             var shops = await paginationService.PaginateAsync(
-                _database.Shops.Where(shop => shop.Name.Contains(name) && shop.Category.Name == category),
+                _database.Shops.Where(
+                    shop => shop.Name.Contains(name ?? "") && 
+                    (category != null ? shop.Category.Name == category : true)),
                 start,
                 count);
 
-            return mapper.Map<IList<Shop>, List <ShopSummary>>(shops);
+            return mapper.Map<IList<Shop>, List<ShopSummary>>(shops);
         }
 
         [HttpGet("{shopId}")]
@@ -86,7 +88,6 @@ namespace Server.Controllers.Shops
         }
 
         [HttpPut("{shopId}")]
-        [Authorize]
         public async Task<IActionResult> UpdateShop(
             [FromRoute]Guid shopId,
             [FromBody]UpdateShopBody body,
@@ -98,7 +99,7 @@ namespace Server.Controllers.Shops
 
             mapper.Map(body, shop);
 
-            var category = await _database.ShopCategories.FirstOrDefaultAsync(category => category.Name == body.CategoryName);
+            var category = await _database.ShopCategories.FirstOrDefaultAsync(category => category.Id == body.CategoryId);
 
             if (category == null)
             {
@@ -115,8 +116,7 @@ namespace Server.Controllers.Shops
             return Ok();
         }
 
-        [HttpDelete("shopId")]
-        [Authorize]
+        [HttpDelete("{shopId}")]
         public async Task<IActionResult> DeleteShop([FromRoute]Guid shopId)
         {
             var shop = await _database.Shops.FirstOrDefaultAsync(shop => shop.Id == shopId);

@@ -12,9 +12,10 @@ namespace Server.Common.Auth.AuthorizationHandlers
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AccountOwnerRequirement requirement, (Guid accountId, string adminPermission) resource)
         {
             var loggedInAccountId = Guid.Parse(context.User.FindFirst("AccountId").Value);
-            var accountHasCorrectPermissions = context.User.FindFirst(resource.adminPermission).Value == true.ToString();
 
-            if (loggedInAccountId == resource.accountId && accountHasCorrectPermissions)
+            var isAuthorizedAdmin = context.User.FindFirst(resource.adminPermission)?.Value == true.ToString();
+
+            if (loggedInAccountId == resource.accountId || isAuthorizedAdmin)
             {
                 context.Succeed(requirement);
             }

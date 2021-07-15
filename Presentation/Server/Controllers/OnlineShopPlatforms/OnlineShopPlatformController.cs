@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.OnlineShopPlatforms
 {
-    [Route("online-shop-platforms")]
+    [Route("api/online-shop-platforms")]
     [ApiController]
     public class OnlineShopPlatformController : ApiControllerBase
     {

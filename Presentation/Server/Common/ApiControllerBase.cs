@@ -25,7 +25,7 @@ namespace Server.Common
 
         private protected async Task<AccountBase> GetLoggedInAccount()
         {
-            var accountId = Guid.Parse(HttpContext.User.FindFirst("UserId").Value);
+            var accountId = Guid.Parse(HttpContext.User.FindFirst("AccountId").Value);
 
             var account = await _database.Accounts.FirstOrDefaultAsync(account => account.Id == accountId);
 

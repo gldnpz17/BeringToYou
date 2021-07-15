@@ -10,8 +10,11 @@ import CustomButton from "../components/custom-button";
 import MoreIcon from '../svg/more-icon';
 import GpsCrosshairIcon from '../svg/gps-crosshair-icon';
 import L from 'leaflet';
+import '../lib/L.KML';
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
+import fetchAllShops from "../use-cases/common/fetch-all-shops";
+import FailSafeImg from '../components/fail-safe-img';
 
 const StyledMap = styled.div`
     #zoom-control {
@@ -156,8 +159,16 @@ const MapContainer = styled.div`
   }
 `;
 
-const MarketMap = (props) => {
+const MarketMap = ({
+  shops, 
+  pointsOfInterest, 
+  floors, 
+  overlays, 
+  onShopMarkerClick, 
+  onPointOfInterestMarkerClick, ...props}) => {
   const [map, setMap] = useState(null);
+  const [currentFloor, setCurrentFloor] = useState(1);
+  const [markers, setMarkers] = useState([]);
 
   useEffect(() => {
     // Initialize map.
@@ -185,19 +196,6 @@ const MarketMap = (props) => {
       currentMap.on('click', () => {
         if (props.onMapClick !== null && props.onMapClick !== undefined) {
           props.onMapClick();
-        }
-      });
-      
-      L.marker([-7.7987943, 110.3652543], {
-        icon: new MapShopIcon(
-          'shop-map-marker', 
-          'shop-map-label', 
-          <SilverwareIcon className='shop-map-icon' />, 
-          'Warung Lorem Ipsum'),
-          bubblingMouseEvents: false
-      }).addTo(currentMap).on('click', (event) => {
-        if (props.onMarkerClick !== null && props.onMarkerClick !== undefined) {
-          props.onMarkerClick(event);
         }
       });
       
@@ -258,6 +256,77 @@ const MarketMap = (props) => {
 
     map.invalidateSize();
   };
+
+  useEffect(() => {
+    renderMarkers();
+    renderFloors();
+  }, [shops, pointsOfInterest, overlays, floors]);
+
+  const renderMarkers = () => {
+    // Remove old markers.
+    markers.forEach(marker => {
+      map.removeLayer(marker);
+    });
+
+    // Add new markers.
+    let newMarkers = [];
+
+    shops?.forEach(shop => {
+      if (shop.floor === currentFloor) {
+        newMarkers.push(L.marker([shop.latitude, shop.longitude], {
+          icon: new MapShopIcon(
+            'shop-map-marker', 
+            'shop-map-label', 
+            <FailSafeImg 
+              src={`/api/public/assets/${shop.category.iconFilename}`}
+              altsrc='/map-assets/missing-marker-icon.svg'
+              className='shop-map-icon' 
+            />, 
+            shop.name),
+            bubblingMouseEvents: false
+        }).addTo(map).on('click', (event) => {
+          if (props.onMarkerClick !== null && onShopMarkerClick !== undefined) {
+            event.shopId = shop.id;
+            onShopMarkerClick(event);
+          }
+        }));
+      }
+    });
+
+    pointsOfInterest.forEach(pointOfInterest => {
+      if (pointOfInterest.floorNumber == currentFloor) {
+        newMarkers.push(L.marker([pointOfInterest.latitude, pointOfInterest.longitude], {
+          icon: new MapShopIcon(
+            'shop-map-marker', 
+            'shop-map-label', 
+            <SilverwareIcon className='shop-map-icon' />, 
+            pointOfInterest.category.name),
+            bubblingMouseEvents: false
+        }).addTo(map).on('click', (event) => {
+          if (props.onMarkerClick !== null && onPointOfInterestMarkerClick !== undefined) {
+            event.pointOfInterestId = pointOfInterest.id;
+            onPointOfInterestMarkerClick(event);
+          }
+        }));
+      }
+    });
+
+    setMarkers(newMarkers);
+  };
+
+  const renderFloors = () => {
+    if (map !== null) {
+      fetch('/kml/pb.kml')
+        .then(res => res.text())
+        .then(kmltext => {
+            const parser = new DOMParser();
+            const kml = parser.parseFromString(kmltext, 'text/xml');
+            const track = new L.KML(kml);
+            map.addLayer(track);
+        }
+      );
+    }
+  }
 
   return (
     <StyledMap {...props}>

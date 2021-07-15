@@ -8,8 +8,10 @@ import AdminMapPage from '../pages/admin-map-page';
 import AdminShopPage from '../pages/admin-shop-page';
 import AdminMiscPage from '../pages/admin-misc-page';
 import { useContext, useEffect, useState } from "react";
-import checkAuthStatus from "../use-cases/check-auth-status";
+import checkAuthStatus from "../use-cases/check-identity";
 import LoginPage from '../pages/login-page';
+import React from "react";
+import { IdentityContext } from "../app";
 
 const AdminPageContainer = styled.div`
   background-color: ${props => props.theme.whitespace};
@@ -30,21 +32,16 @@ const ContentContainer = styled.div`
 const AdminRoute = () => {
   let { path, url } = useRouteMatch();
   let { page } = useParams();
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
+
+  const identityContext = useContext(IdentityContext);
 
   useEffect(() => {
-    checkAuth();
-  }, []);
 
-  const checkAuth = async () => {
-    let authStatus = await checkAuthStatus();
+  }, [identityContext.identity?.isAuthenticated])
 
-    setIsAuthenticated(authStatus);
-  };
-
-  if (isAuthenticated === null) {
+  if (identityContext.identity === null) {
     return null;
-  } else if (isAuthenticated) {
+  } else if (identityContext.identity.isAuthenticated) {
     return (
       <AdminPageContainer className='d-flex flex-row'>
         <AdminSidebar page={page} />
@@ -70,7 +67,7 @@ const AdminRoute = () => {
         </Switch>
       </AdminPageContainer>
     );
-  } else if (!isAuthenticated) {
+  } else if (!identityContext.identity.isAuthenticated) {
     return (
       <AdminPageContainer>
         <LoginPage />

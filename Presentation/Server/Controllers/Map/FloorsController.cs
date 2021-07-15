@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Server.Common;
 using Server.Common.Auth;
 using Server.Common.Configuration;
+using Server.Common.Exceptions;
 using Server.Models.Request;
 using Server.Models.Response;
 using Server.Services;
@@ -19,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.Map
 {
-    [Route("map/floors")]
+    [Route("api/map/floors")]
     [ApiController]
     public class FloorsController : ApiControllerBase
     {
@@ -34,6 +35,13 @@ namespace Server.Controllers.Map
             [FromBody]CreateMapFloorBody body,
             [FromServices]IMapper mapper)
         {
+            var existingFloor = await _database.MapFloors.FirstOrDefaultAsync(floor => floor.FloorNumber == body.FloorNumber);
+
+            if (existingFloor != null)
+            {
+                throw new AppException(AppExceptionCode.CONFLICTING_FLOOR_NUMBER, "Floor number must be unique.");
+            }
+
             var newFloor = mapper.Map<MapFloor>(body);
 
             await _database.MapFloors.AddAsync(newFloor);
@@ -54,14 +62,21 @@ namespace Server.Controllers.Map
             return floorSummaries;
         }
 
-        [HttpPut("{floorNumber}")]
+        [HttpPut("{floorId}")]
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
         public async Task<IActionResult> UpdateMapFloor(
-            [FromRoute]int floorNumber, 
+            [FromRoute]Guid floorId, 
             [FromBody]UpdateMapFloorBody body, 
             [FromServices]IMapper mapper)
         {
-            var floor = await _database.MapFloors.FirstOrDefaultAsync(floor => floor.FloorNumber == floorNumber);
+            var existingFloor = await _database.MapFloors.FirstOrDefaultAsync(floor => floor.FloorNumber == body.FloorNumber);
+
+            if (existingFloor != null)
+            {
+                throw new AppException(AppExceptionCode.CONFLICTING_FLOOR_NUMBER, "Floor number must be unique.");
+            }
+
+            var floor = await _database.MapFloors.FirstOrDefaultAsync(floor => floor.Id == floorId);
 
             mapper.Map(body, floor);
 
@@ -70,14 +85,14 @@ namespace Server.Controllers.Map
             return Ok();
         }
 
-        [HttpDelete("{floorNumber}")]
+        [HttpDelete("{floorId}")]
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
         public async Task<IActionResult> DeleteMapFloor(
-            [FromRoute]int floorNumber, 
+            [FromRoute]Guid floorId, 
             [FromServices]IFileSystemService fileSystemService,
             [FromServices]ApplicationConfiguration applicationConfiguration)
         {
-            var floor = await _database.MapFloors.FirstOrDefaultAsync(floor => floor.FloorNumber == floorNumber);
+            var floor = await _database.MapFloors.FirstOrDefaultAsync(floor => floor.Id == floorId);
 
             await fileSystemService.DeleteFileAsync(applicationConfiguration.PublicAssetsDirectory, floor.KmlFilename);
 
@@ -88,15 +103,15 @@ namespace Server.Controllers.Map
             return Ok();
         }
 
-        [HttpPut("{floorNumber}/kml")]
+        [HttpPut("{floorId}/kml")]
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
         public async Task<IActionResult> UpdateKml(
-            [FromRoute]int floorNumber, 
+            [FromRoute]Guid floorId, 
             [FromForm(Name = "kml")]IFormFile kml,
             [FromServices]IFileSystemService fileSystemService,
             [FromServices]ApplicationConfiguration applicationConfiguration)
         {
-            var floor = await _database.MapFloors.FirstAsync(floor => floor.FloorNumber == floorNumber);
+            var floor = await _database.MapFloors.FirstAsync(floor => floor.Id == floorId);
 
             await fileSystemService.DeleteFileAsync(applicationConfiguration.PublicAssetsDirectory, floor.KmlFilename);
 

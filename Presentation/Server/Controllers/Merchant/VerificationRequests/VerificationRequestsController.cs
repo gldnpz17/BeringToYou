@@ -37,11 +37,13 @@ namespace Server.Controllers.Merchant.VerificationRequests
         }
 
         [HttpGet("{accountId}")]
-        [Authorize(PolicyNameConstants.Admin.CanManageAccounts)]
+        [Authorize(PolicyNameConstants.AuthenticatedUsers)]
         public async Task<MerchantVerificationRequestDetailed> GetMerchantVerificationRequestDetailed(
             [FromRoute]Guid accountId,
             [FromServices]IMapper mapper)
         {
+            await AuthorizeAccountOwner(accountId, "CanManageAccounts");
+
             var account = await _database.MerchantAccounts.FirstOrDefaultAsync(account => account.Id == accountId);
 
             var verificationRequest = account.VerificationRequest;
@@ -49,7 +51,7 @@ namespace Server.Controllers.Merchant.VerificationRequests
             return mapper.Map<MerchantVerificationRequestDetailed>(verificationRequest);
         }
 
-        [HttpPost("accept")]
+        [HttpPost("{accountId}/accept")]
         [Authorize(PolicyNameConstants.Admin.CanManageAccounts)]
         public async Task<IActionResult> AcceptMerchantVerificationRequest([FromRoute]Guid accountId)
         {
@@ -62,7 +64,7 @@ namespace Server.Controllers.Merchant.VerificationRequests
             return Ok();
         }
 
-        [HttpPost("reject")]
+        [HttpPost("{accountId}/reject")]
         [Authorize(PolicyNameConstants.Admin.CanManageAccounts)]
         public async Task<IActionResult> RejectMerchantVerificationRequest([FromRoute]Guid accountId)
         {

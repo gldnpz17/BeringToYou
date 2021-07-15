@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace Server.Controllers.Map
 {
-    [Route("map/overlays")]
+    [Route("api/map/overlays")]
     [ApiController]
     public class OverlaysController : ApiControllerBase
     {

@@ -1,4 +1,5 @@
-﻿using DomainModel.ValueObjects;
+﻿using DomainModel.Common;
+using DomainModel.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,8 +22,15 @@ namespace DomainModel.Entities
 
         public void AcceptVerification()
         {
-            Accepted = true;
-            Account.OwnedShops = OwnedShops;
+            if (Accepted == false)
+            {
+                Accepted = true;
+                Account.OwnedShops = OwnedShops;
+            }
+            else
+            {
+                throw new DomainModelException(ExceptionCode.MERCHANT_ALREADY_VERIFIED, "Merchant has already been verified");
+            }
         }
     }
 }
