@@ -98,13 +98,15 @@ const AdminShopPage = () => {
     let bannerImage = document.getElementById('shop-banner-image');
     bannerImage.src = `/api/public/assets/${selectedShop?.bannerImage?.thumbnailFilename}`;
 
-    document.getElementById('shop-profile-name').defaultValue = selectedShop?.name ?? "";
-    document.getElementById('shop-profile-description').defaultValue = selectedShop?.description ?? "";
+    document.getElementById('shop-profile-name').value = selectedShop?.name ?? "";
+    document.getElementById('shop-profile-description').value = selectedShop?.description ?? "";
     
     setOnlineShops(await fetchOnlineShops(shopId));
     setProducts(await fetchShopProducts(shopId));
 
     setBannerImageToUpload(null);
+
+    setCanSubmitProfileEdits(false);
   };
 
   const selectShop = (shopId) => {
