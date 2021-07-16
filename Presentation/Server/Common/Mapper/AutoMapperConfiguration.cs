@@ -127,6 +127,8 @@ namespace Server.Common.Mapper
                     #region Shops
                     config.CreateMap<Models.Request.CreateProductBody, DomainModel.Entities.Product>();
 
+                    config.CreateMap<DomainModel.ValueObjects.ThumbnailedImage, Models.Response.ThumbnailedImageSummary>();
+
                     // NOTE: product fetching-related object mappings already configured above.
 
                     config.CreateMap<Models.Request.UpdateProductBody, DomainModel.Entities.Product>();

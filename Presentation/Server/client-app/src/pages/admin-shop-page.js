@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import React from 'react';
 import AdminPageContainer from "../components/admin-page-container";
 import AdminPageHeader from "../components/admin-page-header";
@@ -38,6 +38,8 @@ import createOnlineShopPlatform from '../use-cases/admin/shop/create-online-shop
 import updateOnlineShopPlatform from '../use-cases/admin/shop/update-online-shop-platform';
 import deleteOnlineShopPlatform from '../use-cases/admin/shop/delete-online-shop-platform';
 import uploadFile from "../use-cases/common/upload-file";
+import FailSafeImg from "../components/fail-safe-img";
+import updateShop from "../use-cases/admin/map/update-shop";
 
 const StoreSelectContainer = styled.div`
   max-width: 28rem;
@@ -54,13 +56,15 @@ const StoreSelectContainer = styled.div`
   }
 `;
 
-const ShopBanner = styled.img`
+const ShopBanner = styled(FailSafeImg)`
   max-height: 15rem;
   max-width: 100%;
 `;
 
 const AdminShopPage = () => {
-  const [shops, setShops] = useState([]);
+  const bannerUploadInput = useRef(null);
+
+  const [shops, setShops] = useState([]); 
   const [selectedShop, setSelectedShop] = useState(null);
 
   const [onlineShops, setOnlineShops] = useState([]);
@@ -71,6 +75,9 @@ const AdminShopPage = () => {
   const [onlineShopPlatforms, setOnlineShopPlatforms] = useState([]);
 
   const [tabActiveKey, setTabActiveKey] = useState('shop-profile');
+
+  const [canSubmitProfileEdits, setCanSubmitProfileEdits] = useState(false);
+  const [bannerImageToUpload, setBannerImageToUpload] = useState(null);
 
   useEffect(() => {
     getAllData();
@@ -84,12 +91,20 @@ const AdminShopPage = () => {
   };
 
   useEffect(() => {
-    getShopData(selectedShop?.id);
+    refreshShopData(selectedShop?.id);
   }, [selectedShop])
 
-  const getShopData = async (shopId) => {
+  const refreshShopData = async (shopId) => {
+    let bannerImage = document.getElementById('shop-banner-image');
+    bannerImage.src = `/api/public/assets/${selectedShop?.bannerImage?.thumbnailFilename}`;
+
+    document.getElementById('shop-profile-name').defaultValue = selectedShop?.name ?? "";
+    document.getElementById('shop-profile-description').defaultValue = selectedShop?.description ?? "";
+    
     setOnlineShops(await fetchOnlineShops(shopId));
     setProducts(await fetchShopProducts(shopId));
+
+    setBannerImageToUpload(null);
   };
 
   const selectShop = (shopId) => {
@@ -99,6 +114,44 @@ const AdminShopPage = () => {
   } 
 
   const [query, setQuery] = useState(null);
+
+  const handleSubmitShopProfileEdits = async () => {
+    let newName = document.getElementById('shop-profile-name').value;
+    let newDescription = document.getElementById('shop-profile-description').value;
+    
+    await updateShop(
+      selectedShop.id,
+      newName,
+      newDescription,
+      selectedShop.floor,
+      selectedShop.latitude,
+      selectedShop.longitude,
+      selectedShop.category.id);
+
+    if (bannerImageToUpload !== null || bannerImageToUpload !== undefined) {
+      await uploadFile(
+        `/api/shops/${selectedShop.id}/banner-image`,
+        'image',
+        bannerImageToUpload,
+        bannerImageToUpload.filename,
+        'PUT'
+      );
+    }
+
+    window.location.reload();
+  };
+
+  const handleSetBannerImage = async () => {
+    let file = bannerUploadInput.current.files[0];
+    setBannerImageToUpload(file);
+
+    let bannerImage = document.getElementById('shop-banner-image');
+    bannerImage.src = URL.createObjectURL(file);
+
+    bannerUploadInput.current.value = null;
+
+    setCanSubmitProfileEdits(true);
+  }
 
   const handleAddOnlineShop = () => {
     setQuery({
@@ -724,20 +777,33 @@ const AdminShopPage = () => {
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Nama Toko</Form.Label>
-                  <AdminFormControl type='text' defaultValue={selectedShop?.name} />
+                  <AdminFormControl id='shop-profile-name'
+                    onChange={() => setCanSubmitProfileEdits(true)}
+                    type='text' 
+                    defaultValue={selectedShop?.name} />
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Deskripsi</Form.Label>
-                  <AdminFormControl as='textarea' rows={5} className='form-control' defaultValue={selectedShop?.description} />
+                  <AdminFormControl id='shop-profile-description' 
+                    onChange={() => setCanSubmitProfileEdits(true)}
+                    as='textarea' rows={5} 
+                    className='form-control' 
+                    defaultValue={selectedShop?.description} />
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Gambar Banner</Form.Label>
                   <div className='d-flex align-items-end flex-wrap'>
-                    <ShopBanner className='mb-2 mr-2' src='/dummy-images/food-stall.jpg' />
-                    <CustomButton className='mb-2'>Unggah gambar baru</CustomButton>
+                    <ShopBanner 
+                      id='shop-banner-image'
+                      className='mb-2 mr-2' 
+                      src={`/api/public/assets/${selectedShop?.bannerImage?.thumbnailFilename}`}
+                      altsrc='/assets/imagenotfound.png' />
+                    <CustomButton className='mb-2' onClick={() => bannerUploadInput.current.click()}>Unggah gambar baru</CustomButton>
                   </div>
                 </Form.Group>
-                <CustomButton disabled>Simpan</CustomButton>
+                <CustomButton disabled={!canSubmitProfileEdits} className='mr-2' onClick={() => handleSubmitShopProfileEdits()}>Simpan</CustomButton>
+                <input type='file' style={{display: 'none'}} ref={bannerUploadInput} onChange={() => handleSetBannerImage()} />
+                <CustomButton disabled={!canSubmitProfileEdits} secondary onClick={() => refreshShopData()}>Batalkan perubahan</CustomButton>
               </Form>
             </AdminFormContainer>
             <AdminFormContainer>

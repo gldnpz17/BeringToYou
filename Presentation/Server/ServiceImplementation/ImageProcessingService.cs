@@ -27,17 +27,33 @@ namespace Server.ServiceImplementation
             using (var originalImage = Image.Load(originalImagePath))
             {
                 var resizedWidth = 0;
-                var resizedHeight = 0;
+                var resizedHeight = 0;  
 
                 // If landscape or square, scale by width.
                 if (originalImage.Width >= originalImage.Height)
                 {
-                    resizedWidth = maxDimension;
+                    if (originalImage.Width >= maxDimension)
+                    {
+                        resizedWidth = maxDimension;
+                    }
+                    else
+                    {
+                        resizedWidth = originalImage.Width;
+                    }
+
                     resizedHeight = originalImage.Height * (resizedWidth / originalImage.Width);
                 }
                 else // If portrait, scale by height.
                 {
-                    resizedHeight = maxDimension;
+                    if (originalImage.Height >= maxDimension)
+                    {
+                        resizedHeight = maxDimension;
+                    }
+                    else
+                    {
+                        resizedHeight = originalImage.Height;
+                    }
+
                     resizedWidth = originalImage.Width * (resizedHeight / originalImage.Height);
                 }
 
