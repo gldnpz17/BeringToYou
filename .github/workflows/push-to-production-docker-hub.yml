@@ -1,0 +1,28 @@
+name: Push to Docker Hub
+
+on:
+  push:
+    branches: [ production ]
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: 'production'
+    
+    - name: Build the Docker image
+      run: docker build -f "./Presentation/Server/Dockerfile" --tag "beringtoyou/beringtoyou-server:latest" .
+    
+    - name: Login to Docker Hub
+      env: 
+        ACCESS_TOKEN: ${{ secrets.PRODUCTION_DOCKER_HUB_ACCESS_TOKEN }}
+      run: docker login --username beringtoyou --password $ACCESS_TOKEN
+    
+    - name: Push to registry
+      run: docker push "beringtoyou/beringtoyou-server:latest"

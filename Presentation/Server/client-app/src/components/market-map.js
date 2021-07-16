@@ -15,6 +15,8 @@ import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import fetchAllShops from "../use-cases/common/fetch-all-shops";
 import FailSafeImg from '../components/fail-safe-img';
+import RadioIconButton from "./radio-icon-button";
+import delay from "../helpers/delay";
 
 const StyledMap = styled.div`
     #zoom-control {
@@ -159,6 +161,18 @@ const MapContainer = styled.div`
   }
 `;
 
+const ExpandableContainer = styled.span`
+
+`;
+
+const ExpandableContents = styled.div`
+  transition-duration: 0.5s;
+
+  &.hidden {
+    opacity: 0%;
+  }
+`;
+
 const MarketMap = ({
   shops, 
   pointsOfInterest, 
@@ -166,24 +180,19 @@ const MarketMap = ({
   overlays, 
   onShopMarkerClick, 
   onPointOfInterestMarkerClick, ...props}) => {
+  
   const [map, setMap] = useState(null);
-  const [currentFloor, setCurrentFloor] = useState(1);
-  const [markers, setMarkers] = useState([]);
+  const [tileLayer, setTileLayer] = useState(null);
+  const [currentFloorNumber, setCurrentFloorNumber] = useState(1);
+  const [floorSelectOpen, setFloorSelectOpen] = useState(false);
 
   useEffect(() => {
     // Initialize map.
-    let tiles = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token='+ props.accessToken, {
-      attribution: '© <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      tileSize: 512,
-      zoomOffset: -1,
-      maxZoom: 30
-    });
-
     if (map === null) {
       let currentMap = L.map('market-map', {
         zoomControl: false,
         attributionControl: false
-      }).addLayer(tiles);
+      });
 
       currentMap.on('load', () => {
         setTimeout(() => {
@@ -258,74 +267,88 @@ const MarketMap = ({
   };
 
   useEffect(() => {
-    renderMarkers();
-    renderFloors();
-  }, [shops, pointsOfInterest, overlays, floors]);
+    renderMap();
+  }, [shops, pointsOfInterest, overlays, floors, currentFloorNumber]);
 
-  const renderMarkers = () => {
-    // Remove old markers.
-    markers.forEach(marker => {
-      map.removeLayer(marker);
-    });
-
-    // Add new markers.
-    let newMarkers = [];
-
-    shops?.forEach(shop => {
-      if (shop.floor === currentFloor) {
-        newMarkers.push(L.marker([shop.latitude, shop.longitude], {
-          icon: new MapShopIcon(
-            'shop-map-marker', 
-            'shop-map-label', 
-            <FailSafeImg 
-              src={`/api/public/assets/${shop.category.iconFilename}`}
-              altsrc='/map-assets/missing-marker-icon.svg'
-              className='shop-map-icon' 
-            />, 
-            shop.name),
-            bubblingMouseEvents: false
-        }).addTo(map).on('click', (event) => {
-          if (props.onMarkerClick !== null && onShopMarkerClick !== undefined) {
-            event.shopId = shop.id;
-            onShopMarkerClick(event);
-          }
-        }));
-      }
-    });
-
-    pointsOfInterest.forEach(pointOfInterest => {
-      if (pointOfInterest.floorNumber == currentFloor) {
-        newMarkers.push(L.marker([pointOfInterest.latitude, pointOfInterest.longitude], {
-          icon: new MapShopIcon(
-            'shop-map-marker', 
-            'shop-map-label', 
-            <SilverwareIcon className='shop-map-icon' />, 
-            pointOfInterest.category.name),
-            bubblingMouseEvents: false
-        }).addTo(map).on('click', (event) => {
-          if (props.onMarkerClick !== null && onPointOfInterestMarkerClick !== undefined) {
-            event.pointOfInterestId = pointOfInterest.id;
-            onPointOfInterestMarkerClick(event);
-          }
-        }));
-      }
-    });
-
-    setMarkers(newMarkers);
-  };
-
-  const renderFloors = () => {
+  const renderMap = async () => {
     if (map !== null) {
-      fetch('/kml/pb.kml')
-        .then(res => res.text())
-        .then(kmltext => {
-            const parser = new DOMParser();
-            const kml = parser.parseFromString(kmltext, 'text/xml');
-            const track = new L.KML(kml);
-            map.addLayer(track);
+      // Remove old layers.
+      map.eachLayer(layer => {
+        if (layer !== tileLayer) {
+          map.removeLayer(layer);
         }
-      );
-    }
+      });
+
+      // Render tiles.
+      if (tileLayer === null) {
+        let tiles = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token='+ props.accessToken, {
+          attribution: '© <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          tileSize: 512,
+          zoomOffset: -1,
+          maxZoom: 30
+        });
+        map.addLayer(tiles);
+
+        setTileLayer(tiles);
+      }
+
+      // Render floor layers.
+      let selectedFloor = floors.find(floor => floor.floorNumber === currentFloorNumber);
+
+      if (selectedFloor) {
+        let response = await fetch(`/api/public/assets/${selectedFloor.kmlFilename}`);
+
+        if (response.status === 200) {
+          let kmlText = await response.text();
+
+          const parser = new DOMParser();
+          const kml = parser.parseFromString(kmlText, 'text/xml');
+          const layerToRender = new L.KML(kml);
+          map.addLayer(layerToRender);
+        }
+      };
+
+      // Render markers.
+      shops?.forEach(shop => {
+        if (shop.floor === currentFloorNumber) {
+          L.marker([shop.latitude, shop.longitude], {
+            icon: new MapShopIcon(
+              'shop-map-marker', 
+              'shop-map-label', 
+              <FailSafeImg 
+                src={`/api/public/assets/${shop.category.iconFilename}`}
+                altsrc='/map-assets/missing-marker-icon.svg'
+                className='shop-map-icon' 
+              />, 
+              shop.name),
+              bubblingMouseEvents: false
+          }).addTo(map).on('click', (event) => {
+            if (props.onMarkerClick !== null && onShopMarkerClick !== undefined) {
+              event.shopId = shop.id;
+              onShopMarkerClick(event);
+            }
+          });
+        }
+      });
+  
+      pointsOfInterest.forEach(pointOfInterest => {
+        if (pointOfInterest.floorNumber == currentFloorNumber) {
+          L.marker([pointOfInterest.latitude, pointOfInterest.longitude], {
+            icon: new MapShopIcon(
+              'shop-map-marker', 
+              'shop-map-label', 
+              <SilverwareIcon className='shop-map-icon' />, 
+              pointOfInterest.category.name),
+              bubblingMouseEvents: false
+          }).addTo(map).on('click', (event) => {
+            if (props.onMarkerClick !== null && onPointOfInterestMarkerClick !== undefined) {
+              event.pointOfInterestId = pointOfInterest.id;
+              onPointOfInterestMarkerClick(event);
+            }
+          });
+        }
+      });
+    };
   }
 
   return (
@@ -352,9 +375,28 @@ const MarketMap = ({
             </svg>
           </CompassNeedle>
         </CompassButton>
-        <CustomButton className='p-1 m-1'>
-          <p>lt.1</p>
-        </CustomButton>
+        <ExpandableContainer className='d-flex flex-row'>
+          <ExpandableContents className={`d-flex flex-row align-items-center ${floorSelectOpen ? '' : 'hidden'}`}>
+            {floors.map(floor => {
+              return (
+                <RadioIconButton 
+                  id={`floor-button-${floor.floorNumber}`} 
+                  selectedId={`floor-button-${currentFloorNumber}`}
+                  iconOnly={true} className='p-1 m-1' 
+                  onClick={() => setCurrentFloorNumber(floor.floorNumber)}>
+                  <p>{floor.floorNumber}</p>
+                </RadioIconButton>
+              ); 
+            })}
+          </ExpandableContents>
+          {(floorSelectOpen)
+            ? <IconButton iconOnly={true} className='p-1 m-1' onClick={() => setFloorSelectOpen(false)}>
+                <CloseIcon style={{height: '1.6rem !important'}} />
+              </IconButton> 
+            : <CustomButton className='p-1 m-1' onClick={() => setFloorSelectOpen(true)}>
+                <p style={{width: '1.6rem', height: '1.6rem'}}>lt.{currentFloorNumber}</p>
+              </CustomButton>}
+        </ExpandableContainer>
         <IconButton iconOnly={true} className='p-1 m-1'>
           <LayersIcon style={{width: '1.6rem', height: '1.6rem'}} />
         </IconButton>
