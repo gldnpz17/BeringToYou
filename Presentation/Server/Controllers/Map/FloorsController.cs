@@ -59,7 +59,7 @@ namespace Server.Controllers.Map
 
             var floorSummaries = mapper.Map<List<MapFloor>, List<MapFloorSummary>>(floors);
 
-            floorSummaries.OrderBy(floor => floor.FloorNumber);
+            floorSummaries = floorSummaries.OrderBy(floor => floor.FloorNumber).ToList();
 
             return floorSummaries;
         }
