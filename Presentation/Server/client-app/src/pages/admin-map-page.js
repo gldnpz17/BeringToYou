@@ -43,6 +43,7 @@ import updatePointOfInterestCategory from '../use-cases/admin/map/update-point-o
 import deletePointOfInterestCategory from '../use-cases/admin/map/delete-point-of-interest-category';
 import updateShopCategory from "../use-cases/admin/shop/update-shop-category";
 import fetchShopDetails from '../use-cases/common/fetch-shop-details';
+import updateMapFloorKml from "../use-cases/admin/map/update-map-floor-kml";
 
 const AdminMapPage = () => {
   const [floors, setFloors] = useState([]);
@@ -124,13 +125,23 @@ const AdminMapPage = () => {
         {
           id: 'kmlFile',
           label: 'File KML',
-          type: 'file'
+          type: 'file',
+          preview: `/api/public/assets/${floor.kmlFilename}`
         }
       ],
       submit: {
         label: 'Simpan',
         callback: async (values) => {
-          await updateFloor(values.id, values.floorNumber);
+          if (values.floorNumber !== floor.floorNumber) {
+            await updateFloor(values.id, values.floorNumber);
+          }
+
+          if (values.kmlFile) {
+            await updateMapFloorKml(
+              values.id, 
+              values.kmlFile.filename, 
+              values.kmlFile);
+          }
 
           await getAllData();
         }
