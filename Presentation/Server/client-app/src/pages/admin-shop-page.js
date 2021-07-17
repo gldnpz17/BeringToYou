@@ -40,6 +40,9 @@ import deleteOnlineShopPlatform from '../use-cases/admin/shop/delete-online-shop
 import uploadFile from "../use-cases/common/upload-file";
 import FailSafeImg from "../components/fail-safe-img";
 import updateShop from "../use-cases/admin/map/update-shop";
+import createOnlineShop from "../use-cases/admin/shop/create-online-shop";
+import editOnlineShop from '../use-cases/admin/shop/edit-online-shop';
+import deleteOnlineShop from '../use-cases/admin/shop/delete-online-shop';
 
 const StoreSelectContainer = styled.div`
   max-width: 28rem;
@@ -100,7 +103,7 @@ const AdminShopPage = () => {
 
     document.getElementById('shop-profile-name').defaultValue = selectedShop?.name ?? "";
     document.getElementById('shop-profile-description').defaultValue = selectedShop?.description ?? "";
-    
+
     setOnlineShops(await fetchOnlineShops(shopId));
     setProducts(await fetchShopProducts(shopId));
 
@@ -185,8 +188,15 @@ const AdminShopPage = () => {
       ],
       submit: {
         label: 'Tambahkan',
-        callback: (values) => {
-          console.log(values)
+        callback: async (values) => {
+          await createOnlineShop(
+            selectedShop.id,
+            values.platform,
+            values.name,
+            values.url
+          );
+
+          await refreshShopData(selectedShop.id);
         }
       }
     });
@@ -233,8 +243,16 @@ const AdminShopPage = () => {
       ],
       submit: {
         label: 'Simpan',
-        callback: (values) => {
-          console.log(values)
+        callback: async (values) => {
+          await editOnlineShop(
+            selectedShop.id,
+            values.id,
+            values.platform,
+            values.name,
+            values.url
+          );
+
+          await refreshShopData(selectedShop.id);
         }
       }
     });
@@ -270,8 +288,13 @@ const AdminShopPage = () => {
       submit: {
         label: 'Hapus',
         danger: true,
-        callback: (values) => {
-          console.log(values)
+        callback: async (values) => {
+          await deleteOnlineShop(
+            selectedShop.id,
+            values.id
+          );
+
+          await refreshShopData(selectedShop.id);
         }
       }
     });
@@ -819,7 +842,7 @@ const AdminShopPage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {onlineShops.map((onlineShop) => {
+                  {onlineShops?.map((onlineShop) => {
                     return (
                       <tr>
                         <ItemWithIdTableCell>
