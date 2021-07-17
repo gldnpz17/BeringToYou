@@ -281,11 +281,11 @@ const MarketMap = ({
 
       // Render tiles.
       if (tileLayer === null) {
-        let tiles = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token='+ props.accessToken, {
+        let tiles = L.tileLayer('https://api.mapbox.com/styles/v1/zpndlg/ckr7oxark0lbn17mtzv4dym5u/tiles/{z}/{x}/{y}?access_token='+ props.accessToken, {
           attribution: '© <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
           tileSize: 512,
           zoomOffset: -1,
-          maxZoom: 30
+          maxZoom: 23
         });
         map.addLayer(tiles);
 
