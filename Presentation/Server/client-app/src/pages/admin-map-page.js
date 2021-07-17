@@ -44,6 +44,7 @@ import deletePointOfInterestCategory from '../use-cases/admin/map/delete-point-o
 import updateShopCategory from "../use-cases/admin/shop/update-shop-category";
 import fetchShopDetails from '../use-cases/common/fetch-shop-details';
 import updateMapFloorKml from "../use-cases/admin/map/update-map-floor-kml";
+import uploadFile from "../use-cases/common/upload-file";
 
 const AdminMapPage = () => {
   const [floors, setFloors] = useState([]);
@@ -726,7 +727,8 @@ const AdminMapPage = () => {
         {
           id: 'iconFile',
           type: 'file',
-          label: 'File Icon'
+          label: 'File Icon',
+          preview: `/api/public/assets/${pointOfInterestCategory.iconFilename}`
         }
       ],
       submit: {
@@ -736,6 +738,16 @@ const AdminMapPage = () => {
             values.id,
             values.name
           );
+
+          if (values.iconFile !== null && values.iconFile !== undefined) {
+            await uploadFile(
+              `/api/map/point-of-interest-categories/${values.id}/icon`,
+              'icon',
+              values.iconFile,
+              values.iconFile.filename,
+              'PUT'
+            );
+          }
 
           await getAllData();
         }
@@ -973,8 +985,8 @@ const AdminMapPage = () => {
                         <td>{pointOfInterest?.id}</td>
                         <ItemWithIdTableCell>
                           <div>
-                            <p>{pointOfInterest?.category.name}</p>
-                            <p className='id'>{pointOfInterest?.category.id}</p>
+                            <p>{pointOfInterest?.category?.name}</p>
+                            <p className='id'>{pointOfInterest?.category?.id}</p>
                           </div>
                         </ItemWithIdTableCell>
                         <td>{pointOfInterest?.floorNumber}</td>
