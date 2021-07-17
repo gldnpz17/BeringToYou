@@ -137,7 +137,7 @@ namespace Server.Common.Mapper
 
                     config.CreateMap<DomainModel.Entities.OnlineShopInstance, Models.Response.OnlineShopInstanceSummary>();
 
-                    config.CreateMap<Models.Request.UpdateOnlineShopBody, DomainModel.Entities.OnlineShopInstance>();
+                    config.CreateMap<Models.Request.UpdateOnlineShopInstanceBody, DomainModel.Entities.OnlineShopInstance>();
 
                     config.CreateMap<Models.Request.CreateShopBody, DomainModel.Entities.Shop>();
 

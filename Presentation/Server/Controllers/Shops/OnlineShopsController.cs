@@ -62,7 +62,7 @@ namespace Server.Controllers.Shops
         public async Task<IActionResult> UpdateOnlineShopInstance(
             [FromRoute]Guid shopId,
             [FromRoute]Guid onlineShopId,
-            [FromBody]UpdateOnlineShopBody body,
+            [FromBody]UpdateOnlineShopInstanceBody body,
             [FromServices]IMapper mapper)
         {
             var shop = await _database.Shops.FirstOrDefaultAsync(shop => shop.Id == shopId);
@@ -71,6 +71,10 @@ namespace Server.Controllers.Shops
             var onlineShop = await _database.OnlineShopInstances.FirstOrDefaultAsync(onlineShop => onlineShop.Id == onlineShopId);
 
             mapper.Map(body, onlineShop);
+
+            var platform = await _database.OnlineShopPlatforms.FirstOrDefaultAsync(platform => platform.Id == body.PlatformId);
+
+            onlineShop.Platform = platform;
 
             await _database.SaveChangesAsync();
 
