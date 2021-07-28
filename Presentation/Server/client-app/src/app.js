@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
 import AdminNavigationBar from './components/admin-navigation-bar';
 import NavigationBar from "./components/navigation-bar";
+import VisitorNavbar from './components/visitor-navbar';
 import NavigationOverlay from "./overlays/navigation-overlay";
 import HomePage from "./pages/home-page";
 import MarketMapPage from './pages/market-map-page';
@@ -11,10 +12,25 @@ import ProductDetailsPage from './pages/product-details-page';
 import ProductSearchPage from "./pages/product-search-page";
 import ShopListPage from "./pages/shop-list-page";
 import ShopProfilePage from "./pages/shop-profile-page";
+import VisitorHomePage from './pages/visitor-home-page';
 import AdminRoute from './routes/admin-route';
 import checkIdentity from './use-cases/check-identity';
 
 export const IdentityContext = React.createContext({});
+
+const WebContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+`;
+
+const ContentContainer = styled.div`
+  flex-grow: 1;
+  position: relative;
+
+  margin-top: 3rem;
+`;
 
 const App = () => {
   const [identity, setIdentity] = useState(null);
@@ -45,23 +61,7 @@ const App = () => {
     textOnDanger: 'white'
   }
 
-  const resizePageContent = () => {
-    let navigationBarElement = document.getElementById('navigation-bar');
-
-    let navigationBarHeight = navigationBarElement.clientHeight;
-    let viewportHeight = document.documentElement.clientHeight;
-
-    navigationBarElement.style.maxHeight = `${navigationBarHeight}px`;
-
-    let pageContentElement = document.getElementById('page-content');
-    pageContentElement.style.marginTop = `${navigationBarHeight - 0.01}px`;
-    pageContentElement.style.minHeight = `${viewportHeight - navigationBarHeight}px`;
-  };
-
   useEffect(() => {
-    resizePageContent();
-    window.onresize = () => resizePageContent();
-
     getIdentity();
   }, []);
 
@@ -76,53 +76,37 @@ const App = () => {
     refreshIdentity: getIdentity
   };
 
-  const [displayMode, setDisplayMode] = useState('list');
-
   return (
     <ThemeProvider theme={theme}>
       <IdentityContext.Provider value={identityContextValue}>
         <BrowserRouter>
-          <Switch>
-            <Route path='/admin'>
-              <AdminNavigationBar id='navigation-bar' />
-            </Route>
-            <Route path='/'>
-              <NavigationBar id='navigation-bar' />
-            </Route>
-          </Switch>
-          <NavigationOverlay id='navigation-overlay' />
-          <div id='page-content' style={{position: 'relative'}}>
+          <WebContainer>
             <Switch>
-              {/* Admin page contents. */}
-              <Route path='/admin/:page?'>
-                <AdminRoute />
+              <Route path='/admin'>
+                <AdminNavigationBar id='navigation-bar' />
               </Route>
-
-              {/* Visitor page contents. */}
               <Route path='/'>
-                <Switch>
-                  <Route exact path='/'>
-                    <HomePage />
-                  </Route>
-                  <Route exact path='/toko'>
-                    <ShopListPage />
-                  </Route>
-                  <Route exact path='/produk'>
-                    <ProductSearchPage displayMode={displayMode} setDisplayMode={setDisplayMode} />
-                  </Route>
-                  <Route path='/toko/warung-lorem-ipsum'>
-                    <ShopProfilePage displayMode={displayMode} setDisplayMode={setDisplayMode} />
-                  </Route>
-                  <Route path='/produk/idproduk'>
-                    <ProductDetailsPage />
-                  </Route>
-                  <Route path='/peta'>
-                    <MarketMapPage />
-                  </Route>
-                </Switch>
+                <VisitorNavbar id='navigation-bar' />
               </Route>
             </Switch>
-          </div>
+            <ContentContainer>
+              <Switch>
+                {/* Admin page contents. */}
+                <Route path='/admin/:page?'>
+                  <AdminRoute />
+                </Route>
+
+                {/* Visitor page contents. */}
+                <Route path='/'>
+                  <Switch>
+                    <Route exact path='/(search)?'>
+                      <VisitorHomePage />
+                    </Route>
+                  </Switch>
+                </Route>
+              </Switch>
+            </ContentContainer>
+          </WebContainer>
         </BrowserRouter>
       </IdentityContext.Provider>
     </ThemeProvider>

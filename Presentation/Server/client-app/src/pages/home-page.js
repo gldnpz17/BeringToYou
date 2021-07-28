@@ -8,7 +8,7 @@ import MapIcon from "../svg/map-icon";
 import ShopIcon from '../svg/shop-icon';
 
 const StyledContainer = styled(Container)`
-  font-family: 'Roboto';
+  font-family: 'Open Sans';
   color: ${props => props.theme.whitespace};
 
   #welcome-title {

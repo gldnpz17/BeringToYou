@@ -5,9 +5,11 @@ import SearchTextBox from "../components/search-textbox";
 import ShopCard from "../components/shop-card";
 import ShopIcon from "../svg/shop-icon";
 import FilterIcon from '../svg/filter-icon';
+import VisitorPageTitleContainer from "../components/visitor-page-title-container";
+import { useEffect, useState } from "react";
 
 const StyledContainer = styled(Container)`
-  font-family: 'Roboto';
+  font-family: 'Open Sans';
   min-height: inherit;
 
   background-color: ${props => props.theme.whitespace};
@@ -24,12 +26,27 @@ const StyledContainer = styled(Container)`
 `;
 
 const ShopListPage = () => {
+  const searchCriteria = useState({
+    keywords: [],
+    categoryId: null,
+    start: 0,
+    count: 30
+  });
+
+  useEffect(() => {
+
+  }, [searchCriteria])
+
+  const getShopDatas = async () => {
+    
+  };
+
   return (
     <StyledContainer className='p-0'>
-      <div className='title d-flex flex-row px-2 mb-2 pt-2 align-items-center'>
-        <ShopIcon style={{width: 'calc(1.375rem + 1.5vw)', height: 'calc(1.375rem + 1.5vw)'}} />
-        <h1 className='ps-1 m-0'>Daftar Toko</h1>
-      </div>
+      <VisitorPageTitleContainer>
+        <ShopIcon/>
+        <h1>Daftar Toko</h1>
+      </VisitorPageTitleContainer>
       <div className='mx-2 mb-4 d-flex flex-column'>
         <SearchTextBox placeholder='Cari Toko' className='mb-3' />
         <IconButton text='Filter & Urutkan' className='align-self-center'>
