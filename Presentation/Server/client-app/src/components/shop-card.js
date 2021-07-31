@@ -4,6 +4,8 @@ import CustomCard from "./custom-card";
 import FailSafeImg from "./fail-safe-img";
 
 const StyledCard = styled(CustomCard)`
+  display: inline-block;
+
   font-family: 'Open Sans';
   color: black;
 
