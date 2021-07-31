@@ -16,10 +16,14 @@ namespace DomainModel.Entities
         [Required]
         public string Name { get; set; }
 
+        public string LowercaseName { get; set; }
+
         public virtual ThumbnailedImage BannerImage { get; set; }
 
         [MaxLength(1024)]
         public string Description { get; set; }
+        
+        public string LowercaseDescription { get; set; }
 
         public virtual IList<MerchantAccount> ShopOwners { get; set; }
 

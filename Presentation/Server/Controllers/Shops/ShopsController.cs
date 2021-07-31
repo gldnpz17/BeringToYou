@@ -71,7 +71,7 @@ namespace Server.Controllers.Shops
             [FromServices]IPaginationService paginationService,
             [FromServices]IMapper mapper)
         {
-            var queryKeywords = rawQueryKeywords?.Split(' ') ?? Array.Empty<string>();
+            var queryKeywords = rawQueryKeywords?.Split(' ').Select(raw => raw.ToLower()).ToArray() ?? Array.Empty<string>();
 
             var queryCategoryId = Guid.Empty;
             if (rawQueryCategoryId != null)
@@ -99,8 +99,8 @@ namespace Server.Controllers.Shops
                     shop.MinPrice >= queryMinPrice && shop.MaxPrice <= queryMaxPrice
                 )
                 .Search(
-                    shop => shop.Name,
-                    shop => shop.Description)
+                    shop => shop.LowercaseName,
+                    shop => shop.LowercaseDescription)
                 .Containing(queryKeywords).OrderBy(shop => shop.Name),
                 start,
                 count);

@@ -139,7 +139,13 @@ namespace Server.Common.Mapper
 
                     config.CreateMap<Models.Request.UpdateOnlineShopInstanceBody, DomainModel.Entities.OnlineShopInstance>();
 
-                    config.CreateMap<Models.Request.CreateShopBody, DomainModel.Entities.Shop>();
+                    config.CreateMap<Models.Request.CreateShopBody, DomainModel.Entities.Shop>()
+                        .ForMember(
+                            destination => destination.LowercaseName,
+                            options => options.MapFrom(source => source.Name.ToLower()))
+                        .ForMember(
+                            destination => destination.LowercaseDescription,
+                            options => options.MapFrom(source => source.Description.ToLower()));
 
                     config.CreateMap<DomainModel.Entities.Shop, Models.Response.ShopSummary>()
                         .ForMember(
@@ -148,7 +154,13 @@ namespace Server.Common.Mapper
 
                     config.CreateMap<DomainModel.Entities.Shop, Models.Response.ShopDetailed>();
 
-                    config.CreateMap<Models.Request.UpdateShopBody, DomainModel.Entities.Shop>();
+                    config.CreateMap<Models.Request.UpdateShopBody, DomainModel.Entities.Shop>()
+                        .ForMember(
+                            destination => destination.LowercaseName,
+                            options => options.MapFrom(source => source.Name.ToLower()))
+                        .ForMember(
+                            destination => destination.LowercaseDescription,
+                            options => options.MapFrom(source => source.Description.ToLower())); ;
                     #endregion
                 });
             } 
