@@ -9,6 +9,7 @@ const StyledNavbar = styled(Navbar)`
   background-color: ${props => props.theme.primary};
   box-shadow: ${props => props.theme.shadow} 0rem 0.1rem 0.3rem;
   color: ${props => props.theme.secondary};
+  width: 100vw;
 
   h1 {
     font-family: 'Open Sans';
