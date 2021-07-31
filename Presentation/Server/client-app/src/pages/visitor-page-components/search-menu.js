@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Col, Row, Spinner } from "react-bootstrap";
+import { CardColumns, Col, Row, Spinner } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import CustomButton from "../../components/custom-button";
@@ -25,6 +25,38 @@ const Container = styled.div`
 const SearchContainer = styled.div`
   @media(min-width: ${responsiveBreakpoints.large}) {
     width: 50%;
+  }
+`;
+
+const StyledCardColumns = styled(CardColumns)`
+  @media (min-width: ${responsiveBreakpoints.small}) {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;  
+  }
+
+  @media (min-width: ${responsiveBreakpoints.medium}) {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;  
+  }
+
+  @media (min-width: ${responsiveBreakpoints.large}) {
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;  
+  }
+
+  @media (min-width: ${responsiveBreakpoints.xLarge}) {
+    -webkit-column-count: 5;
+    -moz-column-count: 5;
+    column-count: 5;  
+  }
+
+  @media (min-width: ${responsiveBreakpoints.xxLarger}) {
+    -webkit-column-count: 6;
+    -moz-column-count: 6;
+    column-count: 6;  
   }
 `;
 
@@ -187,18 +219,26 @@ const SearchMenu = ({ history }) => {
         <SearchTextBox className='mr-2' id='shop-search-input' defaultValue={new URLSearchParams(window.location.search).get('keywords')} onClick={setKeywords}/>
         <CustomButton onClick={() => setFilterModalShow(true)}>Filter</CustomButton>
       </SearchContainer>
-      <Row xs={2} sm={3} md={4} lg={5} xl={6} className='d-flex justify-content-center mx-2 mb-4'>
-        {searchResults.length !== 0 ? searchResults.map(shop => {
+      {(() => {
+        if (!isLoading && searchResults?.length === 0) {
+          return (<p className='text-center'>Hasil pencarian kosong.</p>)
+        } else {
           return (
-            <Col className='p-2'>
-              <ShopCard 
-                onClick={() => setViewShopUrl(shop?.id)}
-                shop={shop}
-              />
-            </Col>
+            <StyledCardColumns className='d-flex justify-content-center mx-2 mb-4'>
+              {searchResults?.map(shop => {
+                return (
+                  <Col className='p-2'>
+                    <ShopCard 
+                      onClick={() => setViewShopUrl(shop?.id)}
+                      shop={shop}
+                    />
+                  </Col>
+                );
+              })}
+            </StyledCardColumns>
           );
-        }) : (isLoading ? null : <p className='text-center'>Hasil pencarian kosong.</p>)}
-      </Row>
+        }
+      })()}
       <div className='mb-5'>
         <LoadingAnimation 
           loaderCount={5}
