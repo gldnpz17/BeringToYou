@@ -9,6 +9,11 @@ const StyledCard = styled(CustomCard)`
 
   border: none;
   overflow: hidden;
+
+  img {
+    width: 100%;
+    object-fit: cover;
+  }
 `;
 
 const ShopCard = ({shop, className, ...props}) => {
@@ -17,7 +22,6 @@ const ShopCard = ({shop, className, ...props}) => {
       <Card.Body className='p-0 d-flex flex-column h-100'>
         <FailSafeImg 
           className='flex-grow-1'
-          style={{objectFit: 'cover'}}
           src={`api/public/assets/${shop?.bannerImage?.thumbnailFilename}`} 
           altsrc={`assets/imagenotfound.png`}
         />
