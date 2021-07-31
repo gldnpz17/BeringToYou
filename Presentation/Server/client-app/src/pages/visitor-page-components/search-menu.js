@@ -120,7 +120,7 @@ const SearchMenu = ({ history }) => {
       if (queryParamsChanged(
         previousQuery, 
         window.location.search, 
-        ['category', 'onlineshop', 'minprice', 'maxprice'])
+        ['keywords', 'category', 'onlineshop', 'minprice', 'maxprice'])
       ) {
         executeSearch();
       }
