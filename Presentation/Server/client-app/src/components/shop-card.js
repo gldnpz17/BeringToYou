@@ -12,7 +12,7 @@ const StyledCard = styled(CustomCard)`
 
   img {
     width: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
 `;
 
