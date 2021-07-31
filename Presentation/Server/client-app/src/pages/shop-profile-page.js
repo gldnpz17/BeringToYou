@@ -11,7 +11,7 @@ import DisplayOptions from '../helpers/display-options';
 import RadioIconButton from '../components/radio-icon-button';
 
 const StyledContainer = styled(Container)`
-  font-family: 'Roboto';
+  font-family: 'Open Sans';
   min-height: inherit;
 
   background-color: ${props => props.theme.whitespace};
@@ -40,6 +40,10 @@ const ShopNameContainer = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
+
+  h1 {
+    font-size: 1.6rem;
+  }
 `;
 
 const ContentContainer = styled.div`
@@ -124,7 +128,7 @@ const ShopProfilePage = () => {
           <StyledHeroImage src='/dummy-images/food-stall.jpg' />
           <ShopNameContainer className='pb-2'>
             <StyledShopNameBackground className='p-2' />
-            <h1 className='mt-2 mb-3 ps-2' style={{zIndex: '1'}}>Warung Lorem Ipsum</h1>
+            <h1 className='mt-2 ml-2 mb-3 ps-2' style={{zIndex: '1'}}>Warung Lorem Ipsum</h1>
           </ShopNameContainer>
           <RoundedCorner />
         </div>

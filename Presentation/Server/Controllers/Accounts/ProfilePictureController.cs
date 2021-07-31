@@ -40,7 +40,7 @@ namespace Server.Controllers.Accounts
 
             if (account.ProfilePictureFilename == null)
             {
-                return null;
+                return NotFound();
             }
 
             var filePath = Path.Combine(_applicationConfiguration.Account.ProfilePictureDirectory, account.ProfilePictureFilename);

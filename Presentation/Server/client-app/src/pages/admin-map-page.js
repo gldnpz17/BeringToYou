@@ -386,7 +386,17 @@ const AdminMapPage = () => {
               }
             );
           })
-        }
+        },
+        {
+          id: 'minPrice',
+          label: 'Harga Minimum',
+          type: 'text'
+        },
+        {
+          id: 'maxPrice',
+          label: 'Harga Maximum',
+          type: 'text'
+        },
       ],
       submit: {
         label: 'Tambahkan',
@@ -397,7 +407,9 @@ const AdminMapPage = () => {
             values.floorNumber,
             values.latitude,
             values.longitude, 
-            values.category);
+            values.category,
+            values.minPrice,
+            values.maxPrice);
 
           await getAllData();
         }

@@ -15,7 +15,7 @@ import RadioIconButton from '../components/radio-icon-button';
 import AnimatedSearchTextBox from '../components/animated-search-texbox';
 
 const StyledContainer = styled(Container)`
-  font-family: 'Roboto';
+  font-family: 'Open Sans';
   min-height: inherit;
 
   background-color: ${props => props.theme.whitespace};

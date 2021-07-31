@@ -23,14 +23,14 @@ const StyledMap = styled.div`
     position: absolute;
     top: 0.5rem;
     left: 0.5rem;
-    z-index: 1000;
+    z-index: 100;
   }
 
   #compass-layers-control {
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
-    z-index: 1000;
+    z-index: 100;
 
     p {
       width: 1.6rem;
@@ -44,14 +44,14 @@ const StyledMap = styled.div`
     position: absolute;
     bottom: 0.5rem;
     left: 0.5rem;
-    z-index: 1000;
+    z-index: 100;
   }
 
   #gps-controls {
     position: absolute;
     bottom: 0.5rem;
     right: 0.5rem;
-    z-index: 1000;
+    z-index: 100;
   }
 `;
 
@@ -117,6 +117,7 @@ const CompassNeedle = styled.div`
 `;
 
 const MapContainer = styled.div`
+  z-index: 0;
   width: 100%;
   height: 100%;
 
@@ -179,7 +180,9 @@ const MarketMap = ({
   floors, 
   overlays, 
   onShopMarkerClick, 
-  onPointOfInterestMarkerClick, ...props}) => {
+  onPointOfInterestMarkerClick,
+  onMoveEnd,
+  focus, ...props}) => {
   
   const [map, setMap] = useState(null);
   const [tileLayer, setTileLayer] = useState(null);
@@ -207,6 +210,8 @@ const MarketMap = ({
           props.onMapClick();
         }
       });
+
+      currentMap.on('move', onMoveEnd ? onMoveEnd : () => {});
       
       setMap(currentMap);
     }
@@ -214,6 +219,13 @@ const MarketMap = ({
     // Initialize compass.
     initalizeCompass();
   }, []);
+
+  useEffect(() => {
+    if (focus) {
+      setCurrentFloorNumber(focus.floor);
+      map.flyTo([focus.latitude, focus.longitude], focus.zoom);
+    }
+  }, [focus])
 
   const initalizeCompass = async () => {
     let isIOS = (

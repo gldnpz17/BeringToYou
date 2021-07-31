@@ -4,7 +4,7 @@ import ViewProductOverlay from "../overlays/view-product-overlay";
 import CustomCard from './custom-card';
 
 const StyledCard = styled(CustomCard)`
-  font-family: 'Roboto';
+  font-family: 'Open Sans';
   color: black;
 
   p {

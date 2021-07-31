@@ -12,6 +12,8 @@ const StyledNavbar = styled.div`
   box-shadow: ${props => props.theme.shadow} 0rem 0.1rem 0.3rem;
   padding: 0.75rem;
 
+  height: 3rem;
+
   h1 {
     font-size: 1.3rem;
     font-family: 'Open Sans';

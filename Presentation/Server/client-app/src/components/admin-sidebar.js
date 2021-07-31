@@ -104,7 +104,7 @@ const NavigationOption = styled.a`
   flex-direction: row;
   align-items: center;
 
-  font-family: 'Roboto';
+  font-family: 'Open Sans';
 
   .option-label {
     transition-duration: 0.5s;

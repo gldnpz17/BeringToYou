@@ -1,6 +1,7 @@
 import { Button, FormControl, InputGroup } from "react-bootstrap";
 import styled from "styled-components";
 import SearchIcon from "../svg/search-icon";
+import AdminFormControl from "./admin-form-control";
 import CustomButton from "./custom-button";
 
 const StyledInputGroup = styled(InputGroup)`
@@ -30,12 +31,12 @@ const StyledSearchButton = styled(CustomButton)`
   }
 `;
 
-const SearchTextBox = ({ className, placeholder }) => {
+const SearchTextBox = ({ className, placeholder, onClick, ...props }) => {
   return (
     <StyledInputGroup className={`${className}`}>
-      <FormControl placeholder={placeholder} />
+      <AdminFormControl type='text' placeholder={placeholder} {...props}/>
       <InputGroup.Append>
-        <StyledSearchButton>
+        <StyledSearchButton onClick={onClick}>
           <SearchIcon style={{width: '1.6rem', height: '1.6rem'}} />
         </StyledSearchButton>
       </InputGroup.Append>

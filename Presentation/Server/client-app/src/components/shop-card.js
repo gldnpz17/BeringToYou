@@ -1,6 +1,7 @@
 import { Card } from "react-bootstrap";
 import styled from "styled-components";
 import CustomCard from "./custom-card";
+import FailSafeImg from "./fail-safe-img";
 
 const StyledCard = styled(CustomCard)`
   font-family: 'Open Sans';
@@ -10,14 +11,19 @@ const StyledCard = styled(CustomCard)`
   overflow: hidden;
 `;
 
-const ShopCard = ({ image, name, category, style, className }) => {
+const ShopCard = ({shop, className, ...props}) => {
   return (
-    <StyledCard className={`m-0 ${className}`} style={style} onClick={() => window.location.href = '/toko/warung-lorem-ipsum' }>
+    <StyledCard className={`m-0 ${className}`} {...props}>
       <Card.Body className='p-0 d-flex flex-column h-100'>
-        <img className='flex-grow-1' src='dummy-images/food-stall.jpg' style={{objectFit: 'cover'}} />
+        <FailSafeImg 
+          className='flex-grow-1'
+          style={{objectFit: 'cover'}}
+          src={`api/public/assets/${shop?.bannerImage?.thumbnailFilename}`} 
+          altsrc={`assets/imagenotfound.png`}
+        />
         <div className='p-1'>
-          <p className='m-0'><b>{name}</b></p>
-          <p className='m-0'>Makanan & Jajanan</p>
+          <p className='m-0'><b>{shop?.name}</b></p>
+          <p className='m-0'>{shop?.shopCategoryName}</p>
         </div>
       </Card.Body>
     </StyledCard>
