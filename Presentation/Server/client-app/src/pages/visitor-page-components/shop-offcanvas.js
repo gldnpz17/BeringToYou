@@ -1,7 +1,11 @@
+import { withRouter } from "react-router-dom";
 import styled from "styled-components";
+import FailSafeImg from "../../components/fail-safe-img";
 import IconButton from "../../components/icon-button";
+import delay from "../../helpers/delay";
 import CloseIcon from "../../svg/close-icon";
 import LocationIcon from "../../svg/location-icon";
+import fetchShopDetails from "../../use-cases/common/fetch-shop-details";
 
 const Container = styled.div`
   position: absolute;
@@ -188,48 +192,55 @@ const OnlineShop = styled.li`
   }
 `;
 
-const ShopOffCanvas = ({shop, showBackground, visible, setVisible, ...props}) => {
+const ShopOffCanvas = ({ history, shop, showBackground, canJumpToLocation, visible, setVisible, onDismiss, ...props }) => {
   return (
     <Container {...props}>
       <Background className={visible ? '' : 'hidden'} 
         showBackground={showBackground} 
         onClick={() => {
           if (showBackground) {
-            setVisible(false);
+            onDismiss ? onDismiss() : setVisible(false)
           }
         }}
       />
       <Content className={`d-flex flex-column ${visible ? '' : 'hidden'}`}>
         <ImageContainer>
-          <img src='/dummy-images/food-stall.jpg' />
-          <h1>Toko Lorem Ipsum</h1>
-          <Close onClick={() => setVisible(false)} />
-          <Location />
+          <FailSafeImg 
+            src={`api/public/assets/${shop?.bannerImage?.thumbnailFilename}`} 
+            altsrc={`assets/imagenotfound.png`}
+          />
+          <h1>{shop?.name}</h1>
+          <Close onClick={() => onDismiss ? onDismiss() : setVisible(false)} />
+          {canJumpToLocation ? 
+            <Location onClick={() => {
+              history.push(`/?shopfocus=${shop?.id}`);
+            }} />
+            : null
+          }
         </ImageContainer>
         <ShopDetails className='d-flex flex-column flex-grow-1 p-2 pr-3'>
-          <p className='mb-1 mt-2'><b>Rentang Harga: </b>Rp42000 - Rp69000</p>
+          <p className='mb-1 mt-2'><b>Rentang Harga: </b>{`Rp ${shop?.minPrice} - Rp ${shop?.maxPrice}`}</p>
           <p className='mb-1'><b>Toko Online :</b></p>
           <OnlineShopList className='mb-3'>
-            <OnlineShop className='d-flex flex-row align-items-center'>
-              <img src='/dummy-images/shopee-logo.png' />
-              <a href='/nowhere'>Shopee (Toko Lorem)</a>
-            </OnlineShop>
-            <OnlineShop className='d-flex flex-row align-items-center'>
-              <img src='/dummy-images/tokopedia-logo.jpg' />
-              <a href='/nowhere'>Tokopedia (Toko Lorem 123)</a>
-            </OnlineShop>
-            <OnlineShop className='d-flex flex-row align-items-center'>
-              <img src='/dummy-images/shopee-logo.png' />
-              <a href='/nowhere'>Shopee (Toko Lorem Alt)</a>
-            </OnlineShop>
+            {shop?.onlineShopInstances?.map(onlineShop => {
+              return (
+                <OnlineShop className='d-flex flex-row align-items-center'>
+                  <FailSafeImg 
+                    src={`api/public/assets/${onlineShop?.platform?.name}`} 
+                    altsrc={`assets/imagenotfound.png`}
+                  />
+                  <a href={onlineShop?.url}>{`${onlineShop?.platform?.name} (${onlineShop?.name})`}</a>
+                </OnlineShop>
+              );
+            })}
           </OnlineShopList>
-          <p className='mb-1'><b>Kategori : </b>{shop?.category ?? 'N/A'}</p>
-          <p className='mb-2'><b>Pemilik : </b>{shop?.owner ?? 'N/A'}</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam a magna vulputate, iaculis metus et, ornare erat. Quisque quis vulputate orci, a commodo nibh. Suspendisse potenti. Quisque ex elit, porttitor vitae metus sed, vehicula aliquet dui. Nullam eu sem vitae urna fringilla rutrum in ut nisi. Aliquam pharetra ex non leo commodo varius. Sed lectus leo, convallis in maximus rhoncus, commodo ac nunc. Vivamus vulputate varius pulvinar. Ut rhoncus diam eget egestas commodo. Fusce dapibus sed magna eu aliquet. Donec dignissim nunc vel massa aliquam, et gravida orci tempus. In ac lorem id nunc imperdiet finibus vel vel diam.</p>
+          <p className='mb-1'><b>Kategori : </b>{shop?.category?.name ?? 'N/A'}</p>
+          <p className='mb-2'><b>Pemilik : </b>{shop?.ownerNames?.length > 0 ? shop?.ownerNames?.join(', ') : 'N/A'}</p>
+          <p>{shop?.description}</p>
         </ShopDetails>
       </Content>
     </Container>
   );
 };
 
-export default ShopOffCanvas;
+export default withRouter(ShopOffCanvas);

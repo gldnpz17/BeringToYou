@@ -1,5 +1,9 @@
-const fetchAllShops = async () => {
-  let response = await fetch('/api/shops?start=0&count=1000', {
+import delay from "../../helpers/delay";
+
+const fetchAllShops = async (queryParams = 'start=0&count=1000000') => {
+  await delay(1000);
+  
+  let response = await fetch(`/api/shops?${queryParams}`, {
     method: 'GET'
   });
 

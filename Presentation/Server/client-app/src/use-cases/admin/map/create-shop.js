@@ -1,4 +1,4 @@
-const createShop = async (name, description, floor, latitude, longitude, categoryId) => {
+const createShop = async (name, description, floor, latitude, longitude, categoryId, minPrice, maxPrice) => {
   let response = await fetch('/api/shops', {
     method: 'POST',
     headers: {
@@ -10,7 +10,9 @@ const createShop = async (name, description, floor, latitude, longitude, categor
       floor: floor,
       latitude: latitude,
       longitude: longitude,
-      categoryId: categoryId
+      categoryId: categoryId,
+      minPrice: minPrice,
+      maxPrice: maxPrice
     })
   });
 };

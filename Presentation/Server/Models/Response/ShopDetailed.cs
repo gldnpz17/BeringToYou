@@ -11,6 +11,7 @@ namespace Server.Models.Response
         public Guid Id { get; set; }
         public string Name { get; set; }
         public ThumbnailedImageSummary BannerImage { get; set; }
+        public List<string> OwnerNames { get; set; }
         public string Description { get; set; }
         public int Floor { get; set; }
         public double Latitude { get; set; }
@@ -18,5 +19,7 @@ namespace Server.Models.Response
         public ShopCategorySummary Category { get; set; }
         public IList<OnlineShopInstanceSummary> OnlineShopInstances { get; set; }
         public IList<ProductSummary> Products { get; set; }
+        public double MinPrice { get; set; }
+        public double MaxPrice { get; set; }
     }
 }

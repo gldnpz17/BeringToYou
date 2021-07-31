@@ -231,7 +231,7 @@ const VisitorNavbar = ({history, ...props}) => {
 
   const closeSearch = () => {
     history.push('/');
-  }
+  };
   
   return (
     <>

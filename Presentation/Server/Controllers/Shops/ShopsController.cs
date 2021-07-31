@@ -15,6 +15,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
+using NinjaNye.SearchExtensions;
 
 namespace Server.Controllers.Shops
 {
@@ -59,17 +61,47 @@ namespace Server.Controllers.Shops
         [HttpGet]
         [AllowAnonymous]
         public async Task<IList<ShopSummary>> GetAllShops(
-            [FromQuery]string name,
-            [FromQuery]string category,
+            [FromQuery(Name = "keywords")]string rawQueryKeywords,
+            [FromQuery(Name = "category")]string rawQueryCategoryId,
+            [FromQuery(Name = "onlineshop")]string rawQueryOnlineShopPlatformIds,
+            [FromQuery(Name = "minprice")]string rawQueryMinPrice,
+            [FromQuery(Name = "maxprice")]string rawQueryMaxPrice,
             [FromQuery]int start,
             [FromQuery]int count,
             [FromServices]IPaginationService paginationService,
             [FromServices]IMapper mapper)
         {
+            var queryKeywords = rawQueryKeywords?.Split(' ') ?? Array.Empty<string>();
+
+            var queryCategoryId = Guid.Empty;
+            if (rawQueryCategoryId != null)
+            {
+                queryCategoryId = Guid.Parse(rawQueryCategoryId);
+            }
+
+            var queryOnlineShopPlatformIds = Array.Empty<Guid>();
+            if (rawQueryOnlineShopPlatformIds != null)
+            {
+                queryOnlineShopPlatformIds = rawQueryOnlineShopPlatformIds?
+                    .Split(' ')
+                    .Select(platformId => Guid.Parse(platformId))
+                    .ToArray();
+            }
+
+            var queryMinPrice = rawQueryMinPrice == null ? 0.0 : double.Parse(rawQueryMinPrice);
+            var queryMaxPrice = rawQueryMaxPrice == null ? double.MaxValue : double.Parse(rawQueryMaxPrice);
+
             var shops = await paginationService.PaginateAsync(
-                _database.Shops.Where(
-                    shop => shop.Name.Contains(name ?? "") && 
-                    (category != null ? shop.Category.Name == category : true)),
+                _database.Shops.Where(shop =>
+                    (queryCategoryId == Guid.Empty || shop.Category.Id == queryCategoryId) &&
+                    (queryOnlineShopPlatformIds.Any() == false || 
+                        shop.OnlineShopInstances.Any(onlineShop => queryOnlineShopPlatformIds.Any(platformId => platformId == onlineShop.Platform.Id))) &&
+                    shop.MinPrice >= queryMinPrice && shop.MaxPrice <= queryMaxPrice
+                )
+                .Search(
+                    shop => shop.Name,
+                    shop => shop.Description)
+                .Containing(queryKeywords).OrderBy(shop => shop.Name),
                 start,
                 count);
 
@@ -84,7 +116,11 @@ namespace Server.Controllers.Shops
         {
             var shop = await _database.Shops.FirstOrDefaultAsync(shop => shop.Id == shopId);
 
-            return mapper.Map<ShopDetailed>(shop);
+            var mappedShop = mapper.Map<ShopDetailed>(shop);
+
+            mappedShop.OwnerNames = shop.ShopOwners.Select(owner => owner.DisplayName)?.ToList() ?? new List<string>();
+
+            return mappedShop;
         }
 
         [HttpPut("{shopId}")]

@@ -31,6 +31,12 @@ namespace DomainModel.Entities
 
         [Required]
         public double Longitude { get; set; }
+
+        [Required]
+        public double MinPrice { get; set; } = 0;
+
+        [Required]
+        public double MaxPrice { get; set; } = double.MaxValue;
         
         public virtual ShopCategory Category { get; set; }
         

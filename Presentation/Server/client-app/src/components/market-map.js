@@ -180,7 +180,9 @@ const MarketMap = ({
   floors, 
   overlays, 
   onShopMarkerClick, 
-  onPointOfInterestMarkerClick, ...props}) => {
+  onPointOfInterestMarkerClick,
+  onMoveEnd,
+  focus, ...props}) => {
   
   const [map, setMap] = useState(null);
   const [tileLayer, setTileLayer] = useState(null);
@@ -208,6 +210,8 @@ const MarketMap = ({
           props.onMapClick();
         }
       });
+
+      currentMap.on('move', onMoveEnd ? onMoveEnd : () => {});
       
       setMap(currentMap);
     }
@@ -215,6 +219,13 @@ const MarketMap = ({
     // Initialize compass.
     initalizeCompass();
   }, []);
+
+  useEffect(() => {
+    if (focus) {
+      setCurrentFloorNumber(focus.floor);
+      map.flyTo([focus.latitude, focus.longitude], focus.zoom);
+    }
+  }, [focus])
 
   const initalizeCompass = async () => {
     let isIOS = (
