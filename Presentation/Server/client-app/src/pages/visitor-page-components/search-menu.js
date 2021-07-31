@@ -14,6 +14,8 @@ import fetchAllShops from '../../use-cases/common/fetch-all-shops';
 import websiteConfiguration from "../../config";
 import LoadingAnimation from "../../components/loading-animation";
 import fetchShopDetails from "../../use-cases/common/fetch-shop-details";
+import 'react-responsive-masonry';
+import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 
 const Container = styled.div`
   height: 100%;
@@ -29,34 +31,34 @@ const SearchContainer = styled.div`
 `;
 
 const StyledCardColumns = styled(CardColumns)`
-  @media (min-width: ${responsiveBreakpoints.small}) {
-    -webkit-column-count: 2;
-    -moz-column-count: 2;
-    column-count: 2;  
+  @media (max-width: ${responsiveBreakpoints.xxLarger}) {
+    -webkit-column-count: 6;
+    -moz-column-count: 6;
+    column-count: 6;  
   }
 
-  @media (min-width: ${responsiveBreakpoints.medium}) {
-    -webkit-column-count: 3;
-    -moz-column-count: 3;
-    column-count: 3;  
-  }
-
-  @media (min-width: ${responsiveBreakpoints.large}) {
-    -webkit-column-count: 4;
-    -moz-column-count: 4;
-    column-count: 4;  
-  }
-
-  @media (min-width: ${responsiveBreakpoints.xLarge}) {
+  @media (max-width: ${responsiveBreakpoints.xLarge}) {
     -webkit-column-count: 5;
     -moz-column-count: 5;
     column-count: 5;  
   }
 
-  @media (min-width: ${responsiveBreakpoints.xxLarger}) {
-    -webkit-column-count: 6;
-    -moz-column-count: 6;
-    column-count: 6;  
+  @media (max-width: ${responsiveBreakpoints.large}) {
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;  
+  }
+
+  @media (max-width: ${responsiveBreakpoints.medium}) {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;  
+  }
+
+  @media (max-width: ${responsiveBreakpoints.small}) {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;  
   }
 `;
 
@@ -224,18 +226,23 @@ const SearchMenu = ({ history }) => {
           return (<p className='text-center'>Hasil pencarian kosong.</p>)
         } else {
           return (
-            <StyledCardColumns className='d-flex justify-content-center mx-2 mb-4'>
-              {searchResults?.map(shop => {
-                return (
-                  <Col className='p-2'>
-                    <ShopCard 
-                      onClick={() => setViewShopUrl(shop?.id)}
-                      shop={shop}
-                    />
-                  </Col>
-                );
-              })}
-            </StyledCardColumns>
+            <div className='mx-2'>
+              <ResponsiveMasonry
+                columnsCountBreakPoints={{400: 2, 600: 3, 800: 4, 1000: 5, 1200: 6}}
+              >
+                <Masonry>
+                  {searchResults?.map(shop => {
+                    return (
+                      <ShopCard 
+                        className='m-2'
+                        onClick={() => setViewShopUrl(shop?.id)}
+                        shop={shop}
+                      />
+                    );
+                  })}
+                </Masonry>
+              </ResponsiveMasonry>
+            </div>
           );
         }
       })()}
