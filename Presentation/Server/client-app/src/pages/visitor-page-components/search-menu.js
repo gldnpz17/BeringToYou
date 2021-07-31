@@ -218,7 +218,7 @@ const SearchMenu = ({ history }) => {
         canJumpToLocation={true}
       />
       <SearchContainer className='px-3 py-2 d-flex flex-row'>
-        <SearchTextBox className='mr-2' id='shop-search-input' defaultValue={new URLSearchParams(window.location.search).get('keywords')} onClick={setKeywords}/>
+        <SearchTextBox className='mr-2' id='shop-search-input' defaultValue={new URLSearchParams(window.location.search).get('keywords')} onSubmit={setKeywords}/>
         <CustomButton onClick={() => setFilterModalShow(true)}>Filter</CustomButton>
       </SearchContainer>
       {(() => {

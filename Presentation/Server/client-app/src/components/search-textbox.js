@@ -31,16 +31,22 @@ const StyledSearchButton = styled(CustomButton)`
   }
 `;
 
-const SearchTextBox = ({ className, placeholder, onClick, ...props }) => {
+const SearchTextBox = ({ className, placeholder, onSubmit, ...props }) => {
   return (
-    <StyledInputGroup className={`${className}`}>
-      <AdminFormControl type='text' placeholder={placeholder} {...props}/>
-      <InputGroup.Append>
-        <StyledSearchButton onClick={onClick}>
-          <SearchIcon style={{width: '1.6rem', height: '1.6rem'}} />
-        </StyledSearchButton>
-      </InputGroup.Append>
-    </StyledInputGroup>
+    <form onSubmit={(event) => {
+      event.preventDefault();
+
+      onSubmit(event);
+    }} className={className}>
+      <StyledInputGroup>
+          <AdminFormControl type='text' placeholder={placeholder} {...props}/>
+          <InputGroup.Append>
+            <StyledSearchButton type='submit'>
+              <SearchIcon style={{width: '1.6rem', height: '1.6rem'}} />
+            </StyledSearchButton>
+          </InputGroup.Append>
+      </StyledInputGroup>
+    </form>
   );
 };
 
