@@ -57,7 +57,7 @@ const StyledButton = styled(Button)`
 
 const CustomButton = ({onClick, ...props}) => {
   const handleOnClick = (event) => {
-    if (!props['aria-disabled']) {
+    if (props['aria-disabled'] !== 'true') {
       onClick(event);
     }
   }

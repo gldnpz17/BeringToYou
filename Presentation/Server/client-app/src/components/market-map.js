@@ -19,7 +19,7 @@ import RadioIconButton from "./radio-icon-button";
 import delay from "../helpers/delay";
 
 const StyledMap = styled.div`
-    #zoom-control {
+  #zoom-control {
     position: absolute;
     top: 0.5rem;
     left: 0.5rem;
@@ -160,6 +160,20 @@ const MapContainer = styled.div`
     text-align: center;
     transform: translateX(-50%);
   }
+
+  .gps-marker {
+    padding: 0.2rem;
+    transform: translateX(-50%);
+    width: 1.6rem !important;
+    height: 1.6rem !important;
+    background-color: ${props => props.theme.primaryLight};
+
+    border-style: solid;
+    border-width: 0.15rem;
+    box-shadow: ${props => props.theme.shadow} 0.1rem 0.1rem 0.2rem;
+    border-radius: 1rem;
+    border-color: ${props => props.theme.primary};
+  }
 `;
 
 const ExpandableContainer = styled.span`
@@ -272,7 +286,13 @@ const MarketMap = ({
       if (gpsEnabled && gpsIsAvailable) {
         console.log('GPS available.')
 
-        let marker = L.marker([0, 0]);
+        let marker = L.marker([0, 0], {
+          icon: new MapShopIcon(
+            'gps-marker', 
+            '', 
+            <div />,
+            '')
+        });
         setGpsMarker(marker);
         marker.addTo(gpsMap);
   
