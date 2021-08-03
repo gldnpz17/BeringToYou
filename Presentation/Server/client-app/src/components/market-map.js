@@ -9,7 +9,7 @@ import LayersIcon from "../svg/layers-icon";
 import CustomButton from "../components/custom-button";
 import MoreIcon from '../svg/more-icon';
 import GpsCrosshairIcon from '../svg/gps-crosshair-icon';
-import L from 'leaflet';
+import L, { marker } from 'leaflet';
 import '../lib/L.KML';
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
@@ -182,12 +182,16 @@ const MarketMap = ({
   onShopMarkerClick, 
   onPointOfInterestMarkerClick,
   onMoveEnd,
+  gpsEnabled,
   focus, ...props}) => {
   
   const [map, setMap] = useState(null);
   const [tileLayer, setTileLayer] = useState(null);
   const [currentFloorNumber, setCurrentFloorNumber] = useState(1);
   const [floorSelectOpen, setFloorSelectOpen] = useState(false);
+
+  const [gpsMarker, setGpsMarker] = useState(null);
+  const [gpsLatLong, setGpsLatLong] = useState(null);
 
   useEffect(() => {
     // Initialize map.
@@ -212,11 +216,12 @@ const MarketMap = ({
       });
 
       currentMap.on('move', onMoveEnd ? onMoveEnd : () => {});
-      
+
       setMap(currentMap);
+
+      initializeGps(currentMap);
     }
 
-    // Initialize compass.
     initalizeCompass();
   }, []);
 
@@ -260,6 +265,42 @@ const MarketMap = ({
     }
   };
 
+  const initializeGps = (gpsMap) => {
+    if (!gpsMarker) {
+      let gpsIsAvailable = 'geolocation' in navigator;
+    
+      if (gpsEnabled && gpsIsAvailable) {
+        console.log('GPS available.')
+
+        let marker = L.marker([0, 0]);
+        setGpsMarker(marker);
+        marker.addTo(gpsMap);
+  
+        navigator.geolocation.watchPosition((position) => {
+          let coords = position.coords;
+  
+          setGpsLatLong([coords.latitude, coords.longitude]);
+        });
+      } else {
+        console.log('GPS unavailable.');
+      }
+    }
+  };
+
+  useEffect(() => {
+    renderGpsMarker();
+  }, [gpsMarker, gpsLatLong])
+
+  const renderGpsMarker = () => {
+    if (gpsMarker && gpsLatLong) {
+      gpsMarker.setLatLng(gpsLatLong);
+    }
+  };
+
+  const focusOnGpsMarker = () => {
+    map.flyTo(gpsLatLong, 21);
+  };
+
   const changeCompassAngle = (degrees) => {
     let compassNeedle = document.getElementById('compass-needle');
 
@@ -286,7 +327,7 @@ const MarketMap = ({
     if (map !== null) {
       // Remove old layers.
       map.eachLayer(layer => {
-        if (layer !== tileLayer) {
+        if (layer !== tileLayer && layer !== gpsMarker) {
           map.removeLayer(layer);
         }
       });
@@ -349,7 +390,11 @@ const MarketMap = ({
             icon: new MapShopIcon(
               'shop-map-marker', 
               'shop-map-label', 
-              <SilverwareIcon className='shop-map-icon' />, 
+              <FailSafeImg 
+                src={`/api/public/assets/${pointOfInterest.category.iconFilename}`}
+                altsrc='/map-assets/missing-marker-icon.svg'
+                className='shop-map-icon' 
+              />, 
               pointOfInterest.category.name),
               bubblingMouseEvents: false
           }).addTo(map).on('click', (event) => {
@@ -361,7 +406,7 @@ const MarketMap = ({
         }
       });
     };
-  }
+  };
 
   return (
     <StyledMap {...props}>
@@ -409,17 +454,20 @@ const MarketMap = ({
                 <p style={{width: '1.6rem', height: '1.6rem'}}>lt.{currentFloorNumber}</p>
               </CustomButton>}
         </ExpandableContainer>
-        <IconButton iconOnly={true} className='p-1 m-1'>
+        <IconButton iconOnly={true} aria-disabled='true' className='p-1 m-1'>
           <LayersIcon style={{width: '1.6rem', height: '1.6rem'}} />
         </IconButton>
       </span>
       <span id='misc-controls'>
-        <IconButton iconOnly={true} className='p-1 m-1'>
+        <IconButton iconOnly={true} aria-disabled='true' className='p-1 m-1'>
           <MoreIcon style={{width: '1.6rem', height: '1.6rem'}} />
         </IconButton>
       </span>
       <span id='gps-controls'>
-        <IconButton iconOnly={true} className='p-1 m-1'>
+        <IconButton iconOnly={true} 
+          aria-disabled={gpsMarker && gpsLatLong ? 'false' : 'true'} 
+          className='p-1 m-1'
+          onClick={focusOnGpsMarker}>
           <GpsCrosshairIcon style={{width: '1.6rem', height: '1.6rem'}} />
         </IconButton>
       </span>

@@ -106,6 +106,7 @@ const VisitorHomePage = ({ history }) => {
         onShopMarkerClick={(e) => viewShop(e.shopId)}
         onPointOfInterestMarkerClick={() => {}}
         onMoveEnd={clearMapFocus}
+        gpsEnabled={true}
         accessToken={websiteConfiguration.mapAccessToken}
         style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}}
       />

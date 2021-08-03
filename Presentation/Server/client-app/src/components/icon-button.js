@@ -14,7 +14,7 @@ const StyledCustomButton = styled(CustomButton)`
   }
 `;
 
-const IconButton = ({ children, text, onClick, className, iconOnly, id, style, danger }) => {
+const IconButton = ({ children, text, onClick, className, iconOnly, id, style, danger, ...props }) => {
   let buttonContent = null;
   if (iconOnly) {
     buttonContent = children;
@@ -28,7 +28,7 @@ const IconButton = ({ children, text, onClick, className, iconOnly, id, style, d
   }
 
   return (
-    <StyledCustomButton id={id} variant='none' style={style} className={`${iconOnly ? '' : 'py-1 px-2'} ${className}`} onClick={onClick} danger={danger}>
+    <StyledCustomButton id={id} variant='none' style={style} className={`${iconOnly ? '' : 'py-1 px-2'} ${className}`} onClick={onClick} danger={danger} {...props}>
       {buttonContent}
     </StyledCustomButton>
   );

@@ -30,38 +30,6 @@ const SearchContainer = styled.div`
   }
 `;
 
-const StyledCardColumns = styled(CardColumns)`
-  @media (max-width: ${responsiveBreakpoints.xxLarger}) {
-    -webkit-column-count: 6;
-    -moz-column-count: 6;
-    column-count: 6;  
-  }
-
-  @media (max-width: ${responsiveBreakpoints.xLarge}) {
-    -webkit-column-count: 5;
-    -moz-column-count: 5;
-    column-count: 5;  
-  }
-
-  @media (max-width: ${responsiveBreakpoints.large}) {
-    -webkit-column-count: 4;
-    -moz-column-count: 4;
-    column-count: 4;  
-  }
-
-  @media (max-width: ${responsiveBreakpoints.medium}) {
-    -webkit-column-count: 3;
-    -moz-column-count: 3;
-    column-count: 3;  
-  }
-
-  @media (max-width: ${responsiveBreakpoints.small}) {
-    -webkit-column-count: 2;
-    -moz-column-count: 2;
-    column-count: 2;  
-  }
-`;
-
 const SearchMenu = ({ history }) => {
   const [shopOffcanvasShow, setShopOffcanvasShow] = useState(false);
   const [shopToShow, setShopToShow] = useState(null);
@@ -217,8 +185,8 @@ const SearchMenu = ({ history }) => {
         onDismiss={() => setViewShopUrl(null)}
         canJumpToLocation={true}
       />
-      <SearchContainer className='px-3 py-2 d-flex flex-row'>
-        <SearchTextBox className='mr-2' id='shop-search-input' defaultValue={new URLSearchParams(window.location.search).get('keywords')} onSubmit={setKeywords}/>
+      <SearchContainer className='px-3 py-2 d-flex flex-row mx-auto'>
+        <SearchTextBox className='mr-2 flex-grow-1' id='shop-search-input' defaultValue={new URLSearchParams(window.location.search).get('keywords')} onSubmit={setKeywords}/>
         <CustomButton onClick={() => setFilterModalShow(true)}>Filter</CustomButton>
       </SearchContainer>
       {(() => {
