@@ -19,15 +19,12 @@ namespace Server.Common.Configuration
             switch (secretStorage)
             {
                 case "EnvironmentVariables":
-                    Console.WriteLine($"Fetching secrets from environment variables.");
                     return GetEnvironmentVariableSecrets();
                 case "Json":
-                    Console.WriteLine($"Fetching secrets from json file.");
                     return GetJsonSecrets();
                 default:
                     if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
                     {
-                        Console.WriteLine($"Using development secrets.");
                         return GetDevelopmentSecrets();
                     }
                     else

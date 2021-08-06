@@ -153,7 +153,7 @@ namespace Server
 
             // Register controller services.
             services.AddSingleton<IFileSystemService, FileSystemService>();
-            services.AddSingleton<IImageProcessingService, ImageProcessingService>();
+            services.AddSingleton<IImageProcessingService, MagickNetImageProcessingService>();
             services.AddSingleton<IPaginationService, PaginationService>();
 
             // Register object-object mapper.

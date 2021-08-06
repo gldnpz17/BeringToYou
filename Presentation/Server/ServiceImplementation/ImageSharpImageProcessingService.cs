@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Server.ServiceImplementation
 {
-    public class ImageProcessingService : IImageProcessingService
+    public class ImageSharpImageProcessingService : IImageProcessingService
     {
         private readonly IFileSystemService _fileSystemService;
 
-        public ImageProcessingService(IFileSystemService fileSystemService)
+        public ImageSharpImageProcessingService(IFileSystemService fileSystemService)
         {
             _fileSystemService = fileSystemService;
         }
@@ -67,6 +67,8 @@ namespace Server.ServiceImplementation
                     Path.GetExtension(originalImagePath));
 
                 originalImage.Save(generatedPath);
+
+                Configuration.Default.MemoryAllocator.ReleaseRetainedResources();
 
                 return Path.GetFileName(generatedPath);
             }
