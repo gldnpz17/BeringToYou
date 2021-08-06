@@ -37,7 +37,7 @@ namespace Server.Common.Configuration
         {
             public string[] AllowedBannerImageExtensions { get; set; } = new string[] { ".bmp", ".png", ".jpg", ".jpeg" };
             public int MaxBannerImageSize { get; set; } = 1024 * 1024 * 10;
-            public int MaxBannerImageThumbnailDimension { get; set; } = 1024;
+            public int MaxBannerImageThumbnailDimension { get; set; } = 512;
         }
 
         public class ShopCategoryConfiguration
@@ -50,7 +50,7 @@ namespace Server.Common.Configuration
         {
             public string[] AllowedImageExtensions { get; set; } = new string[] { ".bmp", ".png", ".jpg", ".jpeg" };
             public int MaxImageSize { get; set; } = 1024 * 1024 * 10;
-            public int MaxImageThumbnailDimension { get; set; } = 768;
+            public int MaxImageThumbnailDimension { get; set; } = 512;
         }
 
         public class FileSystemServiceConfiguration
