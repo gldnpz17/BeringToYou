@@ -118,7 +118,8 @@ const ImageContainer = styled.div`
     position: relative;
 
     height: 16rem;
-    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
     object-fit: cover;
 
     z-index: -10;

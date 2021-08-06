@@ -153,7 +153,6 @@ const SearchMenu = ({ history }) => {
       setShopToShow(await fetchShopDetails(params.get('viewshop')));
       setShopOffcanvasShow(true);
     } else {
-      setShopToShow(null);
       setShopOffcanvasShow(false);
     }
   };
