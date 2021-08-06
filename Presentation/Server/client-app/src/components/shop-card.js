@@ -15,7 +15,7 @@ const StyledCard = styled(CustomCard)`
   img {
     width: 100%;
     object-fit: contain;
-    image-orientation: none;
+    image-orientation: from-image;
   }
 `;
 
