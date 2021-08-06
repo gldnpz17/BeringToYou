@@ -113,6 +113,7 @@ const Location = styled(LocationIcon)`
 const ImageContainer = styled.div`
   position: relative;
   box-shadow: ${props => props.theme.shadow} 0rem 0.05rem 0.08rem;
+  overflow: hidden;
 
   img {
     position: relative;
