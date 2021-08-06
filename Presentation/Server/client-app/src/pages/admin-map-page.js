@@ -482,7 +482,17 @@ const AdminMapPage = () => {
               }
             );
           })
-        }
+        },
+        {
+          id: 'minPrice',
+          label: 'Harga Minimum',
+          type: 'text'
+        },
+        {
+          id: 'maxPrice',
+          label: 'Harga Maximum',
+          type: 'text'
+        },
       ],
       submit: {
         label: 'Simpan',
@@ -491,6 +501,8 @@ const AdminMapPage = () => {
             values.id,
             values.name,
             values.description,
+            values.minPrice,
+            values.maxPrice,
             values.floorNumber,
             values.latitude,
             values.longitude,

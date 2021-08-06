@@ -177,7 +177,7 @@ const MapContainer = styled.div`
 `;
 
 const ExpandableContainer = styled.span`
-
+  
 `;
 
 const ExpandableContents = styled.div`

@@ -226,7 +226,7 @@ const ShopOffCanvas = ({ history, shop, showBackground, canJumpToLocation, visib
               return (
                 <OnlineShop className='d-flex flex-row align-items-center'>
                   <FailSafeImg 
-                    src={`api/public/assets/${onlineShop?.platform?.name}`} 
+                    src={`api/public/assets/${onlineShop?.platform?.iconFilename}`} 
                     altsrc={`assets/imagenotfound.png`}
                   />
                   <a href={onlineShop?.url}>{`${onlineShop?.platform?.name} (${onlineShop?.name})`}</a>

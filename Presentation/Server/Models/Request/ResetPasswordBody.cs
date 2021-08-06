@@ -8,8 +8,7 @@ namespace Server.Models.Request
 {
     public class ResetPasswordBody
     {
-        public string Email { get; set; }
-        public string Token { get; set; }
+        public Guid AccountId { get; set; }
         public string NewPassword { get; set; }
     }
 }

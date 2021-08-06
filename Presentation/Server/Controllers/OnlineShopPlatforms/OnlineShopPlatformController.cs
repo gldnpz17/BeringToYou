@@ -43,7 +43,7 @@ namespace Server.Controllers.OnlineShopPlatforms
         }
 
         [HttpGet]
-        [Authorize(PolicyNameConstants.Admin.CanManageShops)]
+        [AllowAnonymous]
         public async Task<IList<OnlineShopPlatformSummary>> ReadAllOnlineShopPlatforms([FromServices]IMapper mapper)
         {
             var platforms = await _database.OnlineShopPlatforms.ToListAsync();
@@ -86,7 +86,7 @@ namespace Server.Controllers.OnlineShopPlatforms
         [Authorize(PolicyNameConstants.Admin.CanManageShops)]
         public async Task<IActionResult> UpdateOnlineShopPlatformIcon(
             [FromRoute]Guid platformId, 
-            [FromForm]IFormFile icon,
+            [FromForm(Name = "icon")]IFormFile icon,
             [FromServices]IFileSystemService fileSystemService,
             [FromServices]ApplicationConfiguration applicationConfiguration)
         {

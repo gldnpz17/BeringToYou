@@ -118,8 +118,6 @@ const ImageListControl = ({images, loadImages, onUpload, onSwap, onRemove, ...pr
   const removeCompletedUploads = () => {
     let newPendingImages = pendingImages.filter(image => !image.finished);
 
-    console.log(newPendingImages);
-
     setPendingImages(newPendingImages);
   }
 

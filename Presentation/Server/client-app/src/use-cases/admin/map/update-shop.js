@@ -1,4 +1,4 @@
-const updateShop = async (shopId, name, description, floor, latitude, longitude, categoryId) => {
+const updateShop = async (shopId, name, description, minPrice, maxPrice, floor, latitude, longitude, categoryId) => {
   let response = await fetch(`/api/shops/${shopId}`, {
     method: 'PUT',
     headers: {
@@ -8,6 +8,8 @@ const updateShop = async (shopId, name, description, floor, latitude, longitude,
       name: name,
       description: description,
       floor: floor,
+      minPrice: minPrice,
+      maxPrice: maxPrice,
       latitude: latitude,
       longitude: longitude,
       categoryId: categoryId

@@ -120,58 +120,11 @@ namespace DomainModel.Entities
             });
         }
 
-        public void ResetPassword(
-            string token, 
-            string newPassword, 
-            IPasswordHasher passwordHasher,
-            IDateTimeService dateTimeService,
-            DomainModelConfiguration configuration)
+        public void ResetPassword(string newPassword, IPasswordHasher passwordHasher)
         {
-            var now = dateTimeService.GetCurrentDateTime();
+            var hash = passwordHasher.Hash(newPassword, Salt);
 
-            if (now >= ResetAttemptTimeoutExpired)
-            {
-                if (token == ResetToken)
-                {
-                    if (now > ResetTokenExpired)
-                    {
-                        throw new DomainModelException(
-                            ExceptionCode.PASSWORD_RESET_TOKEN_EXPIRED,
-                            "This password reset token has passed it's expiry time.");
-                    }
-
-                    SetNewPassword();
-                    Account.AuthenticationTokens.Clear();
-                }
-                else
-                {
-                    if (now >= ResetAttemptMistakeClear)
-                    {
-                        ResetAttemptMistakeCounter = 0;
-                        ResetAttemptMistakeClear = now + configuration.TimeBeforePasswordResetRetryClear;
-                    }
-
-                    ResetAttemptMistakeCounter++;
-
-                    if (ResetAttemptMistakeCounter >= configuration.PasswordResetMaxRetries)
-                    {
-                        ResetAttemptTimeoutExpired = now + configuration.PasswordAttemptTimeoutDuration;
-                    }
-                }
-            }
-            else
-            {
-                throw new DomainModelException(
-                    ExceptionCode.PASSWORD_RESET_ATTEMPT_TIMEOUT,
-                    "Too many password reset attempt has been made. Please try again later.");
-            }
-
-            void SetNewPassword()
-            {
-                var hash = passwordHasher.Hash(newPassword, Salt);
-
-                Hash = hash;
-            }
+            Hash = hash;
         }
     }
 }

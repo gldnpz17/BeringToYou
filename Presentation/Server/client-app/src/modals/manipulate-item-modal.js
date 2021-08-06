@@ -107,7 +107,7 @@ const ManipulateItemModal = (props) => {
                   case 'file':
                     return (
                       <div className='d-flex flex-column'>
-                        {(field.preview !== null && field.preview !== undefined) ? <a href={field.preview} target="_blank">Old file</a> : null}
+                        {(field.preview !== null && field.preview !== undefined) ? <a href={field.preview} target="_blank">File lama</a> : null}
                         <AdminFormControl id={field.id} 
                           className={props.query?.id}
                           type='file' 

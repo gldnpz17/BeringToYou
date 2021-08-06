@@ -21,5 +21,6 @@ namespace Server.Models.Response
         public IList<ProductSummary> Products { get; set; }
         public double MinPrice { get; set; }
         public double MaxPrice { get; set; }
+        public List<AccountSummary> ShopOwners { get; set; }
     }
 }

@@ -29,9 +29,12 @@ import ImageListControl from "../components/image-list-control";
 import addMerchantVerificationImage from '../use-cases/admin/account/add-merchant-verification-image';
 import deleteMerchantVerificationImage from '../use-cases/admin/account/delete-merchant-verification-image';
 import fetchMerchantVerificationDetails from '../use-cases/admin/fetch-merchant-verification-details';
+import AdminFormControl from "../components/admin-form-control";
+import updateProfile from "../use-cases/admin/account/update-profile";
+import resetPassword from "../use-cases/admin/reset-password";
 
 const AdminAccountPage = () => {
-  const identityContext = useContext(IdentityContext)
+  const identityContext = useContext(IdentityContext);
 
   const [query, setQuery] = useState(null);
 
@@ -50,11 +53,7 @@ const AdminAccountPage = () => {
   const getAllData = async () => {
     setShops(await fetchAllShops());
     
-    if (identityContext !== undefined && identityContext.identity !== undefined) {
-      setOwnedShops(await fetchMerchantVerificationShops(identityContext.identity.accountId));
-    }
-    
-    if (identityContext?.identity.isMerchant) {
+    if (identityContext?.identity?.isMerchant) {
       let request = await fetchMerchantVerificationDetails(identityContext.identity.accountId);
 
       setVerificationRequest(request)
@@ -62,6 +61,12 @@ const AdminAccountPage = () => {
       let urls = request?.verificationPhotoFilenames.map(filename => `/api/merchant/verification-requests/${identityContext.identity.accountId}/photos/${filename}`);
 
       setVerificationImages(urls);
+
+      if (request.accepted) {
+        setOwnedShops(request.ownedShops);
+      } else {
+        setOwnedShops(await fetchMerchantVerificationShops(identityContext.identity.accountId));
+      }
     }
   }
 
@@ -78,6 +83,35 @@ const AdminAccountPage = () => {
       window.location.reload();
     }
   };
+
+  const handleUpdateProfile = async () => {
+    let username = document.getElementById('account-profile-form-username').value;
+    let displayName = document.getElementById('account-profile-form-display-name').value;
+    let email = document.getElementById('account-profile-form-email').value;
+
+    let response = await updateProfile(
+      identityContext?.identity?.accountId,
+      username,
+      displayName,
+      email);
+
+    if (response.status === 200) {
+      window.location.reload();
+    }
+  };
+
+  const handleResetPassword = async () => {
+    let newPassword = document.getElementById('account-page-reset-password').value;
+
+    if (newPassword) {
+      let response = await resetPassword(identityContext?.identity?.accountId, newPassword);
+
+      if (response.status === 200) {
+        document.getElementById('account-page-reset-password').value = '';
+        alert('Perubahan kata sandi berhasil.');
+      }
+    }
+  }
 
   const handleAddShop = (identity) => {
     setQuery({
@@ -136,29 +170,52 @@ const AdminAccountPage = () => {
               <p>Keamanan</p>
             </AdminPageNavLink>
           </Nav.Item>
-          <Nav.Item>
-            <AdminPageNavLink eventKey='verification'>
-              <VerifiedIcon />
-              <p>Verifikasi</p>
-            </AdminPageNavLink>
-          </Nav.Item>
+          {identityContext?.identity?.isMerchant ? 
+            <Nav.Item>
+              <AdminPageNavLink eventKey='verification'>
+                <VerifiedIcon />
+                <p>Verifikasi</p>
+              </AdminPageNavLink>
+            </Nav.Item>
+          : null}
         </AdminPageNav>
         <AdminPagetabContent>
           <Tab.Pane eventKey='profile'>
             <AdminFormContainer>
-              <h1 className='mb-3'>Informasi Diri</h1>
+              <Form>
+                <Form.Group className='mb-3'>
+                  <Form.Label>Username</Form.Label>
+                  <AdminFormControl type='text'
+                    id='account-profile-form-username' 
+                    defaultValue={identityContext?.identity?.username} 
+                    className='mr-2'
+                  />
+                </Form.Group>
+                <Form.Group className='mb-3'>
+                  <Form.Label>Nama Lengkap</Form.Label>
+                  <AdminFormControl type='text'
+                    id='account-profile-form-display-name'
+                    defaultValue={identityContext?.identity?.displayName}
+                    className='mr-2'
+                  />
+                </Form.Group>
+                <Form.Group className='mb-3'>
+                  <Form.Label>Alamat E-Mail</Form.Label>
+                  <AdminFormControl type='text' 
+                    id='account-profile-form-email'
+                    defaultValue={identityContext?.identity?.email}
+                    className='mr-2'
+                  />
+                </Form.Group>
+                <CustomButton onClick={handleUpdateProfile}>Ubah</CustomButton>
+              </Form>
+            </AdminFormContainer>
+            <AdminFormContainer>
               <Form className='mb-3'>
                 <Form.Group>
                   <Form.Label>Foto profil</Form.Label>
                   <Form.Control className='w-100' type='file' onChange={handleUpdateProfilePicture} />
                 </Form.Group>
-              </Form>
-              <Form>
-                <Form.Group className='mb-2'>
-                  <Form.Label>Nama</Form.Label>
-                  <Form.Control type='text' />
-                </Form.Group>
-                <CustomButton>Ubah</CustomButton>
               </Form>
             </AdminFormContainer>
           </Tab.Pane>
@@ -168,11 +225,11 @@ const AdminAccountPage = () => {
               <Form className='mb-3'>
                 <Form.Group className='mb-2'>
                   <Form.Label>Ubah kata sandi</Form.Label>
-                  <Form.Control className='mb-1' type='text' placeholder='Kode' />
-                  <Form.Control type='text' placeholder='Kata sandi baru' />
+                  <div className='d-flex'>
+                    <AdminFormControl id='account-page-reset-password' type='password' placeholder='Kata sandi baru' />
+                    <CustomButton className='ml-2' onClick={() => handleResetPassword()}>Ubah</CustomButton>
+                  </div>
                 </Form.Group>
-                <CustomButton className='mr-2'>Ubah</CustomButton>
-                <CustomButton secondary={true}>Kirim Kode</CustomButton>
               </Form>
             </AdminFormContainer>
             <AdminFormContainer>
@@ -196,7 +253,7 @@ const AdminAccountPage = () => {
               <h1 className='mb-3'>Status Verifikasi</h1>
               <p><b>Status: </b>{verificationRequest?.accepted ? 'Sudah diverifikasi' : 'Belum diverifikasi'}</p>
             </AdminFormContainer>
-            <AdminFormContainer>
+            <AdminFormContainer disabled={verificationRequest?.accepted} disabledReason='Sudah diverifikasi'>
               <h1 className='mb-3'>Kepemilikan Toko</h1>
               <CustomButton className='mb-3' onClick={() => handleAddShop()}>Tambah toko</CustomButton>
               <AdminTable>
@@ -231,7 +288,7 @@ const AdminAccountPage = () => {
                 </tbody>
               </AdminTable>
             </AdminFormContainer>
-            <AdminFormContainer>
+            <AdminFormContainer disabled={verificationRequest?.accepted} disabledReason='Sudah diverifikasi'>
               <h1 className='mb-3'>Foto Verifikasi</h1>
               <ImageListControl
                 images={verificationImages}

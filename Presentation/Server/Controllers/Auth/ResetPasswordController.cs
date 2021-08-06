@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.Common;
+using Server.Common.Auth;
 using Server.Models.Request;
 using System;
 using System.Collections.Generic;
@@ -56,14 +57,13 @@ namespace Server.Controllers.Auth
             [FromBody] ResetPasswordBody body,
             [FromServices] IPasswordHasher passwordHasher)
         {
-            var account = await _database.Accounts.FirstOrDefaultAsync(account => account.Email == body.Email);
+            var account = await _database.Accounts.FirstOrDefaultAsync(account => account.Id == body.AccountId);
+
+            await AuthorizeAccountOwner(body.AccountId, PermissionNameConstants.CanManageAccounts);
 
             account.PasswordCredential.ResetPassword(
-                body.Token,
                 body.NewPassword,
-                passwordHasher,
-                _dateTimeService,
-                _domainModelConfiguration);
+                passwordHasher);
 
             await _database.SaveChangesAsync();
 

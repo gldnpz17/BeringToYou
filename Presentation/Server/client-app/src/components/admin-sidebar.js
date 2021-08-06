@@ -219,24 +219,30 @@ const AdminSidebar = (props) => {
           <AccountIcon className='icon' />
           <p className='option-label'>Akun Pribadi</p>
         </NavigationOption>
-        <NavigationOption className={`${(props.page === 'manajemen-akun') ? 'selected' : ''}`}
-          href='/admin/manajemen-akun'
-        >
-          <AccountsIcon className='icon' />
-          <p className='option-label'>Manajemen Akun</p>
-        </NavigationOption>
-        <NavigationOption className={`${(props.page === 'peta-digital') ? 'selected' : ''}`}
-          href='/admin/peta-digital'
-        >
-          <MapIcon className='icon' />
-          <p className='option-label'>Peta Digital</p>
-        </NavigationOption>
-        <NavigationOption className={`${(props.page === 'toko') ? 'selected' : ''}`}
-          href='/admin/toko'
-        >
-          <ShopIcon className='icon' />
-          <p className='option-label'>Toko</p>
-        </NavigationOption>
+        {identityContext?.identity?.adminPermissions?.canManageAccounts || identityContext?.identity?.adminPermissions?.canManagePermissions ? 
+          <NavigationOption className={`${(props.page === 'manajemen-akun') ? 'selected' : ''}`}
+            href='/admin/manajemen-akun'
+          >
+            <AccountsIcon className='icon' />
+            <p className='option-label'>Manajemen Akun</p>
+          </NavigationOption>
+        : null}
+        {identityContext?.identity?.adminPermissions?.canManageMap ?
+          <NavigationOption className={`${(props.page === 'peta-digital') ? 'selected' : ''}`}
+            href='/admin/peta-digital'
+          >
+            <MapIcon className='icon' />
+            <p className='option-label'>Peta Digital</p>
+          </NavigationOption>
+        : null}
+        {identityContext?.identity?.adminPermissions?.canManageShops || identityContext?.identity?.isMerchant ?
+          <NavigationOption className={`${(props.page === 'toko') ? 'selected' : ''}`}
+            href='/admin/toko'
+          >
+            <ShopIcon className='icon' />
+            <p className='option-label'>Toko</p>
+          </NavigationOption>
+        : null}
         <NavigationOption className={`${(props.page === 'lain-lain') ? 'selected' : ''}`}
           href='/admin/lain-lain'
         >

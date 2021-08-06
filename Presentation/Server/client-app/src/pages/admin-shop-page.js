@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import React from 'react';
 import AdminPageContainer from "../components/admin-page-container";
 import AdminPageHeader from "../components/admin-page-header";
@@ -43,6 +43,9 @@ import updateShop from "../use-cases/admin/map/update-shop";
 import createOnlineShop from "../use-cases/admin/shop/create-online-shop";
 import editOnlineShop from '../use-cases/admin/shop/edit-online-shop';
 import deleteOnlineShop from '../use-cases/admin/shop/delete-online-shop';
+import { IdentityContext } from "../app";
+import ProfileIcon from "../svg/profile-icon";
+import fetchShopDetails from "../use-cases/common/fetch-shop-details";
 
 const StoreSelectContainer = styled.div`
   max-width: 28rem;
@@ -66,6 +69,7 @@ const ShopBanner = styled(FailSafeImg)`
 
 const AdminShopPage = () => {
   const bannerUploadInput = useRef(null);
+  const identityContext = useContext(IdentityContext);
 
   const [shops, setShops] = useState([]); 
   const [selectedShop, setSelectedShop] = useState(null);
@@ -87,7 +91,11 @@ const AdminShopPage = () => {
   }, []);
 
   const getAllData = async () => {
-    setShops(await fetchAllShops());
+    if (identityContext?.identity?.isMerchant) {
+      setShops(identityContext?.identity?.ownedShops);
+    } else if (identityContext?.identity?.adminPermissions?.canManageShops) {
+      setShops(await fetchAllShops());
+    }
     setShopCategories(await fetchAllShopCategories());
     setProductCategories(await fetchAllProductCategories());
     setOnlineShopPlatforms(await fetchAllOnlineShopPlatforms());
@@ -112,8 +120,8 @@ const AdminShopPage = () => {
     setCanSubmitProfileEdits(false);
   };
 
-  const selectShop = (shopId) => {
-    let shop = shops.find(shop => shop.id === shopId);
+  const selectShop = async (shopId) => {
+    let shop = await fetchShopDetails(shopId)
 
     setSelectedShop(shop);
   } 
@@ -123,17 +131,21 @@ const AdminShopPage = () => {
   const handleSubmitShopProfileEdits = async () => {
     let newName = document.getElementById('shop-profile-name').value;
     let newDescription = document.getElementById('shop-profile-description').value;
-    
+    let newMinPrice = document.getElementById('shop-profile-min-price').value;
+    let newMaxPrice = document.getElementById('shop-profile-max-price').value;
+
     await updateShop(
       selectedShop.id,
       newName,
       newDescription,
+      newMinPrice,
+      newMaxPrice,
       selectedShop.floor,
       selectedShop.latitude,
       selectedShop.longitude,
       selectedShop.category.id);
 
-    if (bannerImageToUpload !== null || bannerImageToUpload !== undefined) {
+    if (bannerImageToUpload) {
       await uploadFile(
         `/api/shops/${selectedShop.id}/banner-image`,
         'image',
@@ -687,13 +699,24 @@ const AdminShopPage = () => {
         {
           id: 'iconFile',
           label: 'File Icon',
-          type: 'file'
+          type: 'file',
+          preview: `/api/public/assets/${onlineShopPlatform.iconFilename}`
         }
       ],
       submit: {
         label: 'Simpan',
         callback: async (values) => {
           await updateOnlineShopPlatform(values.id, values.name);
+
+          if (values.iconFile) {
+            await uploadFile(
+              `/api/online-shop-platforms/${values.id}/icon`,
+              'icon',
+              values.iconFile,
+              values.iconFile.filename,
+              'PUT'
+            );
+          }
 
           await getAllData();
         }
@@ -763,7 +786,7 @@ const AdminShopPage = () => {
               <p>Profil</p>
             </AdminPageNavLink>
           </Nav.Item>
-          <Nav.Item>
+          {/*<Nav.Item>
             <AdminPageNavLink 
               onClick={() => setTabActiveKey('shop-products')}
               active={tabActiveKey === 'shop-products'}
@@ -771,8 +794,8 @@ const AdminShopPage = () => {
               <ProductIcon />
               <p>Produk</p>
             </AdminPageNavLink>
-          </Nav.Item>
-          <Nav.Item>
+          </Nav.Item>*/}
+          {/*<Nav.Item>
             <AdminPageNavLink 
               onClick={() => setTabActiveKey('shop-preview')}
               active={tabActiveKey === 'shop-preview'}
@@ -780,16 +803,18 @@ const AdminShopPage = () => {
               <ViewIcon />
               <p>Preview</p>
             </AdminPageNavLink>
-          </Nav.Item>
-          <Nav.Item>
-            <AdminPageNavLink 
-              onClick={() => setTabActiveKey('shop-management')}
-              active={tabActiveKey === 'shop-management'}
-            >
-              <CogsIcon />
-              <p>Manajemen</p>
-            </AdminPageNavLink>
-          </Nav.Item>
+          </Nav.Item>*/}
+          {identityContext?.identity?.adminPermissions?.canManageShops ? 
+            <Nav.Item>
+              <AdminPageNavLink 
+                onClick={() => setTabActiveKey('shop-management')}
+                active={tabActiveKey === 'shop-management'}
+              >
+                <CogsIcon />
+                <p>Manajemen</p>
+              </AdminPageNavLink>
+            </Nav.Item>
+          : null}
         </AdminPageNav>
         <AdminPageTabContent>
           <Tab.Pane active={tabActiveKey === 'shop-profile'}>
@@ -814,6 +839,20 @@ const AdminShopPage = () => {
                     as='textarea' rows={5} 
                     className='form-control' 
                     defaultValue={selectedShop?.description} />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>Harga minimum</Form.Label>
+                  <AdminFormControl id='shop-profile-min-price'
+                    onChange={() => setCanSubmitProfileEdits(true)}
+                    type='text' 
+                    defaultValue={selectedShop?.minPrice} />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>Harga maksimum</Form.Label>
+                  <AdminFormControl id='shop-profile-max-price'
+                    onChange={() => setCanSubmitProfileEdits(true)}
+                    type='text' 
+                    defaultValue={selectedShop?.maxPrice} />
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Gambar Banner</Form.Label>
@@ -978,7 +1017,7 @@ const AdminShopPage = () => {
                 </tbody>
               </AdminTable>
             </AdminFormContainer>
-            <AdminFormContainer>
+            {/*<AdminFormContainer>
               <h1>Kategori Produk</h1>
               <CustomButton className='mb-3' onClick={() => handleCreateProductCategory()}>Kategori produk baru</CustomButton>
               <AdminTable>
@@ -1017,7 +1056,7 @@ const AdminShopPage = () => {
                   })}
                 </tbody>
               </AdminTable>
-            </AdminFormContainer>
+            </AdminFormContainer>*/}
             <AdminFormContainer>
               <h1>Platform Toko Online</h1>
               <CustomButton className='mb-3' onClick={() => handleCreateOnlineShopPlatform()}>Platform baru</CustomButton>
