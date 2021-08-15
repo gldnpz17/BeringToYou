@@ -101,5 +101,43 @@ namespace Server.Controllers.ShopCategories
 
             return Ok();
         }
+
+        [HttpPost("{categoryId}/subcategories")]
+        [Authorize(PolicyNameConstants.Admin.CanManageShops)]
+        public async Task<IActionResult> CreateShopSubcategory(
+            [FromRoute] Guid categoryId,
+            [FromBody] CreateShopSubcategoryBody body,
+            [FromServices] IMapper mapper)
+        {
+            var category = await _database.ShopCategories.FirstOrDefaultAsync(category => category.Id == categoryId);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            var newSubcategory = mapper.Map<ShopSubcategory>(body);
+
+            category.Subcategories.Add(newSubcategory);
+
+            await _database.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpGet("{categoryId}/subcategories")]
+        [AllowAnonymous]
+        public async Task<IList<ShopSubcategorySummary>> ReadAllCategorySubcategories(
+            [FromRoute] Guid categoryId,
+            [FromServices] IMapper mapper)
+        {
+            var subcategories = await _database.ShopSubcategories
+                .Where(subcategory => subcategory.ShopCategory.Id == categoryId)
+                .ToListAsync();
+
+            var summaries = mapper.Map<List<ShopSubcategory>, List<ShopSubcategorySummary>>(subcategories);
+
+            return summaries;
+        }
     }
 }

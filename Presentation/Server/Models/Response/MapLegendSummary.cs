@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace Server.Models.Response
 {
-    public class ShopCategorySummary
+    public class MapLegendSummary
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
         public string IconFilename { get; set; }
-        public IList<ShopSubcategorySummary> Subcategories { get; set; }
+        public string Label { get; set; }
     }
 }

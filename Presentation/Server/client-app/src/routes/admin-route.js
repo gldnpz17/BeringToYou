@@ -9,9 +9,10 @@ import AdminShopPage from '../pages/admin-shop-page';
 import AdminMiscPage from '../pages/admin-misc-page';
 import { useContext, useEffect, useState } from "react";
 import checkAuthStatus from "../use-cases/check-identity";
-import LoginPage from '../pages/login-page';
+import AuthPage from '../pages/auth-page';
 import React from "react";
 import { IdentityContext } from "../app";
+import RequireAuthenticationRoute from "../components/auth/require-authentication-route";
 
 const AdminPageContainer = styled.div`
   background-color: ${props => props.theme.whitespace};
@@ -31,50 +32,41 @@ const ContentContainer = styled.div`
 
 const AdminRoute = () => {
   let { path, url } = useRouteMatch();
-  let { page } = useParams();
 
-  const identityContext = useContext(IdentityContext);
-
-  useEffect(() => {
-
-  }, [identityContext.identity?.isAuthenticated])
-
-  if (identityContext.identity === null) {
-    return null;
-  } else if (identityContext.identity.isAuthenticated) {
-    return (
-      <AdminPageContainer className='d-flex flex-row'>
-        <AdminSidebar page={page} />
-        <Switch>
+  return (
+    <AdminPageContainer className='d-flex flex-row'>
+      <Switch>
+        <Route path={`${path}/auth/:mode`}>
+          <AuthPage />
+        </Route>
+        <RequireAuthenticationRoute path={`${path}/:page?`}>
+          <AdminSidebar />
           <ContentContainer className='flex-grow-1'>
-            {(page === undefined) ? <AdminWelcomePage /> : null }
-            <Route exact path={`${path}/akun-pribadi`}>
-              <AdminAccountPage />
-            </Route>
-            <Route exact path={`${path}/manajemen-akun`}>
-              <AdminAdminPage />
-            </Route>
-            <Route exact path={`${path}/peta-digital`}>
-              <AdminMapPage />
-            </Route>
-            <Route exact path={`${path}/toko`}>
-              <AdminShopPage />
-            </Route>
-            <Route exact path={`${path}/lain-lain`}>
-              <AdminMiscPage />
-            </Route>
+            <Switch>
+              <Route exact path={`${path}`}>
+                <AdminWelcomePage />
+              </Route>
+              <Route path={`${path}/akun-pribadi`}>
+                <AdminAccountPage />
+              </Route>
+              <Route path={`${path}/manajemen-akun`}>
+                <AdminAdminPage />
+              </Route>
+              <Route path={`${path}/peta-digital`}>
+                <AdminMapPage />
+              </Route>
+              <Route path={`${path}/toko`}>
+                <AdminShopPage />
+              </Route>
+              <Route path={`${path}/lain-lain`}>
+                <AdminMiscPage />
+              </Route>
+            </Switch>
           </ContentContainer>
-        </Switch>
-      </AdminPageContainer>
-    );
-  } else if (!identityContext.identity.isAuthenticated) {
-    return (
-      <AdminPageContainer>
-        <LoginPage />
-      </AdminPageContainer>
-    );
-  }
-  
+        </RequireAuthenticationRoute>
+      </Switch>
+    </AdminPageContainer>
+  );
 };
 
 export default AdminRoute;

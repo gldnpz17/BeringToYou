@@ -27,6 +27,8 @@ namespace EFCoreDatabase
         public DbSet<Shop> Shops { get; set; }
         public DbSet<ShopCategory> ShopCategories { get; set; }
         public DbSet<TotpCredential> TotpCredentials { get; set; }
+        public DbSet<ShopSubcategory> ShopSubcategories { get; set; }
+        public DbSet<MapLegend> MapLegends { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

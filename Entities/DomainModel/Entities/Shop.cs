@@ -43,6 +43,8 @@ namespace DomainModel.Entities
         public double MaxPrice { get; set; } = double.MaxValue;
         
         public virtual ShopCategory Category { get; set; }
+
+        public virtual IList<ShopSubcategory> Subcategories { get; set; } = new List<ShopSubcategory>();
         
         public virtual IList<OnlineShopInstance> OnlineShopInstances { get; set; } = new List<OnlineShopInstance>();
         

@@ -6,8 +6,6 @@ import AdminPageNav from "../components/admin-page-nav";
 import AdminPageTabContainer from "../components/admin-page-tab-container";
 import ManipulateItemModal from "../modals/manipulate-item-modal";
 import ShopIcon from "../svg/shop-icon";
-import ProductIcon from '../svg/product-icon';
-import ViewIcon from '../svg/view-icon';
 import CogsIcon from '../svg/cogs-icon';
 import { Nav, Tab, Form } from 'react-bootstrap';
 import AdminPageNavLink from "../components/admin-page-nav-link";
@@ -27,7 +25,6 @@ import fetchShopProducts from "../use-cases/common/fetch-shop-products";
 import fetchAllShopCategories from "../use-cases/common/fetch-all-shop-categories";
 import fetchAllProductCategories from "../use-cases/common/fetch-all-product-categories";
 import fetchAllOnlineShopPlatforms from '../use-cases/common/fetch-all-online-shop-platforms';
-import ImageListControl from "../components/image-list-control";
 import createShopCategory from '../use-cases/admin/shop/create-shop-category';
 import updateShopCategory from '../use-cases/admin/shop/update-shop-category';
 import deleteShopCategory from '../use-cases/admin/shop/delete-shop-category';
@@ -44,8 +41,9 @@ import createOnlineShop from "../use-cases/admin/shop/create-online-shop";
 import editOnlineShop from '../use-cases/admin/shop/edit-online-shop';
 import deleteOnlineShop from '../use-cases/admin/shop/delete-online-shop';
 import { IdentityContext } from "../app";
-import ProfileIcon from "../svg/profile-icon";
 import fetchShopDetails from "../use-cases/common/fetch-shop-details";
+import CategoryIcon from '../svg/category-icon';
+import EditShopSubcategoriesModal from '../modals/edit-shop-subcategories-modal';
 
 const StoreSelectContainer = styled.div`
   max-width: 28rem;
@@ -85,6 +83,9 @@ const AdminShopPage = () => {
 
   const [canSubmitProfileEdits, setCanSubmitProfileEdits] = useState(false);
   const [bannerImageToUpload, setBannerImageToUpload] = useState(null);
+
+  const [editShopSubcategoriesShow, setEditShopSubcategoriesShow] = useState(false);
+  const [categoryToEditSubcategories, setCategoryToEditSubcategories] = useState(null);
 
   useEffect(() => {
     getAllData();
@@ -488,6 +489,12 @@ const AdminShopPage = () => {
         }
       }
     });
+  };
+
+  const handleEditCategorySubcategories = (shopCategory) => {
+    setCategoryToEditSubcategories(shopCategory);
+
+    setEditShopSubcategoriesShow(true);
   }
 
   const handleEditShopCategory = (shopCategory) => {
@@ -762,6 +769,12 @@ const AdminShopPage = () => {
         size='xl'
         query={query}
       />
+      <EditShopSubcategoriesModal
+        size='lg'
+        show={editShopSubcategoriesShow}
+        setShow={setEditShopSubcategoriesShow}
+        category={categoryToEditSubcategories}
+      />
       <AdminPageHeader title='Toko'>
         <ShopIcon />
       </AdminPageHeader>
@@ -999,6 +1012,11 @@ const AdminShopPage = () => {
                         </ItemWithIdTableCell>
                         <td>
                           <span className='d-flex justify-content-end'>
+                            <IconButton className='p-1 mr-2' iconOnly
+                              onClick={() => handleEditCategorySubcategories(category)}
+                            >
+                              <CategoryIcon />
+                            </IconButton>
                             <IconButton className='p-1 mr-2' iconOnly
                               onClick={() => handleEditShopCategory(category)}
                             >

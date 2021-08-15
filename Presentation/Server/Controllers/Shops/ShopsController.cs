@@ -94,14 +94,13 @@ namespace Server.Controllers.Shops
             var shops = await paginationService.PaginateAsync(
                 _database.Shops.Where(shop =>
                     (queryCategoryId == Guid.Empty || shop.Category.Id == queryCategoryId) &&
-                    (queryOnlineShopPlatformIds.Any() == false || 
-                        shop.OnlineShopInstances.Any(onlineShop => queryOnlineShopPlatformIds.Any(platformId => platformId == onlineShop.Platform.Id))) &&
+                    (queryOnlineShopPlatformIds.Any() == false || shop.OnlineShopInstances.Any(
+                        onlineShop => queryOnlineShopPlatformIds.Any(platformId => platformId == onlineShop.Platform.Id))) &&
                     shop.MinPrice >= queryMinPrice && shop.MaxPrice <= queryMaxPrice
-                )
-                .Search(
+                ).Search(
                     shop => shop.LowercaseName,
-                    shop => shop.LowercaseDescription)
-                .Containing(queryKeywords).OrderBy(shop => shop.Name),
+                    shop => shop.LowercaseDescription
+                ).Containing(queryKeywords).OrderBy(shop => shop.Name),
                 start,
                 count);
 
@@ -118,7 +117,7 @@ namespace Server.Controllers.Shops
 
             var mappedShop = mapper.Map<ShopDetailed>(shop);
 
-            mappedShop.OwnerNames = shop.ShopOwners.Select(owner => owner.DisplayName)?.ToList() ?? new List<string>();
+            mappedShop.OwnerNames = shop.ShopOwners.Select(owner => owner?.DisplayName)?.ToList() ?? new List<string>();
 
             return mappedShop;
         }
@@ -142,9 +141,20 @@ namespace Server.Controllers.Shops
                 throw new AppException(
                     AppExceptionCode.SHOP_CATEGORY_NOT_FOUND);
             }
-            else
+
+            shop.Category = category;
+
+            shop.Subcategories.Clear();
+
+            var categorySubcategoryIds = category.Subcategories.Select(subcategory => subcategory.Id).ToList();
+            foreach (var subcategoryIdToAdd in body.SubcategoryIds)
             {
-                shop.Category = category;
+                if (categorySubcategoryIds.Contains(subcategoryIdToAdd))
+                {
+                    var subcategory = await _database.ShopSubcategories.FirstOrDefaultAsync(subcategory => subcategory.Id == subcategoryIdToAdd);
+
+                    shop.Subcategories.Add(subcategory);
+                }
             }
 
             await _database.SaveChangesAsync();

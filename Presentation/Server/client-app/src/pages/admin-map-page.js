@@ -45,6 +45,9 @@ import updateShopCategory from "../use-cases/admin/shop/update-shop-category";
 import fetchShopDetails from '../use-cases/common/fetch-shop-details';
 import updateMapFloorKml from "../use-cases/admin/map/update-map-floor-kml";
 import uploadFile from "../use-cases/common/upload-file";
+import EditShopModal from "../modals/edit-shop-modal";
+import MiscTab from './admin-map-page-components/misc-tab';
+import MiscIcon from "../svg/misc-icon";
 
 const AdminMapPage = () => {
   const [floors, setFloors] = useState([]);
@@ -56,9 +59,14 @@ const AdminMapPage = () => {
 
   const [query, setQuery] = useState(null);
 
+  const [showEditShopModal, setShowEditShopModal] = useState(false);
+  const [shopToEdit, setShopToEdit] = useState(null);
+
+  const [openModal, setOpenModal] = useState(null);
+
   useEffect(() => {
     getAllData();
-  }, []);
+  }, [showEditShopModal]);
 
   const getAllData = async () => {
     setFloors(await fetchAllMapFloors());
@@ -418,100 +426,8 @@ const AdminMapPage = () => {
   }
 
   const handleEditShop = async (shop) => {
-    let shopDetails = await fetchShopDetails(shop.id);
-
-    setQuery({
-      id: 'edit-shop',
-      title: 'Ubah Toko',
-      fields: [
-        {
-          id: 'id',
-          label: 'Nama',
-          type: 'text',
-          readOnly: true,
-          defaultValue: shopDetails.id
-        },
-        {
-          id: 'name',
-          label: 'Nama',
-          type: 'text',
-          defaultValue: shopDetails.name
-        },
-        {
-          id: 'description',
-          label: 'Deskripsi',
-          type: 'textarea',
-          defaultValue: shopDetails.description
-        },
-        {
-          id: 'floorNumber',
-          label: 'Lantai',
-          type: 'select',
-          options: floors.map(floor => {
-            return (
-              {
-                value: floor.floorNumber,
-                label: `Lantai ${floor.floorNumber}`,
-                isDefault: (floor.floorNumber === shopDetails.floor)
-              }
-            );
-          })
-        },
-        {
-          id: 'latitude',
-          label: 'Latitude',
-          type: 'text',
-          defaultValue: shopDetails.latitude
-        },
-        {
-          id: 'longitude',
-          label: 'Longitude',
-          type: 'text',
-          defaultValue: shopDetails.longitude
-        },
-        {
-          id: 'category',
-          label: 'Kategori',
-          type: 'select',
-          options: shopCategories.map(category => {
-            return (
-              {
-                value: category.id,
-                label: category.name,
-                isDefault: (category.id === shopDetails.category.id)
-              }
-            );
-          })
-        },
-        {
-          id: 'minPrice',
-          label: 'Harga Minimum',
-          type: 'text'
-        },
-        {
-          id: 'maxPrice',
-          label: 'Harga Maximum',
-          type: 'text'
-        },
-      ],
-      submit: {
-        label: 'Simpan',
-        callback: async (values) => {
-          await updateShop(
-            values.id,
-            values.name,
-            values.description,
-            values.minPrice,
-            values.maxPrice,
-            values.floorNumber,
-            values.latitude,
-            values.longitude,
-            values.category);
-
-          await getAllData();
-        }
-      }
-    });
+    setShopToEdit(shop.id);
+    setShowEditShopModal(true);
   };
 
   const handleDeleteShop = (shop) => {
@@ -817,6 +733,12 @@ const AdminMapPage = () => {
         size='xl'
         query={query}
       />
+      <EditShopModal 
+        size='xl'
+        shopId={shopToEdit}
+        show={showEditShopModal}
+        setShow={setShowEditShopModal}
+      />
       <AdminPageHeader title='Peta Digital'>
         <MapIcon />
       </AdminPageHeader>
@@ -844,6 +766,10 @@ const AdminMapPage = () => {
             <AdminPageNavLink eventKey='locations'>
               <LocationIcon />
               <p>Lokasi</p>
+            </AdminPageNavLink>
+            <AdminPageNavLink eventKey='misc'>
+              <MiscIcon />
+              <p>Lain-lain</p>
             </AdminPageNavLink>
           </Nav.Item>
         </AdminPageNav>
@@ -1076,6 +1002,11 @@ const AdminMapPage = () => {
               </AdminTable>
             </AdminFormContainer>
           </Tab.Pane>
+          <MiscTab 
+            eventKey='misc'
+            openModal={openModal}
+            setOpenModal={setOpenModal}
+          />
         </AdminPageTabContent>
       </AdminPageTabContainer>
     </AdminPageContainer>

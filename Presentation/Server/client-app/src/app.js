@@ -15,6 +15,7 @@ import ShopProfilePage from "./pages/shop-profile-page";
 import VisitorHomePage from './pages/visitor-home-page';
 import AdminRoute from './routes/admin-route';
 import checkIdentity from './use-cases/check-identity';
+import { SnackbarProvider } from 'notistack';
 
 export const IdentityContext = React.createContext({});
 
@@ -78,12 +79,20 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <IdentityContext.Provider value={identityContextValue}>
+      <SnackbarProvider maxSnack={3} 
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right'
+        }}
+        autoHideDuration={2500}
+      >
         <BrowserRouter>
           <WebContainer>
             <Switch>
               <Route path='/admin'>
-                <AdminNavigationBar id='navigation-bar' />
+                <IdentityContext.Provider value={identityContextValue}>
+                  <AdminNavigationBar id='navigation-bar' />
+                </IdentityContext.Provider>
               </Route>
               <Route path='/'>
                 <VisitorNavbar id='navigation-bar' />
@@ -92,8 +101,10 @@ const App = () => {
             <ContentContainer>
               <Switch>
                 {/* Admin page contents. */}
-                <Route path='/admin/:page?'>
-                  <AdminRoute />
+                <Route path='/admin'>
+                  <IdentityContext.Provider value={identityContextValue}>
+                    <AdminRoute />
+                  </IdentityContext.Provider>
                 </Route>
 
                 {/* Visitor page contents. */}
@@ -108,7 +119,7 @@ const App = () => {
             </ContentContainer>
           </WebContainer>
         </BrowserRouter>
-      </IdentityContext.Provider>
+      </SnackbarProvider>
     </ThemeProvider>
   );
 };

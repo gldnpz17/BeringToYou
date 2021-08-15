@@ -14,6 +14,7 @@ namespace Server.Models.Request
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public Guid CategoryId { get; set; }
+        public IList<Guid> SubcategoryIds { get; set; }
         public double MinPrice { get; set; }
         public double MaxPrice { get; set; }
     }

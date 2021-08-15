@@ -40,6 +40,16 @@ namespace Server.Common.Database
             {
                 await _database.PermissionPresets.AddAsync(new AdminPermissionPreset()
                 {
+                    Name = "Default",
+                    CanManageAccounts = false,
+                    CanManageBackups = false,
+                    CanManagePermissions = false,
+                    CanManageShops = false,
+                    CanManageMap = false
+                });
+
+                await _database.PermissionPresets.AddAsync(new AdminPermissionPreset()
+                {
                     Name = "SuperAdmin",
                     CanManageAccounts = true,
                     CanManageBackups = true,

@@ -1,5 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { Form } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { IdentityContext } from "../app";
 import AdminFormControl from '../components/admin-form-control';
@@ -62,9 +63,10 @@ const MerchantSignUpLink = styled.a`
   cursor: pointer;
 `
 
-const LoginPage = () => {
-  const [mode, setMode] = useState('login');
+const AuthPage = () => {
   const identityContext = useContext(IdentityContext);
+
+  let { mode } = useParams();
 
   useEffect(() => {
     if (mode === 'signup') {
@@ -82,6 +84,8 @@ const LoginPage = () => {
 
     if (loginSuccess) {
       await identityContext.refreshIdentity();
+
+      window.location.href = '/admin';
     } else {
       usernameInput.value = '';
       passwordInput.value = '';
@@ -101,12 +105,7 @@ const LoginPage = () => {
       password
     );
 
-    setMode('login');
-
-    document.getElementById('admin-login-username').value = username;
-    document.getElementById('admin-login-password').value = password;
-
-    await handleLogin();
+    window.location.href = 'login';
   }
 
   return (
@@ -138,7 +137,7 @@ const LoginPage = () => {
                   </Form>
                   <div className='text-center'>
                     <p className='m-0'>Belum punya akun?</p>
-                    <MerchantSignUpLink onClick={() => setMode('signup')}>Daftar sebagai pedagang!</MerchantSignUpLink>
+                    <MerchantSignUpLink href='signup'>Daftar sebagai pedagang!</MerchantSignUpLink>
                   </div>
                 </>
               );
@@ -167,7 +166,7 @@ const LoginPage = () => {
                     </CustomButton>
                   </Form>
                   <div className='text-center'>
-                    <p className='m-0'>Sudah memiliki akun? <MerchantSignUpLink onClick={() => setMode('login')}>Masuk!</MerchantSignUpLink></p>
+                    <p className='m-0'>Sudah memiliki akun? <MerchantSignUpLink href='login'>Masuk!</MerchantSignUpLink></p>
                   </div>
                 </>
               );
@@ -178,4 +177,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default AuthPage;

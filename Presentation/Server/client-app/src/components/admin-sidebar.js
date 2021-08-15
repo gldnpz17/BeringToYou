@@ -185,6 +185,8 @@ const AdminSidebar = (props) => {
   const [minimized, setMinimized] = useState(AdminSidebarDisplay.minimized);
   const identityContext = useContext(IdentityContext);
 
+  let { page } = useParams();
+
   const toggleMinimized = () => {
     if (minimized) {
       setMinimized(false);
@@ -204,23 +206,23 @@ const AdminSidebar = (props) => {
       </MinimizeSidebarButton>
       <div id='profile-picture-container'>
         <FailSafeImg id='profile-picture' 
-          src={`/api/accounts/${identityContext.identity.accountId}/profile-picture`}
+          src={`/api/accounts/${identityContext.identity?.accountId}/profile-picture`}
           altsrc='/admin-assets/no-profile-picture.png'
         />
       </div>
       <div id='greeting-message' className='mb-2'>
         <p className='text-center m-0 w-100'>Selamat datang,</p>
-        <p id='account-display-name' className='text-center m-0 w-100'>{identityContext?.identity.displayName}</p>
+        <p id='account-display-name' className='text-center m-0 w-100'>{identityContext?.identity?.displayName}</p>
       </div>
       <div>
-        <NavigationOption className={`${(props.page === 'akun-pribadi') ? 'selected' : ''}`}
+        <NavigationOption className={`${(page === 'akun-pribadi') ? 'selected' : ''}`}
           href='/admin/akun-pribadi'
         >
           <AccountIcon className='icon' />
           <p className='option-label'>Akun Pribadi</p>
         </NavigationOption>
         {identityContext?.identity?.adminPermissions?.canManageAccounts || identityContext?.identity?.adminPermissions?.canManagePermissions ? 
-          <NavigationOption className={`${(props.page === 'manajemen-akun') ? 'selected' : ''}`}
+          <NavigationOption className={`${(page === 'manajemen-akun') ? 'selected' : ''}`}
             href='/admin/manajemen-akun'
           >
             <AccountsIcon className='icon' />
@@ -228,7 +230,7 @@ const AdminSidebar = (props) => {
           </NavigationOption>
         : null}
         {identityContext?.identity?.adminPermissions?.canManageMap ?
-          <NavigationOption className={`${(props.page === 'peta-digital') ? 'selected' : ''}`}
+          <NavigationOption className={`${(page === 'peta-digital') ? 'selected' : ''}`}
             href='/admin/peta-digital'
           >
             <MapIcon className='icon' />
@@ -236,14 +238,14 @@ const AdminSidebar = (props) => {
           </NavigationOption>
         : null}
         {identityContext?.identity?.adminPermissions?.canManageShops || identityContext?.identity?.isMerchant ?
-          <NavigationOption className={`${(props.page === 'toko') ? 'selected' : ''}`}
+          <NavigationOption className={`${(page === 'toko') ? 'selected' : ''}`}
             href='/admin/toko'
           >
             <ShopIcon className='icon' />
             <p className='option-label'>Toko</p>
           </NavigationOption>
         : null}
-        <NavigationOption className={`${(props.page === 'lain-lain') ? 'selected' : ''}`}
+        <NavigationOption className={`${(page === 'lain-lain') ? 'selected' : ''}`}
           href='/admin/lain-lain'
         >
           <MiscIcon className='icon' />

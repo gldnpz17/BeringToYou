@@ -75,6 +75,12 @@ namespace Server.Common.Mapper
                     config.CreateMap<DomainModel.Entities.PointOfInterest, Models.Response.PointOfInterestSummary>();
 
                     config.CreateMap<Models.Request.UpdatePointOfInterestBody, DomainModel.Entities.PointOfInterest>();
+
+                    config.CreateMap<Models.Request.CreateMapLegendBody, DomainModel.Entities.MapLegend>();
+
+                    config.CreateMap<DomainModel.Entities.MapLegend, Models.Response.MapLegendSummary>();
+
+                    config.CreateMap<Models.Request.UpdateMapLegendBody, DomainModel.Entities.MapLegend>();
                     #endregion
 
                     #region Merchant
@@ -122,6 +128,17 @@ namespace Server.Common.Mapper
                     config.CreateMap<DomainModel.Entities.ShopCategory, Models.Response.ShopCategorySummary>();
 
                     config.CreateMap<Models.Request.UpdateShopCategoryBody, DomainModel.Entities.ShopCategory>();
+                    #endregion
+
+                    #region ShopSubcategories
+                    config.CreateMap<Models.Request.CreateShopSubcategoryBody, DomainModel.Entities.ShopSubcategory>();
+
+                    config.CreateMap<DomainModel.Entities.ShopSubcategory, Models.Response.ShopSubcategorySummary>()
+                        .ForMember(
+                            destination => destination.CategoryId,
+                            options => options.MapFrom(source => source.ShopCategory.Id));
+
+                    config.CreateMap<Models.Request.UpdateShopSubcategoryBody, DomainModel.Entities.ShopSubcategory>();
                     #endregion
 
                     #region Shops

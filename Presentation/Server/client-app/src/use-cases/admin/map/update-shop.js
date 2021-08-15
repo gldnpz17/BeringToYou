@@ -1,4 +1,4 @@
-const updateShop = async (shopId, name, description, minPrice, maxPrice, floor, latitude, longitude, categoryId) => {
+const updateShop = async (shopId, name, description, minPrice, maxPrice, floor, latitude, longitude, categoryId, subcategoryIds) => {
   let response = await fetch(`/api/shops/${shopId}`, {
     method: 'PUT',
     headers: {
@@ -12,9 +12,12 @@ const updateShop = async (shopId, name, description, minPrice, maxPrice, floor, 
       maxPrice: maxPrice,
       latitude: latitude,
       longitude: longitude,
-      categoryId: categoryId
+      categoryId: categoryId,
+      subcategoryIds: subcategoryIds
     })
   });
+
+  return response;
 };
 
 export default updateShop;

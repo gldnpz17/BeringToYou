@@ -7,16 +7,13 @@ using System.Threading.Tasks;
 
 namespace DomainModel.Entities
 {
-    public class ShopCategory
+    public class MapLegend
     {
-        [Key]
         public Guid Id { get; set; }
 
-        [Required]
-        public string Name { get; set; }
-
         public string IconFilename { get; set; }
-
-        public virtual IList<ShopSubcategory> Subcategories { get; set; } = new List<ShopSubcategory>();
+        
+        [Required]
+        public string Label { get; set; }
     }
 }

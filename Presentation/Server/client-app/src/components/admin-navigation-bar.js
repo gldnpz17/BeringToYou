@@ -3,7 +3,7 @@ import styled from "styled-components";
 import BeringharjoLogo from '../svg/beringharjo-logo';
 import IconButton from "./icon-button";
 import WebIcon from '../svg/web-icon';
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { IdentityContext } from "../app";
 import logout from '../use-cases/admin/auth/logout';
 
@@ -52,7 +52,7 @@ const AdminNavigationBar = (props) => {
 
     await identityContext.refreshIdentity();
   };
-
+  
   return (
     <StyledNavbar {...props} className='fixed-top w-100 d-flex flex-row align-items-center'>
       <Logo />

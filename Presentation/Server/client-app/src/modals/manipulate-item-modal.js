@@ -5,6 +5,7 @@ import AdminFormGroup from "../components/admin-form-group";
 import AdminFormControl from "../components/admin-form-control";
 import CustomButton from "../components/custom-button";
 import ImageListControl from "../components/image-list-control";
+import FormCheck from "../components/form-check";
 
 const ManipulateItemModal = (props) => {
   const [show, setShow] = useState(false);
@@ -26,10 +27,16 @@ const ManipulateItemModal = (props) => {
       let input = inputs[x];
       switch(input.type) {
         case 'file':
-          values[input.id] = input.files[0];
+          values[input.name] = input.files[0];
           break;      
+        case 'checkbox':
+          if (!values[input.name]) {
+            values[input.name] = {}
+          }
+          (values[input.name])[input.id] = input.checked;
+          break;
         default:
-          values[input.id] = input.value;
+          values[input.name] = input.value;
           break;
       }
     }
@@ -70,7 +77,7 @@ const ManipulateItemModal = (props) => {
                 switch (field.type) {
                   case 'select':
                     return (
-                      <AdminFormControl id={field.id} as='select' className={`${props.query?.id}`}>
+                      <AdminFormControl name={field.id} as='select' className={`${props.query?.id}`}>
                         {field.options.map(option => {
                           return (
                             <option value={option.value} selected={option.isDefault === true}>{option.label}</option>
@@ -80,7 +87,7 @@ const ManipulateItemModal = (props) => {
                     );
                   case 'textarea':
                     return (
-                      <AdminFormControl id={field.id} 
+                      <AdminFormControl name={field.id} 
                         as='textarea' 
                         readOnly={field.readOnly === true} 
                         className={`form-control ${props.query?.id}`} 
@@ -90,7 +97,7 @@ const ManipulateItemModal = (props) => {
                     );
                   case 'text':
                     return (
-                      <AdminFormControl id={field.id} 
+                      <AdminFormControl name={field.id} 
                         className={props.query?.id}
                         type='text' 
                         readOnly={field.readOnly === true} 
@@ -99,7 +106,7 @@ const ManipulateItemModal = (props) => {
                     );
                   case 'password':
                     return (
-                      <AdminFormControl id={field.id} 
+                      <AdminFormControl name={field.id} 
                         className={props.query?.id}
                         type='password' 
                       />
@@ -108,7 +115,7 @@ const ManipulateItemModal = (props) => {
                     return (
                       <div className='d-flex flex-column'>
                         {(field.preview !== null && field.preview !== undefined) ? <a href={field.preview} target="_blank">File lama</a> : null}
-                        <AdminFormControl id={field.id} 
+                        <AdminFormControl name={field.id} 
                           className={props.query?.id}
                           type='file' 
                         />
@@ -122,6 +129,18 @@ const ManipulateItemModal = (props) => {
                         setImages={setImageList(field.id)}
                       />
                     );
+                  case 'checkbox':
+                    field.options?.map(option => {
+                      return (
+                        <FormCheck 
+                          id={option.id}
+                          name={field.id}
+                          className={props.query?.id}
+                          defaultChecked={option.defaultChecked === true}
+                        />
+                      ) ?? null;
+                    });
+                    break;
                   default:
                     throw new Error('Invalid field type.');
                 }
