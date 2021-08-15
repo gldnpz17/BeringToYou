@@ -22,7 +22,15 @@ const StyledButton = styled(Button)`
     }
   }};
 
-  color: ${props => props.danger ? props.theme.textOnDanger : 'black'};
+  color: ${props => {
+    if (props.danger) {
+      return props.theme.textOnDanger;
+    } else if (props.secondary) {
+      return 'black';
+    } else {
+      return props.theme.textOnPrimary;
+    }
+  }};
 
   box-shadow: ${props => props.theme.shadow} 0rem 0.05rem 0.1rem;
   
@@ -35,6 +43,16 @@ const StyledButton = styled(Button)`
 
     :hover,:active,:focus {
       box-shadow: ${props => props.theme.shadow} 0rem 0.05rem 0.1rem;
+
+      color: ${props => {
+        if (props.danger) {
+          return props.theme.textOnDanger;
+        } else if (props.secondary) {
+          return 'black';
+        } else {
+          return props.theme.textOnPrimary;
+        }
+      }};
     }
   }
 
@@ -42,7 +60,15 @@ const StyledButton = styled(Button)`
     :hover,:active,:focus {
       filter: brightness(90%);
 
-      color: ${props => props.danger ? props.theme.textOnDanger : 'black'};
+      color: ${props => {
+        if (props.danger) {
+          return props.theme.textOnDanger;
+        } else if (props.secondary) {
+          return 'black';
+        } else {
+          return props.theme.textOnPrimary;
+        }
+      }};
     }
 
     :active {

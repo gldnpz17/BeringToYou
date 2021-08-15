@@ -16,7 +16,7 @@ import FailSafeImg from "./fail-safe-img";
 const Container = styled.div`
   z-index: 10;
 
-  background-color: #cfd8dc;
+  background-color: ${props => props.theme.adminSidebar};
   box-shadow: ${props => props.theme.shadow} 0rem 0rem 0.3rem;
 
   &.minimized {

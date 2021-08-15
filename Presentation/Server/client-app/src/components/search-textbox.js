@@ -9,7 +9,7 @@ const StyledInputGroup = styled(InputGroup)`
   border-radius: 0.25rem;
 
   svg {
-    color: black;
+    color: ${props => props.theme.textOnPrimary};
   }
 `;
 
