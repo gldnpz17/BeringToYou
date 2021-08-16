@@ -127,41 +127,56 @@ const MapContainer = styled.div`
   width: 100%;
   height: 100%;
 
-  .shop-map-icon {
+  .shop-map-icon, .point-of-interest-map-icon {
     padding: 0.2rem;
     transform: translateX(-50%);
     width: 2rem;
     height: 2rem;
     color: white;
-    background-color: ${props => props.theme.mapSecondaryLight};
 
     border-style: solid;
     border-width: 0.1rem;
     border-radius: 1rem;
-    border-color: ${props => props.theme.mapSecondary};
 
     transition-duration: 0.2s;
 
-    :hover {
-      background-color: ${props => props.theme.mapSecondary};
-      border-color: ${props => props.theme.mapSecondaryDark};
-    }
-
-    :active {
-      background-color: ${props => props.theme.mapSecondary};
-      border-color: ${props => props.theme.mapSecondaryDark};
-
-      transform: translateX(-50%) translateY(0.2rem);
-    }
-
     :focus {
-      border-color: ${props => props.theme.mapSecondaryDark};
       box-shadow: ${props => props.theme.shadow} 0rem 0.15rem 0.3rem;
       color: black;
     }
   }
 
-  .shop-map-label {
+  .shop-map-icon {
+    background-color: ${props => props.theme.mapSecondaryLight};
+    border-color: ${props => props.theme.mapSecondary};
+
+    :hover, :active {
+      background-color: ${props => props.theme.mapSecondary};
+    }
+
+    :hover, :active, :focus {
+      border-color: ${props => props.theme.mapSecondaryDark};
+    }
+
+    :active {
+      transform: translateX(-50%) translateY(0.2rem);
+    }
+  } 
+  
+  .point-of-interest-map-icon {
+    background-color: ${props => props.theme.mapPrimaryLight};
+    border-color: ${props => props.theme.mapPrimary};
+
+    :hover, :active {
+      background-color: ${props => props.theme.mapPrimary};
+    }
+
+    :hover, :active, :focus {
+      border-color: ${props => props.theme.mapPrimaryDark};
+    }
+  }
+
+  .map-label {
     width: 5rem;
     text-align: center;
     transform: translateX(-50%);
@@ -421,7 +436,7 @@ const MarketMap = ({
           L.marker([shop.latitude, shop.longitude], {
             icon: new MapShopIcon(
               'shop-map-marker', 
-              'shop-map-label', 
+              'map-label', 
               <FailSafeImg 
                 style={{
                   background: `conic-gradient(${generateSubcategoryGradientBackground(shop.subcategories)})`
@@ -445,8 +460,8 @@ const MarketMap = ({
         if (pointOfInterest.floorNumber == currentFloorNumber) {
           L.marker([pointOfInterest.latitude, pointOfInterest.longitude], {
             icon: new GenericMapIcon(
-              'shop-map-marker', 
-              'shop-map-label', 
+              'point-of-interest-map-marker', 
+              'map-label', 
               <FailSafeImg 
                 src={`/api/public/assets/${pointOfInterest.category.iconFilename}`}
                 altsrc='/map-assets/missing-marker-icon.svg'
