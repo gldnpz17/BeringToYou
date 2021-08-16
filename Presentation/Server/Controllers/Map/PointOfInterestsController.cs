@@ -44,7 +44,7 @@ namespace Server.Controllers.Map
         }
 
         [HttpGet]
-        [Authorize(PolicyNameConstants.Admin.CanManageMap)]
+        [AllowAnonymous]
         public async Task<IList<PointOfInterestSummary>> ReadAllPointOfInterests([FromServices]IMapper mapper)
         {
             var pointOfInterests = await _database.PointOfInterests.ToListAsync();
