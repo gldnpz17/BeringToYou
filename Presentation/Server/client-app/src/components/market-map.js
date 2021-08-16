@@ -435,7 +435,7 @@ const MarketMap = ({
         if (shop.floor === currentFloorNumber) {
           L.marker([shop.latitude, shop.longitude], {
             icon: new MapShopIcon(
-              'shop-map-marker', 
+              'map-marker', 
               'map-label', 
               <FailSafeImg 
                 style={{
@@ -460,12 +460,12 @@ const MarketMap = ({
         if (pointOfInterest.floorNumber == currentFloorNumber) {
           L.marker([pointOfInterest.latitude, pointOfInterest.longitude], {
             icon: new GenericMapIcon(
-              'point-of-interest-map-marker', 
+              'map-marker', 
               'map-label', 
               <FailSafeImg 
                 src={`/api/public/assets/${pointOfInterest.category.iconFilename}`}
                 altsrc='/map-assets/missing-marker-icon.svg'
-                className='shop-map-icon' 
+                className='point-of-interest-map-icon' 
               />, 
               pointOfInterest.category.name),
               bubblingMouseEvents: false
