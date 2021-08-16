@@ -17,6 +17,12 @@ import fetchAllShops from "../use-cases/common/fetch-all-shops";
 import FailSafeImg from '../components/fail-safe-img';
 import RadioIconButton from "./radio-icon-button";
 import delay from "../helpers/delay";
+import GenericMapIcon from "../helpers/generic-map-icon";
+import sortByObjectProperty from "../helpers/sort-by-object-property";
+import MapLegendIcon from '../svg/map-legend-icon';
+import CopyrightIcon from '../svg/copyright-icon';
+import MapLegendModal from "../modals/market-map/map-legend-modal";
+import AttributionsModal from '../modals/market-map/attributions-modal';
 
 const StyledMap = styled.div`
   #zoom-control {
@@ -202,7 +208,12 @@ const MarketMap = ({
   const [map, setMap] = useState(null);
   const [tileLayer, setTileLayer] = useState(null);
   const [currentFloorNumber, setCurrentFloorNumber] = useState(1);
+
   const [floorSelectOpen, setFloorSelectOpen] = useState(false);
+  const [miscExpandOpen, setMiscExpandOpen] = useState(false);
+
+  const [showLegendModal, setShowLegendModal] = useState(false);
+  const [showAttributionsModal, setShowAttributionsModal] = useState(false);
 
   const [gpsMarker, setGpsMarker] = useState(null);
   const [gpsLatLong, setGpsLatLong] = useState(null);
@@ -287,7 +298,7 @@ const MarketMap = ({
         console.log('GPS available.')
 
         let marker = L.marker([0, 0], {
-          icon: new MapShopIcon(
+          icon: new GenericMapIcon(
             'gps-marker', 
             '', 
             <div />,
@@ -343,6 +354,29 @@ const MarketMap = ({
     renderMap();
   }, [shops, pointsOfInterest, overlays, floors, currentFloorNumber]);
 
+  const generateSubcategoryGradientBackground = (subcategories) => {
+    if (!subcategories) {
+      return null;
+    }
+
+    let sortedSubcategories = sortByObjectProperty(subcategories, 'name');
+
+    let fractionAngle = 360 / sortedSubcategories.length;
+
+    let fractionColors = [];
+
+    sortedSubcategories.forEach((subcategory, index) => {
+      let angleStart = index * fractionAngle;
+      fractionColors.push([
+        subcategory.rgbHexLegendColor, 
+        `${angleStart}deg`, 
+        `${angleStart + fractionAngle}deg`].join(' ')
+      );
+    });
+
+    return fractionColors.join(', ');
+  }
+
   const renderMap = async () => {
     if (map !== null) {
       // Remove old layers.
@@ -389,6 +423,9 @@ const MarketMap = ({
               'shop-map-marker', 
               'shop-map-label', 
               <FailSafeImg 
+                style={{
+                  background: `conic-gradient(${generateSubcategoryGradientBackground(shop.subcategories)})`
+                }}
                 src={`/api/public/assets/${shop.category.iconFilename}`}
                 altsrc='/map-assets/missing-marker-icon.svg'
                 className='shop-map-icon' 
@@ -407,7 +444,7 @@ const MarketMap = ({
       pointsOfInterest.forEach(pointOfInterest => {
         if (pointOfInterest.floorNumber == currentFloorNumber) {
           L.marker([pointOfInterest.latitude, pointOfInterest.longitude], {
-            icon: new MapShopIcon(
+            icon: new GenericMapIcon(
               'shop-map-marker', 
               'shop-map-label', 
               <FailSafeImg 
@@ -430,13 +467,21 @@ const MarketMap = ({
 
   return (
     <StyledMap {...props}>
+      <MapLegendModal 
+        show={showLegendModal}
+        setShow={setShowLegendModal}
+      />
+      <AttributionsModal 
+        show={showAttributionsModal}
+        setShow={setShowAttributionsModal}
+      />
       <span id='zoom-control' className='d-flex flex-column'>
-        <IconButton iconOnly={true} className='p-1 m-1'
+        <IconButton iconOnly className='p-1 m-1'
           onClick = {() => zoomIn()}  
         >
           <ZoomInIcon style={{width: '1.6rem', height: '1.6rem'}} />
         </IconButton>
-        <IconButton iconOnly={true} className='p-1 m-1'
+        <IconButton iconOnly className='p-1 m-1'
           onClick = {() => zoomOut()}
         >
           <ZoomOutIcon style={{width: '1.6rem', height: '1.6rem'}} />
@@ -467,21 +512,35 @@ const MarketMap = ({
             })}
           </ExpandableContents>
           {(floorSelectOpen)
-            ? <IconButton iconOnly={true} className='p-1 m-1' onClick={() => setFloorSelectOpen(false)}>
+            ? <IconButton iconOnly className='p-1 m-1' onClick={() => setFloorSelectOpen(false)}>
                 <CloseIcon style={{height: '1.6rem !important'}} />
               </IconButton> 
             : <CustomButton className='p-1 m-1' onClick={() => setFloorSelectOpen(true)}>
                 <p style={{width: '1.6rem', height: '1.6rem'}}>lt.{currentFloorNumber}</p>
               </CustomButton>}
         </ExpandableContainer>
-        <IconButton iconOnly={true} aria-disabled='true' className='p-1 m-1'>
+        <IconButton iconOnly aria-disabled='true' className='p-1 m-1'>
           <LayersIcon style={{width: '1.6rem', height: '1.6rem'}} />
         </IconButton>
       </span>
       <span id='misc-controls'>
-        <IconButton iconOnly={true} aria-disabled='true' className='p-1 m-1'>
-          <MoreIcon style={{width: '1.6rem', height: '1.6rem'}} />
-        </IconButton>
+        <ExpandableContainer className='d-flex flex-column'>
+          <ExpandableContents className={`d-flex flex-column align-items-center ${miscExpandOpen ? '' : 'hidden'}`}>
+            <IconButton iconOnly className='p-1 m-1' onClick={() => setShowLegendModal(true)}>
+              <MapLegendIcon style={{width: '1.6rem', height: '1.6rem'}} />
+            </IconButton>
+            <IconButton iconOnly className='p-1 m-1' onClick={() => setShowAttributionsModal(true)}>
+              <CopyrightIcon style={{width: '1.6rem', height: '1.6rem'}} />
+            </IconButton>
+          </ExpandableContents>
+          {(miscExpandOpen) 
+            ? <IconButton iconOnly className='p-1 m-1' onClick={() => setMiscExpandOpen(false)}>
+                <CloseIcon style={{height: '1.6rem !important'}} />
+              </IconButton>
+            : <IconButton iconOnly className='p-1 m-1' onClick={() => setMiscExpandOpen(true)}>
+                <MoreIcon style={{width: '1.6rem', height: '1.6rem'}} />
+              </IconButton>}
+        </ExpandableContainer>
       </span>
       <span id='gps-controls'>
         <IconButton iconOnly={true} 

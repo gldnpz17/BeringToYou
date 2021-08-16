@@ -50,7 +50,7 @@ const CreateUpdateMapLegendModal = ({ legendToUpdate, show, setShow, ...props })
         'icon',
         data.get('icon'),
         'PUT',
-        128
+        512
       ); 
 
       if (iconUploadResponse.status !== 200) {
