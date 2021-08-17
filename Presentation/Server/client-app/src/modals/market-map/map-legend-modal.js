@@ -66,10 +66,10 @@ const MapLegendModal = ({ ...props }) => {
             <>
               <SubsectionTitle>{category.name}</SubsectionTitle>
               {(category?.subcategories?.length > 0)
-                ? <Row className='mb-3' xs={2} sm={3}>
+                ? <Row className='mb-3' xs={2}>
                   {category.subcategories.map(subcategory => {
                     return (
-                      <Col>
+                      <Col className='d-flex align-items-center'>
                         <Legend className='p-2 d-flex align-items-center'>
                           <span style={{ backgroundColor: subcategory.rgbHexLegendColor }} />
                           <p className='mb-0 ml-1'>{subcategory.name}</p>
