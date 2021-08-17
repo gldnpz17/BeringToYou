@@ -1,6 +1,5 @@
 import { Card } from "react-bootstrap";
 import styled from "styled-components";
-import ViewProductOverlay from "../overlays/view-product-overlay";
 import CustomCard from './custom-card';
 
 const StyledCard = styled(CustomCard)`

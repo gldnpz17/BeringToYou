@@ -1,5 +1,5 @@
-import { Modal } from "react-bootstrap"
-import AdminModal from "../../components/admin-modal"
+import { Modal } from "react-bootstrap";
+import AdminModal from "../../components/admin-modal";
 import CustomButton from "../../components/custom-button";
 
 const AttributionsModal = ({ setShow, ...props }) => {

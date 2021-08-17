@@ -1,3 +1,4 @@
+import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import AdminFormControl from "../components/admin-form-control";
@@ -6,15 +7,13 @@ import AdminModal from "../components/admin-modal";
 import CustomButton from "../components/custom-button";
 import FormCheck from "../components/form-check";
 import IconButton from "../components/icon-button";
+import { getGpsCoordinates } from "../helpers/get-gps-coordinates";
 import GpsCrosshairIcon from "../svg/gps-crosshair-icon";
 import updateShop from "../use-cases/admin/map/update-shop";
 import fetchAllMapFloors from "../use-cases/common/fetch-all-map-floors";
 import fetchAllShopCategories from "../use-cases/common/fetch-all-shop-categories";
 import fetchShopCategorySubcategories from "../use-cases/common/fetch-shop-category-subcategories";
 import fetchShopDetails from "../use-cases/common/fetch-shop-details";
-import { useSnackbar } from "notistack";
-import { getGpsCoordinates } from "../helpers/get-gps-coordinates";
-import ApplicationError from "../common/application-error";
 
 const EditShopModal = ({ shopId, show, setShow, ...props }) => {
   const [shop, setShop] = useState(null);

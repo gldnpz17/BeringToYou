@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { useEffect } from "react";
-import { Card, Col, Container, Nav, Row, Tab } from "react-bootstrap";
+import { Col, Container, Nav, Row, Tab } from "react-bootstrap";
 import styled from "styled-components";
 import IconButton from "../components/icon-button";
 import ProductCard from "../components/product-card";
+import RadioIconButton from '../components/radio-icon-button';
+import DisplayOptions from '../helpers/display-options';
 import LocationIcon from "../svg/location-icon";
 import ViewListIcon from "../svg/view-list-icon";
 import ViewModulesIcon from "../svg/view-modules-icon";
-import DisplayOptions from '../helpers/display-options';
-import RadioIconButton from '../components/radio-icon-button';
 
 const StyledContainer = styled(Container)`
   font-family: 'Open Sans';

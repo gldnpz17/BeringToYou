@@ -1,28 +1,24 @@
+import L from 'leaflet';
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import MapShopIcon from '../helpers/map-shop-icon';
-import CloseIcon from "../svg/close-icon";
-import SilverwareIcon from '../svg/silverware-icon';
+import CustomButton from "../components/custom-button";
+import FailSafeImg from '../components/fail-safe-img';
 import IconButton from "../components/icon-button";
+import GenericMapIcon from "../helpers/generic-map-icon";
+import MapShopIcon from '../helpers/map-shop-icon';
+import sortByObjectProperty from "../helpers/sort-by-object-property";
+import '../lib/L.KML';
+import AttributionsModal from '../modals/market-map/attributions-modal';
+import MapLegendModal from "../modals/market-map/map-legend-modal";
+import CloseIcon from "../svg/close-icon";
+import CopyrightIcon from '../svg/copyright-icon';
+import GpsCrosshairIcon from '../svg/gps-crosshair-icon';
+import LayersIcon from "../svg/layers-icon";
+import MapLegendIcon from '../svg/map-legend-icon';
+import MoreIcon from '../svg/more-icon';
 import ZoomInIcon from '../svg/zoom-in-icon';
 import ZoomOutIcon from '../svg/zoom-out-icon';
-import LayersIcon from "../svg/layers-icon";
-import CustomButton from "../components/custom-button";
-import MoreIcon from '../svg/more-icon';
-import GpsCrosshairIcon from '../svg/gps-crosshair-icon';
-import L, { marker } from 'leaflet';
-import '../lib/L.KML';
-import { useEffect, useState } from "react";
-import { Container } from "react-bootstrap";
-import fetchAllShops from "../use-cases/common/fetch-all-shops";
-import FailSafeImg from '../components/fail-safe-img';
 import RadioIconButton from "./radio-icon-button";
-import delay from "../helpers/delay";
-import GenericMapIcon from "../helpers/generic-map-icon";
-import sortByObjectProperty from "../helpers/sort-by-object-property";
-import MapLegendIcon from '../svg/map-legend-icon';
-import CopyrightIcon from '../svg/copyright-icon';
-import MapLegendModal from "../modals/market-map/map-legend-modal";
-import AttributionsModal from '../modals/market-map/attributions-modal';
 
 const StyledMap = styled.div`
   #zoom-control {

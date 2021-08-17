@@ -1,12 +1,8 @@
-import React, { useRef } from "react";
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import CustomButton from "./custom-button";
-import IconButton from "./icon-button";
-import UploadIcon from '../svg/upload-icon';
-import AddIcon from '../svg/add-icon';
-import uploadImage from "../use-cases/common/upload-image";
+import React, { useEffect, useRef, useState } from "react";
 import { Spinner } from "react-bootstrap";
+import styled from "styled-components";
+import AddIcon from '../svg/add-icon';
+import IconButton from "./icon-button";
 
 const ImageList = styled.ul`
   display: flex;

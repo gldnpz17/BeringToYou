@@ -1,21 +1,18 @@
-import { useEffect, useRef, useState } from "react";
-import { CardColumns, Col, Row, Spinner } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import 'react-responsive-masonry';
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import CustomButton from "../../components/custom-button";
+import LoadingAnimation from "../../components/loading-animation";
 import SearchTextBox from "../../components/search-textbox";
-import ShopCard from "../../components/shop-card"
+import ShopCard from "../../components/shop-card";
+import websiteConfiguration from "../../config";
 import responsiveBreakpoints from "../../helpers/responsive-breakpoints";
 import ShopFilterModal from "../../modals/shop-filter-modal";
-import ShopOffCanvas from "./shop-offcanvas";
-import fetchAllShopCategories from '../../use-cases/common/fetch-all-shop-categories';
-import fetchAllOnlineShopPlatforms from '../../use-cases/common/fetch-all-online-shop-platforms';
 import fetchAllShops from '../../use-cases/common/fetch-all-shops';
-import websiteConfiguration from "../../config";
-import LoadingAnimation from "../../components/loading-animation";
 import fetchShopDetails from "../../use-cases/common/fetch-shop-details";
-import 'react-responsive-masonry';
-import Masonry, { ResponsiveMasonry } from "react-responsive-masonry"
+import ShopOffCanvas from "./shop-offcanvas";
 
 const Container = styled.div`
   height: 100%;

@@ -1,3 +1,4 @@
+import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 import { Tab } from "react-bootstrap";
 import AdminFormContainer from "../../components/admin-form-container";
@@ -8,9 +9,8 @@ import ItemWithIdTableCell from "../../components/item-with-id-table-cell";
 import CreateUpdateMapLegendModal from "../../modals/map-legend/create-update-map-legend-modal";
 import DeleteIcon from "../../svg/delete-icon";
 import EditIcon from "../../svg/edit-icon";
-import fetchAllLegends from '../../use-cases/common/fetch-all-legends';
 import deleteLegend from '../../use-cases/admin/map/delete-legend';
-import { useSnackbar } from "notistack";
+import fetchAllLegends from '../../use-cases/common/fetch-all-legends';
 
 const modals = {
   createUpdateLegend: 'create-update-map-legend'

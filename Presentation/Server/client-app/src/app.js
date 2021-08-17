@@ -1,21 +1,12 @@
-import React, { useEffect } from 'react';
-import { useState } from "react";
+import { SnackbarProvider } from 'notistack';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
 import AdminNavigationBar from './components/admin-navigation-bar';
-import NavigationBar from "./components/navigation-bar";
 import VisitorNavbar from './components/visitor-navbar';
-import NavigationOverlay from "./overlays/navigation-overlay";
-import HomePage from "./pages/home-page";
-import MarketMapPage from './pages/market-map-page';
-import ProductDetailsPage from './pages/product-details-page';
-import ProductSearchPage from "./pages/product-search-page";
-import ShopListPage from "./pages/shop-list-page";
-import ShopProfilePage from "./pages/shop-profile-page";
 import VisitorHomePage from './pages/visitor-home-page';
 import AdminRoute from './routes/admin-route';
 import checkIdentity from './use-cases/check-identity';
-import { SnackbarProvider } from 'notistack';
 
 export const IdentityContext = React.createContext({});
 

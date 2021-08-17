@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import NavMenuItem from '../components/nav-menu-item';
+import AdminIcon from '../svg/admin-icon';
 import HomeIcon from '../svg/home-icon';
 import MapIcon from "../svg/map-icon";
 import SearchIcon from "../svg/search-icon";
 import ShopIcon from "../svg/shop-icon";
-import AdminIcon from '../svg/admin-icon';
 
 const Container = styled.div`
   height: 0%;

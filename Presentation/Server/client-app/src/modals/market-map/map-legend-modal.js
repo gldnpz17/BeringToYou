@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Col, Modal, Row } from "react-bootstrap";
 import styled from "styled-components";
 import AdminModal from "../../components/admin-modal";
-import FailSafeImg from "../../components/fail-safe-img";
 import fetchAllLegends from "../../use-cases/common/fetch-all-legends";
 import fetchAllShopCategories from "../../use-cases/common/fetch-all-shop-categories";
 

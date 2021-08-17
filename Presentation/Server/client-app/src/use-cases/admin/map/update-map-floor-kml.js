@@ -1,4 +1,4 @@
-import uploadFile from "../../common/upload-file"
+import uploadFile from "../../common/upload-file";
 
 const updateMapFloorKml = async (floorId, kmlFilename, kmlFile) => {
   let response = await uploadFile(

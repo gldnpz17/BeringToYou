@@ -1,22 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import reportWebVitals from './reportWebVitals';
-import HomePage from './pages/home-page';
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-
 import 'bootstrap-select/dist/css/bootstrap-select.min.css';
 import 'bootstrap-select/dist/js/bootstrap-select.js';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'popper.js';
-
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './app';
 import './bootstrap-override.css';
 import './bootstrap-select-override.css';
+import './index.css';
+import reportWebVitals from './reportWebVitals';
 
-import { ThemeProvider } from 'react-bootstrap';
-import App from './app';
+
+
+
+
 
 ReactDOM.render(
   <React.StrictMode>

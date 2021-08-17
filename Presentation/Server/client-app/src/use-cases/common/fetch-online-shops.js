@@ -1,5 +1,3 @@
-import delay from "../../helpers/delay"
-
 const fetchOnlineShops = async (shopId) => {
   let response = await fetch(`/api/shops/${shopId}/online-shops`, {
     method: 'GET'

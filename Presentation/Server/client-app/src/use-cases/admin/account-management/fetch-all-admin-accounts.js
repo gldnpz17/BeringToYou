@@ -1,4 +1,3 @@
-import delay from "../../../helpers/delay"
 
 const fetchAllAdminAccounts = async () => {
   let response = await fetch('/api/admin/accounts', {

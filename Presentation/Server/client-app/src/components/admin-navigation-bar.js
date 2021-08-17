@@ -1,10 +1,7 @@
-import { Navbar } from "react-bootstrap";
+import { useContext } from "react";
 import styled from "styled-components";
-import BeringharjoLogo from '../svg/beringharjo-logo';
-import IconButton from "./icon-button";
-import WebIcon from '../svg/web-icon';
-import { useContext, useEffect } from "react";
 import { IdentityContext } from "../app";
+import BeringharjoLogo from '../svg/beringharjo-logo';
 import logout from '../use-cases/admin/auth/logout';
 
 const StyledNavbar = styled.div`

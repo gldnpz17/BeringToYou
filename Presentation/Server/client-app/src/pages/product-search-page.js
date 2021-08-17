@@ -1,18 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Col, Container, Row } from "react-bootstrap";
 import styled from "styled-components";
+import AnimatedSearchTextBox from '../components/animated-search-texbox';
 import IconButton from "../components/icon-button";
-import SearchTextBox from "../components/search-textbox";
+import ProductCard from '../components/product-card';
+import RadioIconButton from '../components/radio-icon-button';
+import DisplayOptions from '../helpers/display-options';
+import ProductSearchOptionsOverlay from '../overlays/product-search-options-overlay';
 import FilterIcon from "../svg/filter-icon";
 import SearchIcon from "../svg/search-icon";
 import ViewListIcon from '../svg/view-list-icon';
 import ViewModulesIcon from '../svg/view-modules-icon';
-import ProductCard from '../components/product-card';
-import { useEffect, useState } from "react";
-import DisplayOptions from '../helpers/display-options';
-import ProductSearchOptionsOverlay from '../overlays/product-search-options-overlay';
-import RadioIconButton from '../components/radio-icon-button';
-import AnimatedSearchTextBox from '../components/animated-search-texbox';
 
 const StyledContainer = styled(Container)`
   font-family: 'Open Sans';

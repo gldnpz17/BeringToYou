@@ -1,12 +1,12 @@
+import { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styled from "styled-components";
 import IconButton from "../components/icon-button";
 import SearchTextBox from "../components/search-textbox";
 import ShopCard from "../components/shop-card";
-import ShopIcon from "../svg/shop-icon";
-import FilterIcon from '../svg/filter-icon';
 import VisitorPageTitleContainer from "../components/visitor-page-title-container";
-import { useEffect, useState } from "react";
+import FilterIcon from '../svg/filter-icon';
+import ShopIcon from "../svg/shop-icon";
 
 const StyledContainer = styled(Container)`
   font-family: 'Open Sans';

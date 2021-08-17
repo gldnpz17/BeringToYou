@@ -1,4 +1,3 @@
-import delay from "../../helpers/delay";
 
 const fetchAllMapFloors = async () => {
   let response = await fetch('/api/map/floors', {

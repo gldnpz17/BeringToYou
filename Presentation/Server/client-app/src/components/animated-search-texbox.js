@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import SearchTextBox from "./search-textbox";
 import delay from '../helpers/delay';
+import SearchTextBox from "./search-textbox";
 
 const StyledAnimatedSearchTextBox = styled(SearchTextBox)`
   input:focus {

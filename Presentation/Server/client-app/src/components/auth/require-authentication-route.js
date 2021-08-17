@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { Redirect, Route, useLocation } from "react-router-dom";
 import { IdentityContext } from "../../app";
 

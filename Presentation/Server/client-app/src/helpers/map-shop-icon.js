@@ -1,7 +1,7 @@
-import L from 'leaflet';
-import ReactDOMServer from 'react-dom/server';
 import DOMPurify from 'dompurify';
 import { encode } from 'html-entities';
+import L from 'leaflet';
+import ReactDOMServer from 'react-dom/server';
 
 class MapShopIcon extends L.DivIcon {
   constructor(divClass, labelClass, svgIcon, shopName) {

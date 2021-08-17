@@ -1,4 +1,3 @@
-import delay from "../../helpers/delay"
 
 const fetchAllOnlineShopPlatforms = async () => {
   let response = await fetch('/api/online-shop-platforms', {

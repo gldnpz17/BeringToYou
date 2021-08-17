@@ -1,5 +1,3 @@
-import { Offcanvas } from "bootstrap";
-import { map, param } from "jquery";
 import { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";

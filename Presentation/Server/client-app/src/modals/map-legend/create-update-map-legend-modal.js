@@ -1,3 +1,4 @@
+import { useSnackbar } from "notistack";
 import { Modal } from "react-bootstrap";
 import AdminFormControl from "../../components/admin-form-control";
 import AdminFormGroup from "../../components/admin-form-group";
@@ -6,7 +7,6 @@ import CustomButton from "../../components/custom-button";
 import createLegend from '../../use-cases/admin/map/create-legend';
 import updateLegend from '../../use-cases/admin/map/update-legend';
 import uploadImage from "../../use-cases/common/upload-image";
-import { useSnackbar } from "notistack";
 
 const CreateUpdateMapLegendModal = ({ legendToUpdate, show, setShow, ...props }) => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();

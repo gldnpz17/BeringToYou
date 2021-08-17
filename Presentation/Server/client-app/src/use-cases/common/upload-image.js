@@ -1,4 +1,3 @@
-import delay from "../../helpers/delay";
 import uploadFile from "./upload-file";
 
 const resizeImage = (src, maxDimension) => {

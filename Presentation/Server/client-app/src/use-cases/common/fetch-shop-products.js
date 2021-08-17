@@ -1,4 +1,4 @@
-import delay from "../../helpers/delay"
+import delay from "../../helpers/delay";
 
 const fetchShopProducts = async (shopId) => {
   await delay(100);

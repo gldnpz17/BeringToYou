@@ -1,9 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
-import IconButton from "../components/icon-button";
 import NavigateToLink from "../components/navigate-to-link";
 import ChevronUpIcon from '../svg/chevron-up-icon';
-import ShopIcon from "../svg/shop-icon";
 
 const Container = styled.div`
   position: absolute;

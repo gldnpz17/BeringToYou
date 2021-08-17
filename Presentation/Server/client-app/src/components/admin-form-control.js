@@ -1,7 +1,7 @@
-import { Form } from "react-bootstrap"
-import styled from "styled-components"
-import { useEffect } from "react"
-import $ from 'jquery'
+import $ from 'jquery';
+import { useEffect } from "react";
+import { Form } from "react-bootstrap";
+import styled from "styled-components";
 
 const FormControl = styled(Form.Control)`
   :focus {

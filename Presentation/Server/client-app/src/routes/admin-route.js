@@ -1,18 +1,15 @@
-import { Route, Switch, useParams, useRouteMatch } from "react-router";
+import React from "react";
+import { Route, Switch, useRouteMatch } from "react-router";
 import styled from "styled-components";
 import AdminSidebar from "../components/admin-sidebar";
-import AdminWelcomePage from "../pages/admin-welcome-page";
-import AdminAccountPage from '../pages/admin-account-page';
-import AdminAdminPage from '../pages/admin-account-management-page';
-import AdminMapPage from '../pages/admin-map-page';
-import AdminShopPage from '../pages/admin-shop-page';
-import AdminMiscPage from '../pages/admin-misc-page';
-import { useContext, useEffect, useState } from "react";
-import checkAuthStatus from "../use-cases/check-identity";
-import AuthPage from '../pages/auth-page';
-import React from "react";
-import { IdentityContext } from "../app";
 import RequireAuthenticationRoute from "../components/auth/require-authentication-route";
+import AdminAdminPage from '../pages/admin-account-management-page';
+import AdminAccountPage from '../pages/admin-account-page';
+import AdminMapPage from '../pages/admin-map-page';
+import AdminMiscPage from '../pages/admin-misc-page';
+import AdminShopPage from '../pages/admin-shop-page';
+import AdminWelcomePage from "../pages/admin-welcome-page";
+import AuthPage from '../pages/auth-page';
 
 const AdminPageContainer = styled.div`
   background-color: ${props => props.theme.whitespace};

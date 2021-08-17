@@ -1,11 +1,11 @@
-import AdminModal from "../components/admin-modal";
-import { Form, Modal, Row, Col } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import AdminFormControl from "../components/admin-form-control";
 import AdminFormGroup from "../components/admin-form-group";
-import ImageSlideshow from '../components/image-slideshow';
+import AdminModal from "../components/admin-modal";
 import CustomButton from "../components/custom-button";
-import verifyMerchant from '../use-cases/admin/account-management/verify-merchant';
+import ImageSlideshow from '../components/image-slideshow';
 import rejectMerchant from '../use-cases/admin/account-management/reject-merchant';
+import verifyMerchant from '../use-cases/admin/account-management/verify-merchant';
 
 const VerifyMerchantModal = ({ verificationRequest, callback, ...props }) => {
   const handleVerify = async () => {

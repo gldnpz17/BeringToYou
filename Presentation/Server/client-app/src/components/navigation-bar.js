@@ -1,9 +1,9 @@
+import KUTE from 'kute.js';
 import { useState } from "react";
 import { Navbar } from "react-bootstrap";
 import styled from "styled-components";
-import MenuIcon from "../svg/menu-icon";
-import KUTE from 'kute.js';
 import BeringharjoLogo from "../svg/beringharjo-logo";
+import MenuIcon from "../svg/menu-icon";
 
 const StyledNavbar = styled(Navbar)`
   background-color: ${props => props.theme.primary};

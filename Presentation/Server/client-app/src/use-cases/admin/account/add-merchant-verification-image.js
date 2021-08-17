@@ -1,4 +1,4 @@
-import uploadImage from "../../common/upload-image"
+import uploadImage from "../../common/upload-image";
 
 const addMerchantVerificationImage = async (accountId, file) => {
   let response = await uploadImage(

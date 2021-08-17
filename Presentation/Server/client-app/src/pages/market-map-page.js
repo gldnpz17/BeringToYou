@@ -1,10 +1,8 @@
-import { Container } from "react-bootstrap";
-import L from 'leaflet';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import MarketMap from "../components/market-map";
-import MapShopOverviewOverlay from "../overlays/map-shop-overview-overlay";
 import websiteConfiguration from "../config";
+import MapShopOverviewOverlay from "../overlays/map-shop-overview-overlay";
 
 const PageContainer = styled.div`
   position: absolute;

@@ -1,13 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Container } from "react-bootstrap";
 import styled from "styled-components";
 import IconButton from "../components/icon-button";
+import ImageSlideshow from "../components/image-slideshow";
 import LocationIcon from "../svg/location-icon";
 import ShopIcon from "../svg/shop-icon";
-import NextIcon from '../svg/next-icon';
-import PreviousButton from '../svg/previous-icon';
-import RadioIconButton from "../components/radio-icon-button";
-import ImageSlideshow from "../components/image-slideshow";
 
 const ContentContainer = styled.article`
   font-family: 'Open Sans';

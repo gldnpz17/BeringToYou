@@ -1,13 +1,13 @@
+import KUTE from 'kute.js';
 import { useEffect, useState } from "react";
+import { withRouter } from "react-router-dom";
 import styled from "styled-components";
+import SearchMenu from "../pages/visitor-page-components/search-menu";
+import VisitorMenu from "../pages/visitor-page-components/visitor-menu";
+import BackIcon from '../svg/back-icon';
 import BeringharjoLogo from "../svg/beringharjo-logo";
 import MenuIcon from "../svg/menu-icon";
 import SearchIcon from "../svg/search-icon";
-import KUTE from 'kute.js';
-import VisitorMenu from "../pages/visitor-page-components/visitor-menu";
-import BackIcon from '../svg/back-icon';
-import SearchMenu from "../pages/visitor-page-components/search-menu";
-import { useLocation, useRouteMatch, brows, withRouter, useHistory } from "react-router-dom";
 
 const Navbar = styled.div`
   background-color: ${props => props.theme.whitespace};

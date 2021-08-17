@@ -1,9 +1,8 @@
-import { Button, CardDeck, Col, Container, Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import styled from "styled-components";
 import AnimatedSearchTextBox from "../components/animated-search-texbox";
 import IconButton from "../components/icon-button";
 import ProductCategoryCard from "../components/product-category-card";
-import SearchTextBox from "../components/search-textbox";
 import MapIcon from "../svg/map-icon";
 import ShopIcon from '../svg/shop-icon';
 

@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import styled from "styled-components";
-import CustomButton from "./custom-button";
 import IconButton from "./icon-button";
 
 const StyledRadioIconButton = styled(IconButton)`

@@ -1,11 +1,8 @@
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import FailSafeImg from "../../components/fail-safe-img";
-import IconButton from "../../components/icon-button";
-import delay from "../../helpers/delay";
 import CloseIcon from "../../svg/close-icon";
 import LocationIcon from "../../svg/location-icon";
-import fetchShopDetails from "../../use-cases/common/fetch-shop-details";
 
 const Container = styled.div`
   position: absolute;

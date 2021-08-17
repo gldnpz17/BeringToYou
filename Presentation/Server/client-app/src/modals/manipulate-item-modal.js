@@ -1,11 +1,11 @@
-import { Modal } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import AdminModal from "../components/admin-modal";
-import AdminFormGroup from "../components/admin-form-group";
+import { Modal } from "react-bootstrap";
 import AdminFormControl from "../components/admin-form-control";
+import AdminFormGroup from "../components/admin-form-group";
+import AdminModal from "../components/admin-modal";
 import CustomButton from "../components/custom-button";
-import ImageListControl from "../components/image-list-control";
 import FormCheck from "../components/form-check";
+import ImageListControl from "../components/image-list-control";
 
 const ManipulateItemModal = (props) => {
   const [show, setShow] = useState(false);

@@ -1,17 +1,13 @@
+import { useState } from "react";
+import { Form } from "react-bootstrap";
 import styled from "styled-components";
-import FilterIcon from "../svg/filter-icon";
-import SortIcon from '../svg/sort-icon';
-import FilterVariantIcon from '../svg/filter-variant-icon';
-import SortVariantIcon from '../svg/sort-variant-icon';
 import Chip from '../components/chip';
-import TuneIcon from '../svg/tune-icon';
+import CustomButton from '../components/custom-button';
+import FormRadio from '../components/form-radio';
 import IconButton from "../components/icon-button";
 import AddcategoryIcon from "../svg/add-category-icon";
-import { Form } from "react-bootstrap";
-import FormRadio from '../components/form-radio';
-import CustomButton from '../components/custom-button';
+import TuneIcon from '../svg/tune-icon';
 import SelectProductCategoryOverlay from "./select-product-category-overlay";
-import { useState } from "react";
 
 const OverlayContainer = styled.div`
   position: fixed;

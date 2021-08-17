@@ -1,16 +1,14 @@
-import styled from "styled-components";
-import ArrowCollapseLeftIcon from '../svg/arrow-collapse-left-icon';
-import AccountIcon from '../svg/account-icon';
-import AdminIcon from '../svg/admin-icon';
-import MapIcon from '../svg/map-icon';
-import ShopIcon from '../svg/shop-icon';
-import MiscIcon  from '../svg/misc-icon';
-import ChevronDoubleLeftIcon from '../svg/chevron-double-left-icon';
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useParams } from "react-router";
-import AdminSidebarDisplay from '../helpers/admin-sidebar-display';
-import AccountsIcon from "../svg/accounts-icon";
+import styled from "styled-components";
 import { IdentityContext } from "../app";
+import AdminSidebarDisplay from '../helpers/admin-sidebar-display';
+import AccountIcon from '../svg/account-icon';
+import AccountsIcon from "../svg/accounts-icon";
+import ChevronDoubleLeftIcon from '../svg/chevron-double-left-icon';
+import MapIcon from '../svg/map-icon';
+import MiscIcon from '../svg/misc-icon';
+import ShopIcon from '../svg/shop-icon';
 import FailSafeImg from "./fail-safe-img";
 
 const Container = styled.div`
