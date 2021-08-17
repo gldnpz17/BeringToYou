@@ -13,8 +13,6 @@ using Server.Models.Response;
 using Server.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.Map
@@ -25,12 +23,11 @@ namespace Server.Controllers.Map
     {
         public OverlaysController(AppDbContext database, IAuthorizationService authorizationService) : base(database, authorizationService)
         {
-
         }
 
         [HttpPost]
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
-        public async Task<IActionResult> CreateMapOverlay([FromBody]CreateMapOverlayBody body, [FromServices]IMapper mapper)
+        public async Task<IActionResult> CreateMapOverlay([FromBody] CreateMapOverlayBody body, [FromServices] IMapper mapper)
         {
             var newOverlay = mapper.Map<MapOverlay>(body);
 
@@ -43,7 +40,7 @@ namespace Server.Controllers.Map
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IList<MapOverlaySummary>> ReadAllMapOverlays([FromServices]IMapper mapper)
+        public async Task<IList<MapOverlaySummary>> ReadAllMapOverlays([FromServices] IMapper mapper)
         {
             var overlays = await _database.MapOverlays.ToListAsync();
 
@@ -55,9 +52,9 @@ namespace Server.Controllers.Map
         [HttpPut("{overlayId}")]
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
         public async Task<IActionResult> UpdateMapOverlay(
-            [FromRoute]Guid overlayId, 
-            [FromBody]UpdateMapOverlayBody body,
-            [FromServices]IMapper mapper)
+            [FromRoute] Guid overlayId,
+            [FromBody] UpdateMapOverlayBody body,
+            [FromServices] IMapper mapper)
         {
             var overlay = await _database.MapOverlays.FirstOrDefaultAsync(overlay => overlay.Id == overlayId);
 
@@ -71,9 +68,9 @@ namespace Server.Controllers.Map
         [HttpDelete("{overlayId}")]
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
         public async Task<IActionResult> DeleteMapOverlay(
-            [FromRoute]Guid overlayId,
-            [FromServices]IFileSystemService fileSystemService,
-            [FromServices]ApplicationConfiguration applicationConfiguration)
+            [FromRoute] Guid overlayId,
+            [FromServices] IFileSystemService fileSystemService,
+            [FromServices] ApplicationConfiguration applicationConfiguration)
         {
             var overlay = await _database.MapOverlays.FirstOrDefaultAsync(overlay => overlay.Id == overlayId);
 
@@ -90,10 +87,10 @@ namespace Server.Controllers.Map
         [HttpPut("{overlayId}/kml")]
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
         public async Task<IActionResult> UpdateKml(
-            [FromRoute]Guid overlayId, 
-            [FromForm]IFormFile kml,
-            [FromServices]IFileSystemService fileSystemService,
-            [FromServices]ApplicationConfiguration applicationConfiguration)
+            [FromRoute] Guid overlayId,
+            [FromForm] IFormFile kml,
+            [FromServices] IFileSystemService fileSystemService,
+            [FromServices] ApplicationConfiguration applicationConfiguration)
         {
             var overlay = await _database.MapOverlays.FirstOrDefaultAsync(overlay => overlay.Id == overlayId);
 
@@ -111,10 +108,10 @@ namespace Server.Controllers.Map
         [HttpPut("{overlayId}/icon")]
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
         public async Task<IActionResult> UpdateIcon(
-            [FromRoute]Guid overlayId,
-            [FromForm]IFormFile icon,
-            [FromServices]IFileSystemService fileSystemService,
-            [FromServices]ApplicationConfiguration applicationConfiguration)
+            [FromRoute] Guid overlayId,
+            [FromForm] IFormFile icon,
+            [FromServices] IFileSystemService fileSystemService,
+            [FromServices] ApplicationConfiguration applicationConfiguration)
         {
             var overlay = await _database.MapOverlays.FirstOrDefaultAsync(overlay => overlay.Id == overlayId);
 

@@ -7,14 +7,10 @@ using Microsoft.EntityFrameworkCore;
 using Server.Common;
 using Server.Common.Auth;
 using Server.Common.Configuration;
-using Server.Models.Request;
-using Server.Models.Response;
 using Server.Services;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.Merchant.VerificationRequests
@@ -38,8 +34,8 @@ namespace Server.Controllers.Merchant.VerificationRequests
 
         [HttpPost]
         public async Task<IActionResult> UploadMerchantVerificationPhoto(
-            [FromRoute]Guid accountId,
-            [FromForm(Name = "photo")]IFormFile photo)
+            [FromRoute] Guid accountId,
+            [FromForm(Name = "photo")] IFormFile photo)
         {
             await AuthorizeAccountOwner(accountId);
 
@@ -63,8 +59,8 @@ namespace Server.Controllers.Merchant.VerificationRequests
 
         [HttpGet("{filename}")]
         public async Task<IActionResult> DownloadMerchantVerificationPhoto(
-            [FromRoute]Guid accountId,
-            [FromRoute]string filename)
+            [FromRoute] Guid accountId,
+            [FromRoute] string filename)
         {
             await AuthorizeAccountOwner(accountId, PermissionNameConstants.CanManageAccounts);
 
@@ -85,7 +81,7 @@ namespace Server.Controllers.Merchant.VerificationRequests
         }
 
         [HttpDelete("{filename}")]
-        public async Task<IActionResult> DeleteMerchantVerificationPhoto([FromRoute]string filename, [FromRoute]Guid accountId)
+        public async Task<IActionResult> DeleteMerchantVerificationPhoto([FromRoute] string filename, [FromRoute] Guid accountId)
         {
             await AuthorizeAccountOwner(accountId);
 

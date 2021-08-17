@@ -60,7 +60,7 @@ const ShopFilterModal = ({ onApply, ...props }) => {
             defaultValue={selectedCategory}
             onChange={(event) => {
               setSelectedCategory(event.target.value);
-            }}  
+            }}
           >
             <option value=''>Jangan filter berdasarkan kategori</option>
             {shopCategories.map(category => {
@@ -74,8 +74,8 @@ const ShopFilterModal = ({ onApply, ...props }) => {
           <Form.Label>Toko online</Form.Label>
           {onlineShopPlatforms.map(platform => {
             return (
-              <FormCheck 
-                id={platform.id} 
+              <FormCheck
+                id={platform.id}
                 label={platform.name}
                 defaultChecked={selectedPlatforms.indexOf(platform.id) === -1 ? false : true}
                 onChange={(event) => {
@@ -90,7 +90,7 @@ const ShopFilterModal = ({ onApply, ...props }) => {
                   }
 
                   setSelectedPlatforms(newSelectedPlatforms);
-                }} 
+                }}
               />
             );
           })}
@@ -98,7 +98,7 @@ const ShopFilterModal = ({ onApply, ...props }) => {
         <Form.Group>
           <Form.Label>Rentang harga</Form.Label>
           <div className='d-flex align-items-center'>
-            <AdminFormControl className='mr-1' type='text' 
+            <AdminFormControl className='mr-1' type='text'
               defaultValue={minPrice}
               onChange={(event) => {
                 setMinPrice(event.target.value);

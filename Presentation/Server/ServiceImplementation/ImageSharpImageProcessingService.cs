@@ -1,11 +1,7 @@
 ﻿using Server.Services;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.ServiceImplementation
@@ -20,14 +16,14 @@ namespace Server.ServiceImplementation
         }
 
         public async Task<string> GenerateThumbnailAsync(
-            string originalImagePath, 
-            string thumbnailDirectory, 
+            string originalImagePath,
+            string thumbnailDirectory,
             int maxDimension)
         {
             using (var originalImage = Image.Load(originalImagePath))
             {
                 var resizedWidth = 0;
-                var resizedHeight = 0;  
+                var resizedHeight = 0;
 
                 // If landscape or square, scale by width.
                 if (originalImage.Width >= originalImage.Height)
@@ -63,7 +59,7 @@ namespace Server.ServiceImplementation
                 });
 
                 var generatedPath = await _fileSystemService.GenerateNewFilename(
-                    thumbnailDirectory, 
+                    thumbnailDirectory,
                     Path.GetExtension(originalImagePath));
 
                 originalImage.Save(generatedPath);

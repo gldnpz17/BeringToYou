@@ -12,7 +12,7 @@ const CreateUpdateMapLegendModal = ({ legendToUpdate, show, setShow, ...props })
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   let mode = legendToUpdate ? 'update' : 'create';
-  
+
   const handleCreate = async (event) => {
     event.preventDefault();
 
@@ -51,7 +51,7 @@ const CreateUpdateMapLegendModal = ({ legendToUpdate, show, setShow, ...props })
         data.get('icon'),
         'PUT',
         512
-      ); 
+      );
 
       if (iconUploadResponse.status !== 200) {
         iconUploadSuccessful = false;
@@ -73,7 +73,7 @@ const CreateUpdateMapLegendModal = ({ legendToUpdate, show, setShow, ...props })
 
   return (
     <AdminModal show={show} setShow={setShow} {...props}>
-      <form method='POST' 
+      <form method='POST'
         onSubmit={(event) => {
           switch (mode) {
             case 'create':
@@ -88,7 +88,7 @@ const CreateUpdateMapLegendModal = ({ legendToUpdate, show, setShow, ...props })
         <Modal.Header>
           <Modal.Title>
             {(() => {
-              switch(mode) {
+              switch (mode) {
                 case 'create':
                   return ('Tambah Legenda baru')
                 case 'update':
@@ -100,13 +100,13 @@ const CreateUpdateMapLegendModal = ({ legendToUpdate, show, setShow, ...props })
         <Modal.Body>
           {mode === 'update' &&
             <AdminFormGroup label='ID'>
-              <AdminFormControl type='text' name='id' readOnly 
+              <AdminFormControl type='text' name='id' readOnly
                 defaultValue={legendToUpdate.id}
               />
             </AdminFormGroup>
           }
           <AdminFormGroup label='Label'>
-            <AdminFormControl type='text' name='label' required 
+            <AdminFormControl type='text' name='label' required
               defaultValue={(() => {
                 switch (mode) {
                   case 'create':
@@ -120,8 +120,8 @@ const CreateUpdateMapLegendModal = ({ legendToUpdate, show, setShow, ...props })
           {mode === 'update' &&
             <AdminFormGroup label='icon'>
               <div className='d-flex flex-column'>
-                <a 
-                  target='_blank' 
+                <a
+                  target='_blank'
                   href={`/api/public/assets/${legendToUpdate.iconFilename}`}
                 >
                   File Lama
@@ -132,7 +132,7 @@ const CreateUpdateMapLegendModal = ({ legendToUpdate, show, setShow, ...props })
           }
         </Modal.Body>
         <Modal.Footer>
-          <CustomButton type='submit' onClick={() => {}}>
+          <CustomButton type='submit' onClick={() => { }}>
             {(() => {
               switch (mode) {
                 case 'create':

@@ -48,7 +48,7 @@ const MapLegendModal = ({ ...props }) => {
         <Modal.Title>Legenda</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <SectionTitle>Peta Dasar</SectionTitle> 
+        <SectionTitle>Peta Dasar</SectionTitle>
         <Row className='mb-4' xs={2} sm={3}>
           {legends.map(legend => {
             return (
@@ -61,29 +61,29 @@ const MapLegendModal = ({ ...props }) => {
             )
           })}
         </Row>
-        <SectionTitle>Kategori Toko</SectionTitle> 
-          {categories.map(category => {
-            return (
-              <>
-                <SubsectionTitle>{category.name}</SubsectionTitle>
-                  {(category?.subcategories?.length > 0) 
-                    ? <Row className='mb-3' xs={2} sm={3}>
-                        {category.subcategories.map(subcategory => {
-                          return (
-                            <Col>
-                              <Legend className='p-2 d-flex align-items-center'>
-                                <span style={{backgroundColor: subcategory.rgbHexLegendColor}} />
-                                <p className='mb-0 ml-1'>{subcategory.name}</p>
-                              </Legend>
-                            </Col>
-                          );
-                        })}
-                      </Row> 
-                    : <p style={{ fontSize: '0.9rem', color: 'grayText' }}>Kategori toko ini tidak memiliki subkategori.</p>
-                  }
-              </>
-            );
-          })}
+        <SectionTitle>Kategori Toko</SectionTitle>
+        {categories.map(category => {
+          return (
+            <>
+              <SubsectionTitle>{category.name}</SubsectionTitle>
+              {(category?.subcategories?.length > 0)
+                ? <Row className='mb-3' xs={2} sm={3}>
+                  {category.subcategories.map(subcategory => {
+                    return (
+                      <Col>
+                        <Legend className='p-2 d-flex align-items-center'>
+                          <span style={{ backgroundColor: subcategory.rgbHexLegendColor }} />
+                          <p className='mb-0 ml-1'>{subcategory.name}</p>
+                        </Legend>
+                      </Col>
+                    );
+                  })}
+                </Row>
+                : <p style={{ fontSize: '0.9rem', color: 'grayText' }}>Kategori toko ini tidak memiliki subkategori.</p>
+              }
+            </>
+          );
+        })}
       </Modal.Body>
     </AdminModal>
   );

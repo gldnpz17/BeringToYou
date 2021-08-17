@@ -1,6 +1,5 @@
 ﻿using EFCoreDatabase;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace InMemoryDatabase
 {

@@ -89,7 +89,7 @@ const EditShopModal = ({ shopId, show, setShow, ...props }) => {
 
       document.getElementById('edit-shop-latitude').value = latitude;
       document.getElementById('edit-shop-longitude').value = longitude;
-    } catch(err) {
+    } catch (err) {
       enqueueSnackbar('Gagal memperoleh koordinat saat ini.', {
         variant: 'error'
       });
@@ -104,107 +104,107 @@ const EditShopModal = ({ shopId, show, setShow, ...props }) => {
             <Modal.Title>Ubah Toko</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-              <AdminFormGroup label='ID'>
-                <AdminFormControl name='id' type='text' readOnly 
-                  defaultValue={shop.id}
+            <AdminFormGroup label='ID'>
+              <AdminFormControl name='id' type='text' readOnly
+                defaultValue={shop.id}
+              />
+            </AdminFormGroup>
+            <AdminFormGroup label='Nama'>
+              <AdminFormControl name='name' type='text'
+                defaultValue={shop.name}
+              />
+            </AdminFormGroup>
+            <AdminFormGroup label='Deskripsi'>
+              <AdminFormControl name='description' as='textarea'
+                className='form-control'
+                defaultValue={shop.description}
+                rows={5}
+              />
+            </AdminFormGroup>
+            <AdminFormGroup label='Lantai'>
+              <AdminFormControl name='floor' as='select'>
+                {floors.map(floor => {
+                  return (
+                    <option
+                      value={floor.floorNumber}
+                      defaultChecked={floor.floorNumber === shop.floor}
+                    >
+                      {`Lantai ${floor.floorNumber}`}
+                    </option>
+                  );
+                })}
+              </AdminFormControl>
+            </AdminFormGroup>
+            <AdminFormGroup label='Lat/Long'>
+              <div className='d-flex'>
+                <AdminFormControl name='latitude' type='text'
+                  id='edit-shop-latitude'
+                  className='mr-2'
+                  defaultValue={shop.latitude}
                 />
-              </AdminFormGroup>
-              <AdminFormGroup label='Nama'>
-                <AdminFormControl name='name' type='text' 
-                  defaultValue={shop.name}
+                <AdminFormControl name='longitude' type='text'
+                  id='edit-shop-longitude'
+                  className='mr-2'
+                  defaultValue={shop.longitude}
                 />
-              </AdminFormGroup>
-              <AdminFormGroup label='Deskripsi'>
-                <AdminFormControl name='description' as='textarea'
-                  className='form-control' 
-                  defaultValue={shop.description}
-                  rows={5} 
-                />
-              </AdminFormGroup>
-              <AdminFormGroup label='Lantai'>
-                <AdminFormControl name='floor' as='select'>
-                  {floors.map(floor => {
-                    return(
-                      <option 
-                        value={floor.floorNumber}
-                        defaultChecked={floor.floorNumber === shop.floor}
-                      >
-                        {`Lantai ${floor.floorNumber}`}
-                      </option>
-                    );
-                  })}
-                </AdminFormControl>
-              </AdminFormGroup>
-              <AdminFormGroup label='Lat/Long'>
-                <div className='d-flex'>
-                  <AdminFormControl name='latitude' type='text' 
-                    id='edit-shop-latitude'
-                    className='mr-2'
-                    defaultValue={shop.latitude}
-                  />
-                  <AdminFormControl name='longitude' type='text'
-                    id='edit-shop-longitude' 
-                    className='mr-2'
-                    defaultValue={shop.longitude}
-                  />
-                  <IconButton iconOnly className='p-1'
-                    onClick={handleSetCoordinates}
-                  >
-                    <GpsCrosshairIcon />
-                  </IconButton>
-                </div>
-              </AdminFormGroup>
-              <AdminFormGroup label='Kategori'>
-                <AdminFormControl name='category' as='select'
-                  onChange={handleCategoryChange}
+                <IconButton iconOnly className='p-1'
+                  onClick={handleSetCoordinates}
                 >
-                  {categories.map(category => {
-                    return (
-                      <option
-                        key={category.id}
-                        value={category.id}
-                        selected={category.id === shop.category.id}
-                      >
-                        {category.name}
-                      </option>
-                    );
-                  })}
-                </AdminFormControl>
-              </AdminFormGroup>
-              <AdminFormGroup label='Subkategori'>
-                {(() => {
-                  if (subcategories) {
-                    return (
-                      subcategories.map(subcategory => {
-                        return (
-                          <FormCheck
-                            key={subcategory.id}
-                            name='subcategories'
-                            value={subcategory.id}
-                            label={subcategory.name}
-                            defaultChecked={shop.subcategories.find(shopSubcategory => shopSubcategory.id === subcategory.id)}
-                          />
-                        );
-                      })
-                    );
-                  } else {
-                    return (<p>Silahkan pilih salah satu kategori utama.</p>);
-                  }
-                })()}
-              </AdminFormGroup>
-              <AdminFormGroup label='Harga Minimum'>
-                <AdminFormControl name='minimum-price' type='text' 
-                  defaultValue={shop.minPrice}
-                />
-              </AdminFormGroup>
-              <AdminFormGroup label='Harga Maksimum'>
-                <AdminFormControl name='maximum-price' type='text' 
-                  defaultValue={shop.maxPrice}
-                />
-              </AdminFormGroup>
+                  <GpsCrosshairIcon />
+                </IconButton>
+              </div>
+            </AdminFormGroup>
+            <AdminFormGroup label='Kategori'>
+              <AdminFormControl name='category' as='select'
+                onChange={handleCategoryChange}
+              >
+                {categories.map(category => {
+                  return (
+                    <option
+                      key={category.id}
+                      value={category.id}
+                      selected={category.id === shop.category.id}
+                    >
+                      {category.name}
+                    </option>
+                  );
+                })}
+              </AdminFormControl>
+            </AdminFormGroup>
+            <AdminFormGroup label='Subkategori'>
+              {(() => {
+                if (subcategories) {
+                  return (
+                    subcategories.map(subcategory => {
+                      return (
+                        <FormCheck
+                          key={subcategory.id}
+                          name='subcategories'
+                          value={subcategory.id}
+                          label={subcategory.name}
+                          defaultChecked={shop.subcategories.find(shopSubcategory => shopSubcategory.id === subcategory.id)}
+                        />
+                      );
+                    })
+                  );
+                } else {
+                  return (<p>Silahkan pilih salah satu kategori utama.</p>);
+                }
+              })()}
+            </AdminFormGroup>
+            <AdminFormGroup label='Harga Minimum'>
+              <AdminFormControl name='minimum-price' type='text'
+                defaultValue={shop.minPrice}
+              />
+            </AdminFormGroup>
+            <AdminFormGroup label='Harga Maksimum'>
+              <AdminFormControl name='maximum-price' type='text'
+                defaultValue={shop.maxPrice}
+              />
+            </AdminFormGroup>
           </Modal.Body>
           <Modal.Footer>
-            <CustomButton type='submit' onClick={() => {}}>Simpan</CustomButton>
+            <CustomButton type='submit' onClick={() => { }}>Simpan</CustomButton>
             <CustomButton secondary onClick={() => setShow(false)}>Batal</CustomButton>
           </Modal.Footer>
         </form>

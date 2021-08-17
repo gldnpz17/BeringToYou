@@ -117,7 +117,7 @@ const CompassNeedle = styled.div`
 
   svg {
     height: 2.5rem;
-    
+
     filter: drop-shadow(0.05rem 0.05rem 0.1rem rgba(0, 0, 0, 50%));
   }
 `;
@@ -161,8 +161,8 @@ const MapContainer = styled.div`
     :active {
       transform: translateX(-50%) translateY(0.2rem);
     }
-  } 
-  
+  }
+
   .point-of-interest-map-icon {
     background-color: ${props => props.theme.mapPrimaryLight};
     border-color: ${props => props.theme.mapPrimary};
@@ -198,7 +198,7 @@ const MapContainer = styled.div`
 `;
 
 const ExpandableContainer = styled.span`
-  
+
 `;
 
 const ExpandableContents = styled.div`
@@ -210,16 +210,15 @@ const ExpandableContents = styled.div`
 `;
 
 const MarketMap = ({
-  shops, 
-  pointsOfInterest, 
-  floors, 
-  overlays, 
-  onShopMarkerClick, 
+  shops,
+  pointsOfInterest,
+  floors,
+  overlays,
+  onShopMarkerClick,
   onPointOfInterestMarkerClick,
   onMoveEnd,
   gpsEnabled,
-  focus, ...props}) => {
-  
+  focus, ...props }) => {
   const [map, setMap] = useState(null);
   const [tileLayer, setTileLayer] = useState(null);
   const [currentFloorNumber, setCurrentFloorNumber] = useState(1);
@@ -255,7 +254,7 @@ const MarketMap = ({
         }
       });
 
-      currentMap.on('move', onMoveEnd ? onMoveEnd : () => {});
+      currentMap.on('move', onMoveEnd ? onMoveEnd : () => { });
 
       setMap(currentMap);
 
@@ -281,15 +280,15 @@ const MarketMap = ({
     if (isIOS) {
       try {
         let response = await DeviceOrientationEvent.requestPermission();
-      
+
         if (response === 'granted') {
           window.addEventListener(
-            'deviceorientation', 
+            'deviceorientation',
             (event) => changeCompassAngle(event.webkitCompassHeading || Math.abs(event.alpha - 360)),
             false
           );
         }
-      } catch(error) {
+      } catch (error) {
         document.getElementById('compass-button').classList.add('disabled');
       }
     } else {
@@ -308,23 +307,23 @@ const MarketMap = ({
   const initializeGps = (gpsMap) => {
     if (!gpsMarker) {
       let gpsIsAvailable = 'geolocation' in navigator;
-    
+
       if (gpsEnabled && gpsIsAvailable) {
         console.log('GPS available.')
 
         let marker = L.marker([0, 0], {
           icon: new GenericMapIcon(
-            'gps-marker', 
-            '', 
+            'gps-marker',
+            '',
             <div />,
             '')
         });
         setGpsMarker(marker);
         marker.addTo(gpsMap);
-  
+
         navigator.geolocation.watchPosition((position) => {
           let coords = position.coords;
-  
+
           setGpsLatLong([coords.latitude, coords.longitude]);
         });
       } else {
@@ -383,8 +382,8 @@ const MarketMap = ({
     sortedSubcategories.forEach((subcategory, index) => {
       let angleStart = index * fractionAngle;
       fractionColors.push([
-        subcategory.rgbHexLegendColor, 
-        `${angleStart}deg`, 
+        subcategory.rgbHexLegendColor,
+        `${angleStart}deg`,
         `${angleStart + fractionAngle}deg`].join(' ')
       );
     });
@@ -403,7 +402,7 @@ const MarketMap = ({
 
       // Render tiles.
       if (tileLayer === null) {
-        let tiles = L.tileLayer('https://api.mapbox.com/styles/v1/zpndlg/ckr7oxark0lbn17mtzv4dym5u/tiles/{z}/{x}/{y}?access_token='+ props.accessToken, {
+        let tiles = L.tileLayer('https://api.mapbox.com/styles/v1/zpndlg/ckr7oxark0lbn17mtzv4dym5u/tiles/{z}/{x}/{y}?access_token=' + props.accessToken, {
           attribution: '© <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
           tileSize: 512,
           zoomOffset: -1,
@@ -435,18 +434,18 @@ const MarketMap = ({
         if (shop.floor === currentFloorNumber) {
           L.marker([shop.latitude, shop.longitude], {
             icon: new MapShopIcon(
-              'map-marker', 
-              'map-label', 
-              <FailSafeImg 
+              'map-marker',
+              'map-label',
+              <FailSafeImg
                 style={{
                   background: `conic-gradient(${generateSubcategoryGradientBackground(shop.subcategories)})`
                 }}
                 src={`/api/public/assets/${shop.category.iconFilename}`}
                 altsrc='/map-assets/missing-marker-icon.svg'
-                className='shop-map-icon' 
-              />, 
+                className='shop-map-icon'
+              />,
               shop.name),
-              bubblingMouseEvents: false
+            bubblingMouseEvents: false
           }).addTo(map).on('click', (event) => {
             if (props.onMarkerClick !== null && onShopMarkerClick !== undefined) {
               event.shopId = shop.id;
@@ -455,20 +454,20 @@ const MarketMap = ({
           });
         }
       });
-  
+
       pointsOfInterest.forEach(pointOfInterest => {
         if (pointOfInterest.floorNumber == currentFloorNumber) {
           L.marker([pointOfInterest.latitude, pointOfInterest.longitude], {
             icon: new GenericMapIcon(
-              'map-marker', 
-              'map-label', 
-              <FailSafeImg 
+              'map-marker',
+              'map-label',
+              <FailSafeImg
                 src={`/api/public/assets/${pointOfInterest.category.iconFilename}`}
                 altsrc='/map-assets/missing-marker-icon.svg'
-                className='point-of-interest-map-icon' 
-              />, 
+                className='point-of-interest-map-icon'
+              />,
               pointOfInterest.category.name),
-              bubblingMouseEvents: false
+            bubblingMouseEvents: false
           }).addTo(map).on('click', (event) => {
             if (props.onMarkerClick !== null && onPointOfInterestMarkerClick !== undefined) {
               event.pointOfInterestId = pointOfInterest.id;
@@ -482,24 +481,24 @@ const MarketMap = ({
 
   return (
     <StyledMap {...props}>
-      <MapLegendModal 
+      <MapLegendModal
         show={showLegendModal}
         setShow={setShowLegendModal}
       />
-      <AttributionsModal 
+      <AttributionsModal
         show={showAttributionsModal}
         setShow={setShowAttributionsModal}
       />
       <span id='zoom-control' className='d-flex flex-column'>
         <IconButton iconOnly className='p-1 m-1'
-          onClick = {() => zoomIn()}  
+          onClick={() => zoomIn()}
         >
-          <ZoomInIcon style={{width: '1.6rem', height: '1.6rem'}} />
+          <ZoomInIcon style={{ width: '1.6rem', height: '1.6rem' }} />
         </IconButton>
         <IconButton iconOnly className='p-1 m-1'
-          onClick = {() => zoomOut()}
+          onClick={() => zoomOut()}
         >
-          <ZoomOutIcon style={{width: '1.6rem', height: '1.6rem'}} />
+          <ZoomOutIcon style={{ width: '1.6rem', height: '1.6rem' }} />
         </IconButton>
       </span>
       <span id='compass-layers-control' className='d-flex flex-column align-items-end'>
@@ -508,7 +507,7 @@ const MarketMap = ({
             <svg viewBox='0 0 50 300'>
               <polygon id='north-half' fill='red' points='0,150 25,0 50,150' />
               <polygon id='south-half' fill='gray' points='0,150 25,300 50,150' />
-              <rect id='needle-center' fill='black' x='0'rx='10' ry='10' y='125' width='50' height='50' />
+              <rect id='needle-center' fill='black' x='0' rx='10' ry='10' y='125' width='50' height='50' />
             </svg>
           </CompassNeedle>
         </CompassButton>
@@ -516,53 +515,53 @@ const MarketMap = ({
           <ExpandableContents className={`d-flex flex-row align-items-center ${floorSelectOpen ? '' : 'hidden'}`}>
             {floors.map(floor => {
               return (
-                <RadioIconButton 
-                  id={`floor-button-${floor.floorNumber}`} 
+                <RadioIconButton
+                  id={`floor-button-${floor.floorNumber}`}
                   selectedId={`floor-button-${currentFloorNumber}`}
-                  iconOnly={true} className='p-1 m-1' 
+                  iconOnly={true} className='p-1 m-1'
                   onClick={() => setCurrentFloorNumber(floor.floorNumber)}>
                   <p>{floor.floorNumber}</p>
                 </RadioIconButton>
-              ); 
+              );
             })}
           </ExpandableContents>
           {(floorSelectOpen)
             ? <IconButton iconOnly className='p-1 m-1' onClick={() => setFloorSelectOpen(false)}>
-                <CloseIcon style={{height: '1.6rem !important'}} />
-              </IconButton> 
+              <CloseIcon style={{ height: '1.6rem !important' }} />
+            </IconButton>
             : <CustomButton className='p-1 m-1' onClick={() => setFloorSelectOpen(true)}>
-                <p style={{width: '1.6rem', height: '1.6rem'}}>lt.{currentFloorNumber}</p>
-              </CustomButton>}
+              <p style={{ width: '1.6rem', height: '1.6rem' }}>lt.{currentFloorNumber}</p>
+            </CustomButton>}
         </ExpandableContainer>
         <IconButton iconOnly aria-disabled='true' className='p-1 m-1'>
-          <LayersIcon style={{width: '1.6rem', height: '1.6rem'}} />
+          <LayersIcon style={{ width: '1.6rem', height: '1.6rem' }} />
         </IconButton>
       </span>
       <span id='misc-controls'>
         <ExpandableContainer className='d-flex flex-column'>
           <ExpandableContents className={`d-flex flex-column align-items-center ${miscExpandOpen ? '' : 'hidden'}`}>
             <IconButton iconOnly className='p-1 m-1' onClick={() => setShowLegendModal(true)}>
-              <MapLegendIcon style={{width: '1.6rem', height: '1.6rem'}} />
+              <MapLegendIcon style={{ width: '1.6rem', height: '1.6rem' }} />
             </IconButton>
             <IconButton iconOnly className='p-1 m-1' onClick={() => setShowAttributionsModal(true)}>
-              <CopyrightIcon style={{width: '1.6rem', height: '1.6rem'}} />
+              <CopyrightIcon style={{ width: '1.6rem', height: '1.6rem' }} />
             </IconButton>
           </ExpandableContents>
-          {(miscExpandOpen) 
+          {(miscExpandOpen)
             ? <IconButton iconOnly className='p-1 m-1' onClick={() => setMiscExpandOpen(false)}>
-                <CloseIcon style={{height: '1.6rem !important'}} />
-              </IconButton>
+              <CloseIcon style={{ height: '1.6rem !important' }} />
+            </IconButton>
             : <IconButton iconOnly className='p-1 m-1' onClick={() => setMiscExpandOpen(true)}>
-                <MoreIcon style={{width: '1.6rem', height: '1.6rem'}} />
-              </IconButton>}
+              <MoreIcon style={{ width: '1.6rem', height: '1.6rem' }} />
+            </IconButton>}
         </ExpandableContainer>
       </span>
       <span id='gps-controls'>
-        <IconButton iconOnly={true} 
-          aria-disabled={gpsMarker && gpsLatLong ? 'false' : 'true'} 
+        <IconButton iconOnly={true}
+          aria-disabled={gpsMarker && gpsLatLong ? 'false' : 'true'}
           className='p-1 m-1'
           onClick={focusOnGpsMarker}>
-          <GpsCrosshairIcon style={{width: '1.6rem', height: '1.6rem'}} />
+          <GpsCrosshairIcon style={{ width: '1.6rem', height: '1.6rem' }} />
         </IconButton>
       </span>
       <MapContainer id='market-map' />

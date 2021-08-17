@@ -13,8 +13,6 @@ using Server.Models.Response;
 using Server.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.ProductCategories
@@ -25,14 +23,13 @@ namespace Server.Controllers.ProductCategories
     {
         public ProductCategoriesController(AppDbContext database, IAuthorizationService authorizationService) : base(database, authorizationService)
         {
-            
         }
 
         [HttpPost]
         [Authorize(PolicyNameConstants.Admin.CanManageShops)]
         public async Task<IActionResult> CreateProductCategory(
-            [FromBody]CreateProductCategoryBody body,
-            [FromServices]IMapper mapper)
+            [FromBody] CreateProductCategoryBody body,
+            [FromServices] IMapper mapper)
         {
             var newProductCategory = mapper.Map<ProductCategory>(body);
 
@@ -45,7 +42,7 @@ namespace Server.Controllers.ProductCategories
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IList<ProductCategorySummary>> ReadAllProductCategories([FromServices]IMapper mapper)
+        public async Task<IList<ProductCategorySummary>> ReadAllProductCategories([FromServices] IMapper mapper)
         {
             var productCategories = await _database.ProductCategories.ToListAsync();
 
@@ -57,9 +54,9 @@ namespace Server.Controllers.ProductCategories
         [HttpPut("{categoryId}")]
         [Authorize(PolicyNameConstants.Admin.CanManageShops)]
         public async Task<IActionResult> UpdateProductCategory(
-            [FromRoute]Guid categoryId, 
-            [FromBody]UpdateProductCategoryBody body,
-            [FromServices]IMapper mapper)
+            [FromRoute] Guid categoryId,
+            [FromBody] UpdateProductCategoryBody body,
+            [FromServices] IMapper mapper)
         {
             var productCategory = await _database.ProductCategories.FirstOrDefaultAsync(productCategory => productCategory.Id == categoryId);
 
@@ -72,7 +69,7 @@ namespace Server.Controllers.ProductCategories
 
         [HttpDelete("{categoryId}")]
         [Authorize(PolicyNameConstants.Admin.CanManageShops)]
-        public async Task<IActionResult> DeleteProductCategory([FromRoute]Guid categoryId)
+        public async Task<IActionResult> DeleteProductCategory([FromRoute] Guid categoryId)
         {
             var productCategory = await _database.ProductCategories.FirstOrDefaultAsync(productCategory => productCategory.Id == categoryId);
 
@@ -86,10 +83,10 @@ namespace Server.Controllers.ProductCategories
         [HttpPut("{categoryId}/thumbnail")]
         [Authorize(PolicyNameConstants.Admin.CanManageShops)]
         public async Task<IActionResult> UpdateProductCategoryThumbnailImage(
-            [FromRoute]Guid categoryId,
-            [FromForm]IFormFile thumbnailImage,
-            [FromServices]IFileSystemService fileSystemService,
-            [FromServices]ApplicationConfiguration applicationConfiguration)
+            [FromRoute] Guid categoryId,
+            [FromForm] IFormFile thumbnailImage,
+            [FromServices] IFileSystemService fileSystemService,
+            [FromServices] ApplicationConfiguration applicationConfiguration)
         {
             var productCategory = await _database.ProductCategories.FirstOrDefaultAsync(productCategory => productCategory.Id == categoryId);
 

@@ -1,20 +1,15 @@
 ﻿using DomainModel.Common;
 using DomainModel.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DomainModel.Entities
 {
     public class AdminAccount : AccountBase
     {
         public AdminAccount(
-            string username, 
+            string username,
             string email,
-            string displayName, 
-            string password, 
+            string displayName,
+            string password,
             IPasswordHasher passwordHasher,
             IAlphanumericRng alphanumericRng,
             DomainModelConfiguration domainModelConfiguration,
@@ -24,7 +19,9 @@ namespace DomainModel.Entities
             Email = email;
         }
 
-        public AdminAccount() { }
+        public AdminAccount()
+        {
+        }
 
         public virtual AdminPermissionPreset Permissions { get; set; }
     }

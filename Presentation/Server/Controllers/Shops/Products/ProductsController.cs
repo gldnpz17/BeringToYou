@@ -14,7 +14,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.Shops.Products
@@ -25,14 +24,13 @@ namespace Server.Controllers.Shops.Products
     {
         public ProductsController(AppDbContext database, IAuthorizationService authorizationService) : base(database, authorizationService)
         {
-
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateProduct(
-            [FromRoute]Guid shopId,
-            [FromBody]CreateProductBody body,
-            [FromServices]IMapper mapper)
+            [FromRoute] Guid shopId,
+            [FromBody] CreateProductBody body,
+            [FromServices] IMapper mapper)
         {
             var shop = await _database.Shops.FirstOrDefaultAsync(shop => shop.Id == shopId);
             await AuthorizeShopOwner(shop);
@@ -52,8 +50,8 @@ namespace Server.Controllers.Shops.Products
         [HttpGet]
         [AllowAnonymous]
         public async Task<IList<ProductSummary>> ReadAllProducts(
-            [FromRoute]Guid shopId,
-            [FromServices]IMapper mapper)
+            [FromRoute] Guid shopId,
+            [FromServices] IMapper mapper)
         {
             var shop = await _database.Shops.FirstOrDefaultAsync(shop => shop.Id == shopId);
 
@@ -66,10 +64,10 @@ namespace Server.Controllers.Shops.Products
 
         [HttpPut("{productId}")]
         public async Task<IActionResult> UpdateProduct(
-            [FromRoute]Guid shopId,
-            [FromRoute]Guid productId,
-            [FromBody]UpdateProductBody body,
-            [FromServices]IMapper mapper)
+            [FromRoute] Guid shopId,
+            [FromRoute] Guid productId,
+            [FromBody] UpdateProductBody body,
+            [FromServices] IMapper mapper)
         {
             var shop = await _database.Shops.FirstOrDefaultAsync(shop => shop.Id == shopId);
             await AuthorizeShopOwner(shop);
@@ -85,8 +83,8 @@ namespace Server.Controllers.Shops.Products
 
         [HttpDelete("{productId}")]
         public async Task<IActionResult> DeleteProduct(
-            [FromRoute]Guid shopId,
-            [FromRoute]Guid productId)
+            [FromRoute] Guid shopId,
+            [FromRoute] Guid productId)
         {
             var shop = await _database.Shops.FirstOrDefaultAsync(shop => shop.Id == shopId);
             await AuthorizeShopOwner(shop);
@@ -102,12 +100,12 @@ namespace Server.Controllers.Shops.Products
 
         [HttpPut("{productId}/main-image")]
         public async Task<IActionResult> UpdateMainImage(
-            [FromRoute]Guid shopId,
-            [FromRoute]Guid productId,
-            [FromForm(Name = "image")]IFormFile image,
-            [FromServices]IFileSystemService fileSystemService,
-            [FromServices]IImageProcessingService imageProcessingService,
-            [FromServices]ApplicationConfiguration applicationConfiguration)
+            [FromRoute] Guid shopId,
+            [FromRoute] Guid productId,
+            [FromForm(Name = "image")] IFormFile image,
+            [FromServices] IFileSystemService fileSystemService,
+            [FromServices] IImageProcessingService imageProcessingService,
+            [FromServices] ApplicationConfiguration applicationConfiguration)
         {
             var shop = await _database.Shops.FirstOrDefaultAsync(shop => shop.Id == shopId);
             await AuthorizeShopOwner(shop);

@@ -4,10 +4,8 @@ using DomainModel.Structs;
 using DomainModel.ValueObjects;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace DomainModel.Entities
 {
@@ -26,7 +24,9 @@ namespace DomainModel.Entities
             PasswordCredential = new PasswordCredential(password, passwordHasher, alphanumericRng, domainModelConfiguration);
         }
 
-        public AccountBase() { }
+        public AccountBase()
+        {
+        }
 
         [Key]
         public Guid Id { get; set; }
@@ -35,17 +35,17 @@ namespace DomainModel.Entities
         public string Username { get; set; }
 
         public string Email { get; set; }
-        
+
         [Required]
         public string DisplayName { get; set; }
-        
+
         public string ProfilePictureFilename { get; set; }
 
         [Required]
         public virtual PasswordCredential PasswordCredential { get; set; }
-        
+
         public virtual TotpCredential TotpCredential { get; set; }
-        
+
         public virtual BackupCodeCredential BackupCodeCredential { get; set; }
 
         public virtual IList<TwoFactorToken> TwoFactorTokens { get; set; } = new List<TwoFactorToken>();
@@ -82,7 +82,7 @@ namespace DomainModel.Entities
                         Token = token.Token,
                         NeedsTwoFactor = false
                     };
-                } 
+                }
                 else
                 {
                     var token = GenerateNewAuthenticationToken(alphanumericRng, dateTimeService, configuration);
@@ -138,7 +138,7 @@ namespace DomainModel.Entities
         }
 
         public TwoFactorAuthenticationResult BackupCodeLogin(
-            string twoFactorToken, 
+            string twoFactorToken,
             string backupCode,
             IDateTimeService dateTimeService,
             IPasswordHasher passwordHasher,
@@ -170,7 +170,7 @@ namespace DomainModel.Entities
             else
             {
                 throw new DomainModelException(
-                    ExceptionCode.INCORRECT_BACKUP_CODE, 
+                    ExceptionCode.INCORRECT_BACKUP_CODE,
                     "The given backup code is incorrect.");
             }
         }
@@ -182,7 +182,7 @@ namespace DomainModel.Entities
             if (queryResult == null)
             {
                 throw new DomainModelException(
-                    ExceptionCode.LOGOUT_FAILED_AUTH_TOKEN_NOT_FOUND, 
+                    ExceptionCode.LOGOUT_FAILED_AUTH_TOKEN_NOT_FOUND,
                     "The given authentication token was not found.");
             }
 

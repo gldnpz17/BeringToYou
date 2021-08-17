@@ -1,11 +1,7 @@
 ﻿using DomainModel.Common;
 using DomainModel.Services;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DomainModel.Entities
 {
@@ -25,15 +21,17 @@ namespace DomainModel.Entities
             SendEmail(emailSender);
         }
 
-        public EmailVerificationToken() { }
+        public EmailVerificationToken()
+        {
+        }
 
         public virtual Guid AccountId { get; set; }
         public virtual AccountBase Account { get; set; }
-        
+
         [Required]
         [Key]
         public string Token { get; set; }
-        
+
         [Required]
         public DateTime Expired { get; set; }
 
@@ -65,7 +63,7 @@ namespace DomainModel.Entities
             }
 
             throw new DomainModelException(
-                ExceptionCode.INCORRECT_EMAIL_VERIFICATION_TOKEN, 
+                ExceptionCode.INCORRECT_EMAIL_VERIFICATION_TOKEN,
                 "The given e-mail verification code is incorrect.");
         }
     }

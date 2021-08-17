@@ -33,7 +33,7 @@ const StyledButton = styled(Button)`
   }};
 
   box-shadow: ${props => props.theme.shadow} 0rem 0.05rem 0.1rem;
-  
+
   transition-property: all;
   transition-duration: 0.2s;
   transition-timing-function: ease-out;
@@ -45,14 +45,14 @@ const StyledButton = styled(Button)`
       box-shadow: ${props => props.theme.shadow} 0rem 0.05rem 0.1rem;
 
       color: ${props => {
-        if (props.danger) {
-          return props.theme.textOnDanger;
-        } else if (props.secondary) {
-          return 'black';
-        } else {
-          return props.theme.textOnPrimary;
-        }
-      }};
+    if (props.danger) {
+      return props.theme.textOnDanger;
+    } else if (props.secondary) {
+      return 'black';
+    } else {
+      return props.theme.textOnPrimary;
+    }
+  }};
     }
   }
 
@@ -61,14 +61,14 @@ const StyledButton = styled(Button)`
       filter: brightness(90%);
 
       color: ${props => {
-        if (props.danger) {
-          return props.theme.textOnDanger;
-        } else if (props.secondary) {
-          return 'black';
-        } else {
-          return props.theme.textOnPrimary;
-        }
-      }};
+    if (props.danger) {
+      return props.theme.textOnDanger;
+    } else if (props.secondary) {
+      return 'black';
+    } else {
+      return props.theme.textOnPrimary;
+    }
+  }};
     }
 
     :active {
@@ -81,7 +81,7 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const CustomButton = ({onClick, ...props}) => {
+const CustomButton = ({ onClick, ...props }) => {
   const handleOnClick = (event) => {
     if (props['aria-disabled'] !== 'true') {
       onClick(event);

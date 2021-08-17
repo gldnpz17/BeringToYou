@@ -1,13 +1,10 @@
-﻿using DomainModel.Services;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Server.Common.Configuration;
 using Server.Common.Exceptions;
 using Server.Services;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -84,7 +81,7 @@ namespace Server.ServiceImplementation
                 var filename = $"{generatedString}{extension}";
 
                 newFilePath = Path.Combine(directory, filename);
-            } while (File.Exists(newFilePath) == true);
+            } while (File.Exists(newFilePath) == true) ;
 
             await Task.Run(() =>
             {

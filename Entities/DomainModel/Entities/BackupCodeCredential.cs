@@ -4,9 +4,6 @@ using DomainModel.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DomainModel.Entities
 {
@@ -14,11 +11,11 @@ namespace DomainModel.Entities
     {
         public BackupCodeCredential()
         {
-
         }
 
         [Key]
         public virtual Guid AccountId { get; set; }
+
         public virtual AccountBase Account { get; set; }
 
         public virtual IList<BackupCode> BackupCodes { get; set; } = new List<BackupCode>();
@@ -30,13 +27,13 @@ namespace DomainModel.Entities
         public DateTime BackupCodeAttemptTimeoutExpired { get; set; }
 
         public bool Verify(
-            string code, 
-            IPasswordHasher passwordHasher, 
+            string code,
+            IPasswordHasher passwordHasher,
             IDateTimeService dateTimeService,
             DomainModelConfiguration configuration)
         {
             var now = dateTimeService.GetCurrentDateTime();
-            
+
             if (now > BackupCodeAttemptTimeoutExpired)
             {
                 if (CodeIsValid())
@@ -85,7 +82,7 @@ namespace DomainModel.Entities
         }
 
         public IList<string> GenerateBackupCodes(
-            IPasswordHasher passwordHasher, 
+            IPasswordHasher passwordHasher,
             IAlphanumericRng alphanumericRng,
             DomainModelConfiguration configuration)
         {

@@ -1,6 +1,6 @@
 class AdminSidebarDisplay {
   static #minimized = null;
-  
+
   static get minimized() {
     if (AdminSidebarDisplay.#minimized === null) {
       let state = window.localStorage.getItem('admin-sidebar-minimized');

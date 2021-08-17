@@ -7,7 +7,7 @@ import KUTE from 'kute.js';
 import VisitorMenu from "../pages/visitor-page-components/visitor-menu";
 import BackIcon from '../svg/back-icon';
 import SearchMenu from "../pages/visitor-page-components/search-menu";
-import { useLocation, useRouteMatch,brows, withRouter, useHistory } from "react-router-dom";
+import { useLocation, useRouteMatch, brows, withRouter, useHistory } from "react-router-dom";
 
 const Navbar = styled.div`
   background-color: ${props => props.theme.whitespace};
@@ -44,7 +44,7 @@ const ExpandableContainer = styled.div`
   transition-delay: 0s;
   flex-grow: 0.0001;
   overflow: hidden;
-  
+
   &.expanded {
     flex-grow: 1;
   }
@@ -173,7 +173,7 @@ const Search = styled(SearchIcon)`
   transition-duration: 0.5s;
 `;
 
-const VisitorNavbar = ({history, ...props}) => {
+const VisitorNavbar = ({ history, ...props }) => {
   const [menuExpanded, setMenuExpanded] = useState(false);
   const [searchExpanded, setSearchExpanded] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -186,7 +186,7 @@ const VisitorNavbar = ({history, ...props}) => {
     } else {
       setSearchOpen(false);
       setSearchExpanded(false);
-    }    
+    }
   };
 
   useEffect(() => {
@@ -201,25 +201,25 @@ const VisitorNavbar = ({history, ...props}) => {
     if (menuOpen) {
       setMenuOpen(false);
       setMenuExpanded(false);
-      
-      KUTE.fromTo('#current-nav-menu', {path: '#close-path'}, {path: '#menu-path'}, {
+
+      KUTE.fromTo('#current-nav-menu', { path: '#close-path' }, { path: '#menu-path' }, {
         duration: 250,
         morphPrecision: 1
       }).start();
 
-      KUTE.fromTo('#menu-icon', {rotate: 180}, {rotate: 360}, {
+      KUTE.fromTo('#menu-icon', { rotate: 180 }, { rotate: 360 }, {
         duration: 250
       }).start();
     } else {
       setMenuOpen(true);
       setMenuExpanded(true);
-      
-      KUTE.fromTo('#current-nav-menu', {path: '#menu-path'}, {path: '#close-path'}, {
+
+      KUTE.fromTo('#current-nav-menu', { path: '#menu-path' }, { path: '#close-path' }, {
         duration: 250,
         morphPrecision: 1
       }).start();
 
-      KUTE.fromTo('#menu-icon', {rotate: 0}, {rotate: 180}, {
+      KUTE.fromTo('#menu-icon', { rotate: 0 }, { rotate: 180 }, {
         duration: 250
       }).start();
     }
@@ -232,17 +232,17 @@ const VisitorNavbar = ({history, ...props}) => {
   const closeSearch = () => {
     history.push('/');
   };
-  
+
   return (
     <>
       <Navbar {...props} className={`fixed-top d-flex flex-column ${menuExpanded || searchExpanded ? 'expanded' : ''}`}>
         <NavigationContainer className='d-flex flex-row align-items-center px-2 py-2'>
           <ExpandableContainer className={`${searchOpen ? 'collapsed' : ''}`}>
-            <Menu id='menu-icon' 
-              onClick={() => toggleMenu()}  
+            <Menu id='menu-icon'
+              onClick={() => toggleMenu()}
             />
           </ExpandableContainer>
-          <BrandContainer 
+          <BrandContainer
             className={`${searchOpen ? 'collapsed' : 'expanded'} ${menuOpen ? 'menu-open' : ''}`}
           >
             <div id='brand-contents'>
@@ -251,14 +251,14 @@ const VisitorNavbar = ({history, ...props}) => {
             </div>
           </BrandContainer>
           <SearchContainer className={`${searchOpen ? 'expanded' : ''} ${menuOpen ? 'collapsed' : ''}`}>
-            <BackIcon id='back-icon' 
+            <BackIcon id='back-icon'
               onClick={() => {
                 if (searchOpen) {
                   closeSearch();
                 }
               }}
             />
-            <Search id='search-icon' 
+            <Search id='search-icon'
               onClick={() => {
                 if (!searchOpen) {
                   openSearch();

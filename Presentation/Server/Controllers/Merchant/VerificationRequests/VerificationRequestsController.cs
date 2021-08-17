@@ -6,13 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.Common;
 using Server.Common.Auth;
-using Server.Models.Request;
 using Server.Models.Response;
-using Server.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.Merchant.VerificationRequests
@@ -24,12 +20,11 @@ namespace Server.Controllers.Merchant.VerificationRequests
             AppDbContext database,
             IAuthorizationService authorizationService) : base(database, authorizationService)
         {
-
         }
 
         [HttpGet]
         [Authorize(PolicyNameConstants.Admin.CanManageAccounts)]
-        public async Task<IList<MerchantVerificationRequestSummary>> GetAllMerchantVerificationRequest([FromServices]IMapper mapper)
+        public async Task<IList<MerchantVerificationRequestSummary>> GetAllMerchantVerificationRequest([FromServices] IMapper mapper)
         {
             var verificationRequests = await _database.MerchantVerificationRequests.ToListAsync();
 
@@ -39,8 +34,8 @@ namespace Server.Controllers.Merchant.VerificationRequests
         [HttpGet("{accountId}")]
         [Authorize(PolicyNameConstants.AuthenticatedUsers)]
         public async Task<MerchantVerificationRequestDetailed> GetMerchantVerificationRequestDetailed(
-            [FromRoute]Guid accountId,
-            [FromServices]IMapper mapper)
+            [FromRoute] Guid accountId,
+            [FromServices] IMapper mapper)
         {
             await AuthorizeAccountOwner(accountId, "CanManageAccounts");
 
@@ -53,7 +48,7 @@ namespace Server.Controllers.Merchant.VerificationRequests
 
         [HttpPost("{accountId}/accept")]
         [Authorize(PolicyNameConstants.Admin.CanManageAccounts)]
-        public async Task<IActionResult> AcceptMerchantVerificationRequest([FromRoute]Guid accountId)
+        public async Task<IActionResult> AcceptMerchantVerificationRequest([FromRoute] Guid accountId)
         {
             var account = await _database.MerchantAccounts.FirstOrDefaultAsync(account => account.Id == accountId);
 
@@ -66,7 +61,7 @@ namespace Server.Controllers.Merchant.VerificationRequests
 
         [HttpPost("{accountId}/reject")]
         [Authorize(PolicyNameConstants.Admin.CanManageAccounts)]
-        public async Task<IActionResult> RejectMerchantVerificationRequest([FromRoute]Guid accountId)
+        public async Task<IActionResult> RejectMerchantVerificationRequest([FromRoute] Guid accountId)
         {
             var account = await _database.MerchantAccounts.FirstOrDefaultAsync(account => account.Id == accountId);
 

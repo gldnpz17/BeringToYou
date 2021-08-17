@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Models.Response
 {
@@ -17,7 +14,7 @@ namespace Server.Models.Response
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public ShopCategorySummary Category { get; set; }
-        public IList<ShopSubcategorySummary> Subcategories { get; set; }   
+        public IList<ShopSubcategorySummary> Subcategories { get; set; }
         public IList<OnlineShopInstanceSummary> OnlineShopInstances { get; set; }
         public IList<ProductSummary> Products { get; set; }
         public double MinPrice { get; set; }

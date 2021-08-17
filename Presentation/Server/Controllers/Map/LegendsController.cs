@@ -13,8 +13,6 @@ using Server.Models.Response;
 using Server.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.Map
@@ -24,10 +22,9 @@ namespace Server.Controllers.Map
     public class LegendsController : ApiControllerBase
     {
         public LegendsController(
-            AppDbContext database, 
+            AppDbContext database,
             IAuthorizationService authorizationService) : base(database, authorizationService)
         {
-
         }
 
         [HttpPost]
@@ -91,7 +88,7 @@ namespace Server.Controllers.Map
             [FromRoute] Guid legendId,
             [FromForm(Name = "icon")] IFormFile icon,
             [FromServices] IFileSystemService fileSystemService,
-            [FromServices] ApplicationConfiguration applicationConfiguration) 
+            [FromServices] ApplicationConfiguration applicationConfiguration)
         {
             var legend = await _database.MapLegends.FirstAsync(legend => legend.Id == legendId);
 

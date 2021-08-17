@@ -27,5 +27,5 @@ const ProductCategoryCard = ({ image, name, itemCount, style, className, onClick
     </StyledCard>
   );
 };
-  
+
 export default ProductCategoryCard;

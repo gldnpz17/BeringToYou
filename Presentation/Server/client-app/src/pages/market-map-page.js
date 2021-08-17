@@ -17,7 +17,6 @@ const PageContainer = styled.div`
 `;
 
 const MarketMapPage = () => {
-   
   const [shopOverviewVisible, setShopOverviewVisible] = useState(false);
 
   const openShopOverviewOverlay = () => {

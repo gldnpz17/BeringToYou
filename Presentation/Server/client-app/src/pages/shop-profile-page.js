@@ -53,7 +53,7 @@ const ContentContainer = styled.div`
 const RoundedCorner = styled.div`
   background-color: ${props => props.theme.whitespace};
 
-  position: absolute; 
+  position: absolute;
   height: 1rem;
   bottom: 0;
   left: 0;
@@ -74,7 +74,7 @@ const StyledNavItem = styled(Nav.Item)`
       bottom: 0.05rem;
       left: 0;
       right: 0;
-      
+
       height: 0.1rem;
       background-color: lightgray;
     }
@@ -124,11 +124,11 @@ const ShopProfilePage = () => {
   return (
     <StyledContainer className='p-0 d-flex flex-column'>
       <div>
-        <div style={{position: 'relative'}}>
+        <div style={{ position: 'relative' }}>
           <StyledHeroImage src='/dummy-images/food-stall.jpg' />
           <ShopNameContainer className='pb-2'>
             <StyledShopNameBackground className='p-2' />
-            <h1 className='mt-2 ml-2 mb-3 ps-2' style={{zIndex: '1'}}>Warung Lorem Ipsum</h1>
+            <h1 className='mt-2 ml-2 mb-3 ps-2' style={{ zIndex: '1' }}>Warung Lorem Ipsum</h1>
           </ShopNameContainer>
           <RoundedCorner />
         </div>
@@ -158,7 +158,7 @@ const ShopProfilePage = () => {
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec egestas ante. Pellentesque eget nibh ac tortor hendrerit lacinia eu eu ex. Ut velit urna, porta mollis turpis sit amet, semper rutrum lectus. Integer vitae ligula a ligula porta mollis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vivamus mollis dui eget neque lobortis faucibus. Praesent molestie quis odio sit amet condimentum. Nunc quis metus tortor. Aliquam in efficitur velit, ut tincidunt nunc. Duis in dignissim tortor. Suspendisse in magna nisi.
                 </StyledShopDescriptionText>
                 <IconButton text='Lihat lokasi' className='align-self-end'>
-                  <LocationIcon style={{width: '1.6rem', height: '1.6rem'}} />
+                  <LocationIcon style={{ width: '1.6rem', height: '1.6rem' }} />
                 </IconButton>
               </div>
             </Tab.Pane>
@@ -168,12 +168,12 @@ const ShopProfilePage = () => {
                   <RadioIconButton className='ml-2 p-1' iconOnly={true} onClick={() => changeDisplayMode('list')}
                     id='shop-profile-display-list' selectedId={`shop-profile-display-${displayMode}`}
                   >
-                    <ViewListIcon style={{width: '1.6rem', height: '1.6rem'}} />
+                    <ViewListIcon style={{ width: '1.6rem', height: '1.6rem' }} />
                   </RadioIconButton>
                   <RadioIconButton className='ml-2 p-1' iconOnly={true} onClick={() => changeDisplayMode('card')}
                     id='shop-profile-display-card' selectedId={`shop-profile-display-${displayMode}`}
                   >
-                    <ViewModulesIcon style={{width: '1.6rem', height: '1.6rem'}} />
+                    <ViewModulesIcon style={{ width: '1.6rem', height: '1.6rem' }} />
                   </RadioIconButton>
                 </div>
 
@@ -192,7 +192,7 @@ const ShopProfilePage = () => {
             </Tab.Pane>
           </Tab.Content>
         </Tab.Container>
-      </ContentContainer>  
+      </ContentContainer>
     </StyledContainer>
   );
 };

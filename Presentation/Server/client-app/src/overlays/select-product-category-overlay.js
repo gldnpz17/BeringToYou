@@ -9,7 +9,7 @@ const OverlayContainer = styled.div`
   right: 0;
   top: 0;
   bottom: 0;
-  
+
   transition-duration: 0.3s;
 `;
 
@@ -41,9 +41,9 @@ const OverlayContent = styled(Container)`
 const SelectProductCategoryOverlay = ({ visible, setVisible }) => {
   return (
     <OverlayContainer style={{
-        visibility: visible ? 'visible' : 'hidden',
-        opacity: visible ? '100%' : '0%'
-      }}
+      visibility: visible ? 'visible' : 'hidden',
+      opacity: visible ? '100%' : '0%'
+    }}
     >
       <OverlayBackground />
       <OverlayContent onClick={() => setVisible(false)}>
@@ -53,11 +53,11 @@ const SelectProductCategoryOverlay = ({ visible, setVisible }) => {
             [...Array(10).keys()].map(item => {
               return (
                 <ProductCategoryCard name='Lorem' className='d-inline-block m-2' style={{
-                  width: '8rem', 
+                  width: '8rem',
                   height: '12rem',
                   position: 'relative',
                   zIndex: 2221
-                }} onClick={(event) => event.stopPropagation()}/>
+                }} onClick={(event) => event.stopPropagation()} />
               );
             })
           }

@@ -90,7 +90,7 @@ const MapShopOverviewOverlay = (props) => {
 
       document.getElementById('map-shop-overlay-description').classList.add('hidden');
       document.getElementById('map-overlay-expand').style.transform = 'scaleY(1)';
-    } 
+    }
   };
 
   return (

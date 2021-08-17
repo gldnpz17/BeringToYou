@@ -3,7 +3,7 @@ import AdminPageHeader from "../components/admin-page-header";
 import AdminPageNav from "../components/admin-page-nav";
 import AdminPageTabContainer from "../components/admin-page-tab-container";
 import MapIcon from "../svg/map-icon";
-import { Nav, Tab } from "react-bootstrap"; 
+import { Nav, Tab } from "react-bootstrap";
 import AdminPageNavLink from "../components/admin-page-nav-link";
 import LocationIcon from "../svg/location-icon";
 import LayersIcon from "../svg/layers-icon";
@@ -147,8 +147,8 @@ const AdminMapPage = () => {
 
           if (values.kmlFile) {
             await updateMapFloorKml(
-              values.id, 
-              values.kmlFile.filename, 
+              values.id,
+              values.kmlFile.filename,
               values.kmlFile);
           }
 
@@ -330,13 +330,13 @@ const AdminMapPage = () => {
           defaultValue: overlay.name
         }
       ],
-      submit: { 
+      submit: {
         label: 'Hapus',
         danger: true,
         callback: async (values) => {
           await deleteOverlay(values.id);
 
-          await getAllData(); 
+          await getAllData();
         }
       }
     });
@@ -410,11 +410,11 @@ const AdminMapPage = () => {
         label: 'Tambahkan',
         callback: async (values) => {
           await createShop(
-            values.name, 
+            values.name,
             values.description,
             values.floorNumber,
             values.latitude,
-            values.longitude, 
+            values.longitude,
             values.category,
             values.minPrice,
             values.maxPrice);
@@ -733,7 +733,7 @@ const AdminMapPage = () => {
         size='xl'
         query={query}
       />
-      <EditShopModal 
+      <EditShopModal
         size='xl'
         shopId={shopToEdit}
         show={showEditShopModal}
@@ -744,13 +744,13 @@ const AdminMapPage = () => {
       </AdminPageHeader>
       <div className='d-flex flex-row justify-content-center pe-2 pe-md-3'>
         <AdminFormContainer className='w-100 p-1 mb-3'>
-          <div style={{position: 'relative', height: '65vh'}}>
+          <div style={{ position: 'relative', height: '65vh' }}>
             <MarketMap
               shops={shops}
               pointsOfInterest={pointsOfInterest}
               floors={floors}
               overlays={overlays}
-              style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}}
+              style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }}
               accessToken={websiteConfiguration.mapAccessToken}
             />
           </div>
@@ -864,7 +864,7 @@ const AdminMapPage = () => {
             <AdminFormContainer>
               <h1 className='mb-3'>Toko</h1>
               <div className='d-flex flex-row mb-3 align-items-center flex-wrap justify-content-end'>
-                <AdminFormControl type='text' placeholder='Cari toko' className='mb-1' style={{maxWidth: '16rem'}} />
+                <AdminFormControl type='text' placeholder='Cari toko' className='mb-1' style={{ maxWidth: '16rem' }} />
                 <div className='flex-grow-1' />
                 <CustomButton className='mb-1' onClick={() => handleCreateShop()}>Toko baru</CustomButton>
               </div>
@@ -914,7 +914,7 @@ const AdminMapPage = () => {
             <AdminFormContainer>
               <h1 className='mb-3'>Point of Interest</h1>
               <div className='d-flex flex-row mb-3 align-items-center flex-wrap justify-content-end'>
-                <AdminFormControl type='text' placeholder='Cari point of interest' className='mb-1' style={{maxWidth: '16rem'}} />
+                <AdminFormControl type='text' placeholder='Cari point of interest' className='mb-1' style={{ maxWidth: '16rem' }} />
                 <div className='flex-grow-1' />
                 <CustomButton className='mb-1' onClick={() => handleCreatePointOfInterest()}>Point of interest baru</CustomButton>
               </div>
@@ -1002,7 +1002,7 @@ const AdminMapPage = () => {
               </AdminTable>
             </AdminFormContainer>
           </Tab.Pane>
-          <MiscTab 
+          <MiscTab
             eventKey='misc'
             openModal={openModal}
             setOpenModal={setOpenModal}

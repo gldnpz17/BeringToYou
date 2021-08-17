@@ -7,7 +7,7 @@ import CustomButton from "../components/custom-button";
 import verifyMerchant from '../use-cases/admin/account-management/verify-merchant';
 import rejectMerchant from '../use-cases/admin/account-management/reject-merchant';
 
-const VerifyMerchantModal = ({verificationRequest, callback, ...props}) => {
+const VerifyMerchantModal = ({ verificationRequest, callback, ...props }) => {
   const handleVerify = async () => {
     await verifyMerchant(verificationRequest.account.id);
 
@@ -49,10 +49,10 @@ const VerifyMerchantModal = ({verificationRequest, callback, ...props}) => {
           </ul>
         </AdminFormGroup>
         <AdminFormGroup label='Foto bukti'>
-          <ImageSlideshow height='16rem' 
+          <ImageSlideshow height='16rem'
             images={verificationRequest?.verificationPhotoFilenames.map(filename => {
               return (`/api/merchant/verification-requests/${verificationRequest.account.id}/photos/${filename}`);
-            })}/>
+            })} />
         </AdminFormGroup>
       </Modal.Body>
       <Modal.Footer>

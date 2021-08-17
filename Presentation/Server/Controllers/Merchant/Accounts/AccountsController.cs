@@ -12,8 +12,6 @@ using Server.Models.Request;
 using Server.Models.Response;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.Merchant.Accounts
@@ -26,17 +24,16 @@ namespace Server.Controllers.Merchant.Accounts
             AppDbContext database,
             IAuthorizationService authorizationService) : base(database, authorizationService)
         {
-
         }
 
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> CreateMerchantAccount(
-            [FromBody]SignUpMerchantBody body,
-            [FromServices]IPasswordHasher passwordHasher,
-            [FromServices]IAlphanumericRng alphanumericRng,
-            [FromServices]IDateTimeService dateTimeService, 
-            [FromServices]DomainModelConfiguration configuration)
+            [FromBody] SignUpMerchantBody body,
+            [FromServices] IPasswordHasher passwordHasher,
+            [FromServices] IAlphanumericRng alphanumericRng,
+            [FromServices] IDateTimeService dateTimeService,
+            [FromServices] DomainModelConfiguration configuration)
         {
             var account = new MerchantAccount(
                 body.Username,
@@ -56,7 +53,7 @@ namespace Server.Controllers.Merchant.Accounts
 
         [HttpGet]
         [Authorize(PolicyNameConstants.AdminsOnly)]
-        public async Task<IList<MerchantAccountSummary>> GetAllMerchantAccounts([FromServices]IMapper mapper)
+        public async Task<IList<MerchantAccountSummary>> GetAllMerchantAccounts([FromServices] IMapper mapper)
         {
             var accounts = await _database.MerchantAccounts.ToListAsync();
 

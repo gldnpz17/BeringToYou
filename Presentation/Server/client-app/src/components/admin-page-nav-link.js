@@ -12,7 +12,7 @@ const AdminPageNavLink = styled(Nav.Link)`
   @media(min-width: ${responsiveBreakpoints.medium}) {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
-    width: 10rem; 
+    width: 10rem;
   }
 
   position: relative;

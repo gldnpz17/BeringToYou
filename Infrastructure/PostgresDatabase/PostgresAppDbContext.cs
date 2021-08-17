@@ -8,7 +8,9 @@ namespace PostgresDatabase
     {
         private readonly string _connectionString;
 
-        public PostgresAppDbContext() { }
+        public PostgresAppDbContext()
+        {
+        }
 
         public PostgresAppDbContext(string connectionString)
         {

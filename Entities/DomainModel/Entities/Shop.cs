@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DomainModel.Entities
 {
@@ -22,7 +19,7 @@ namespace DomainModel.Entities
 
         [MaxLength(1024)]
         public string Description { get; set; }
-        
+
         public string LowercaseDescription { get; set; }
 
         public virtual IList<MerchantAccount> ShopOwners { get; set; }
@@ -41,13 +38,13 @@ namespace DomainModel.Entities
 
         [Required]
         public double MaxPrice { get; set; } = double.MaxValue;
-        
+
         public virtual ShopCategory Category { get; set; }
 
         public virtual IList<ShopSubcategory> Subcategories { get; set; } = new List<ShopSubcategory>();
-        
+
         public virtual IList<OnlineShopInstance> OnlineShopInstances { get; set; } = new List<OnlineShopInstance>();
-        
+
         public virtual IList<Product> Products { get; set; } = new List<Product>();
     }
 }

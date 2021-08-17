@@ -21,7 +21,7 @@ const MiscTab = ({ openModal, setOpenModal, ...props }) => {
 
   const [legendToUpdate, setLegendToUpdate] = useState(null);
   const [legends, setLegends] = useState([]);
-  
+
   useEffect(() => {
     if (!openModal) {
       fetchData();
@@ -31,7 +31,7 @@ const MiscTab = ({ openModal, setOpenModal, ...props }) => {
   const fetchData = async () => {
     setLegends(await fetchAllLegends());
   }
-  
+
   const handleCreateLegend = () => {
     setLegendToUpdate(null);
     setOpenModal(modals.createUpdateLegend);
@@ -59,7 +59,7 @@ const MiscTab = ({ openModal, setOpenModal, ...props }) => {
       await fetchData();
     }
   }
-  
+
   return (
     <Tab.Pane {...props}>
       <CreateUpdateMapLegendModal

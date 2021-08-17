@@ -4,6 +4,7 @@ using EFCoreDatabase;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NinjaNye.SearchExtensions;
 using Server.Common;
 using Server.Common.Auth;
 using Server.Common.Exceptions;
@@ -13,10 +14,7 @@ using Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Data.SqlClient;
-using NinjaNye.SearchExtensions;
 
 namespace Server.Controllers.Shops
 {
@@ -25,17 +23,16 @@ namespace Server.Controllers.Shops
     public class ShopsController : ApiControllerBase
     {
         public ShopsController(
-            AppDbContext database, 
+            AppDbContext database,
             IAuthorizationService authorizationService) : base(database, authorizationService)
         {
-
         }
 
         [HttpPost]
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
         public async Task<IActionResult> CreateShop(
-            [FromBody]CreateShopBody body,
-            [FromServices]IMapper mapper)
+            [FromBody] CreateShopBody body,
+            [FromServices] IMapper mapper)
         {
             var newShop = mapper.Map<Shop>(body);
 
@@ -61,15 +58,15 @@ namespace Server.Controllers.Shops
         [HttpGet]
         [AllowAnonymous]
         public async Task<IList<ShopSummary>> GetAllShops(
-            [FromQuery(Name = "keywords")]string rawQueryKeywords,
-            [FromQuery(Name = "category")]string rawQueryCategoryId,
-            [FromQuery(Name = "onlineshop")]string rawQueryOnlineShopPlatformIds,
-            [FromQuery(Name = "minprice")]string rawQueryMinPrice,
-            [FromQuery(Name = "maxprice")]string rawQueryMaxPrice,
-            [FromQuery]int start,
-            [FromQuery]int count,
-            [FromServices]IPaginationService paginationService,
-            [FromServices]IMapper mapper)
+            [FromQuery(Name = "keywords")] string rawQueryKeywords,
+            [FromQuery(Name = "category")] string rawQueryCategoryId,
+            [FromQuery(Name = "onlineshop")] string rawQueryOnlineShopPlatformIds,
+            [FromQuery(Name = "minprice")] string rawQueryMinPrice,
+            [FromQuery(Name = "maxprice")] string rawQueryMaxPrice,
+            [FromQuery] int start,
+            [FromQuery] int count,
+            [FromServices] IPaginationService paginationService,
+            [FromServices] IMapper mapper)
         {
             var queryKeywords = rawQueryKeywords?.Split(' ').Select(raw => raw.ToLower()).ToArray() ?? Array.Empty<string>();
 
@@ -110,8 +107,8 @@ namespace Server.Controllers.Shops
         [HttpGet("{shopId}")]
         [AllowAnonymous]
         public async Task<ShopDetailed> GetShopDetails(
-            [FromRoute]Guid shopId,
-            [FromServices]IMapper mapper)
+            [FromRoute] Guid shopId,
+            [FromServices] IMapper mapper)
         {
             var shop = await _database.Shops.FirstOrDefaultAsync(shop => shop.Id == shopId);
 
@@ -124,9 +121,9 @@ namespace Server.Controllers.Shops
 
         [HttpPut("{shopId}")]
         public async Task<IActionResult> UpdateShop(
-            [FromRoute]Guid shopId,
-            [FromBody]UpdateShopBody body,
-            [FromServices]IMapper mapper)
+            [FromRoute] Guid shopId,
+            [FromBody] UpdateShopBody body,
+            [FromServices] IMapper mapper)
         {
             var shop = await _database.Shops.FirstOrDefaultAsync(shop => shop.Id == shopId);
 
@@ -163,7 +160,7 @@ namespace Server.Controllers.Shops
         }
 
         [HttpDelete("{shopId}")]
-        public async Task<IActionResult> DeleteShop([FromRoute]Guid shopId)
+        public async Task<IActionResult> DeleteShop([FromRoute] Guid shopId)
         {
             var shop = await _database.Shops.FirstOrDefaultAsync(shop => shop.Id == shopId);
 

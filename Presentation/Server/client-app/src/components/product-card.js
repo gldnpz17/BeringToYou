@@ -20,7 +20,6 @@ const StyledCard = styled(CustomCard)`
   }
 
   .item-price {
-
   }
 
   img {
@@ -95,7 +94,7 @@ const StyledListCardBody = styled(Card.Body)`
 
 const ProductCard = ({ image, productName, shopName, price, displayMode, style, className }) => {
   return (
-    <StyledCard className={`m-0 ${className}`} style={style} onClick={() => window.location.href='/produk/idproduk'}>
+    <StyledCard className={`m-0 ${className}`} style={style} onClick={() => window.location.href = '/produk/idproduk'}>
       <StyledListCardBody className={`display-${displayMode}`}>
         <img src={image} className='item-image' />
         <div className='item-info-container' >

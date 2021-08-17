@@ -51,7 +51,7 @@ const StoreSelectContainer = styled.div`
   transition: max-width 0.5s 0.6s, opacity 0.5s 0.6s, max-height 0.5s, margin-bottom 0.5s;
 
   &.hidden {
-    transition: max-width 0.5s, opacity 0.5s, max-height 0.5s 0.6s, margin-bottom 0.5s 0.6s; 
+    transition: max-width 0.5s, opacity 0.5s, max-height 0.5s 0.6s, margin-bottom 0.5s 0.6s;
 
     opacity: 0%;
     max-width: 0rem;
@@ -69,7 +69,7 @@ const AdminShopPage = () => {
   const bannerUploadInput = useRef(null);
   const identityContext = useContext(IdentityContext);
 
-  const [shops, setShops] = useState([]); 
+  const [shops, setShops] = useState([]);
   const [selectedShop, setSelectedShop] = useState(null);
 
   const [onlineShops, setOnlineShops] = useState([]);
@@ -112,7 +112,7 @@ const AdminShopPage = () => {
 
     document.getElementById('shop-profile-name').value = selectedShop?.name ?? "";
     document.getElementById('shop-profile-description').value = selectedShop?.description ?? "";
-    
+
     setOnlineShops(await fetchOnlineShops(shopId));
     setProducts(await fetchShopProducts(shopId));
 
@@ -125,7 +125,7 @@ const AdminShopPage = () => {
     let shop = await fetchShopDetails(shopId)
 
     setSelectedShop(shop);
-  } 
+  }
 
   const [query, setQuery] = useState(null);
 
@@ -189,7 +189,7 @@ const AdminShopPage = () => {
               }
             );
           })
-        }, 
+        },
         {
           id: 'name',
           label: 'Nama Toko',
@@ -242,7 +242,7 @@ const AdminShopPage = () => {
               }
             );
           })
-        }, 
+        },
         {
           id: 'name',
           label: 'Nama Toko',
@@ -624,7 +624,7 @@ const AdminShopPage = () => {
         label: 'Simpan',
         callback: async (values) => {
           await updateProductCategory(values.id, values.name);
-  
+
           await getAllData();
         }
       }
@@ -642,7 +642,7 @@ const AdminShopPage = () => {
           type: 'text',
           readOnly: true,
           defaultValue: productCategory.id
-        }, 
+        },
         {
           id: 'name',
           label: 'Nama',
@@ -791,7 +791,7 @@ const AdminShopPage = () => {
       <AdminPageTabContainer>
         <AdminPageNav>
           <Nav.Item>
-            <AdminPageNavLink 
+            <AdminPageNavLink
               onClick={() => setTabActiveKey('shop-profile')}
               active={tabActiveKey === 'shop-profile'}
             >
@@ -800,7 +800,7 @@ const AdminShopPage = () => {
             </AdminPageNavLink>
           </Nav.Item>
           {/*<Nav.Item>
-            <AdminPageNavLink 
+            <AdminPageNavLink
               onClick={() => setTabActiveKey('shop-products')}
               active={tabActiveKey === 'shop-products'}
             >
@@ -809,7 +809,7 @@ const AdminShopPage = () => {
             </AdminPageNavLink>
           </Nav.Item>*/}
           {/*<Nav.Item>
-            <AdminPageNavLink 
+            <AdminPageNavLink
               onClick={() => setTabActiveKey('shop-preview')}
               active={tabActiveKey === 'shop-preview'}
             >
@@ -817,9 +817,9 @@ const AdminShopPage = () => {
               <p>Preview</p>
             </AdminPageNavLink>
           </Nav.Item>*/}
-          {identityContext?.identity?.adminPermissions?.canManageShops ? 
+          {identityContext?.identity?.adminPermissions?.canManageShops ?
             <Nav.Item>
-              <AdminPageNavLink 
+              <AdminPageNavLink
                 onClick={() => setTabActiveKey('shop-management')}
                 active={tabActiveKey === 'shop-management'}
               >
@@ -827,7 +827,7 @@ const AdminShopPage = () => {
                 <p>Manajemen</p>
               </AdminPageNavLink>
             </Nav.Item>
-          : null}
+            : null}
         </AdminPageNav>
         <AdminPageTabContent>
           <Tab.Pane active={tabActiveKey === 'shop-profile'}>
@@ -842,44 +842,44 @@ const AdminShopPage = () => {
                   <Form.Label>Nama Toko</Form.Label>
                   <AdminFormControl id='shop-profile-name'
                     onChange={() => setCanSubmitProfileEdits(true)}
-                    type='text' 
+                    type='text'
                     defaultValue={selectedShop?.name} />
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Deskripsi</Form.Label>
-                  <AdminFormControl id='shop-profile-description' 
+                  <AdminFormControl id='shop-profile-description'
                     onChange={() => setCanSubmitProfileEdits(true)}
-                    as='textarea' rows={5} 
-                    className='form-control' 
+                    as='textarea' rows={5}
+                    className='form-control'
                     defaultValue={selectedShop?.description} />
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Harga minimum</Form.Label>
                   <AdminFormControl id='shop-profile-min-price'
                     onChange={() => setCanSubmitProfileEdits(true)}
-                    type='text' 
+                    type='text'
                     defaultValue={selectedShop?.minPrice} />
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Harga maksimum</Form.Label>
                   <AdminFormControl id='shop-profile-max-price'
                     onChange={() => setCanSubmitProfileEdits(true)}
-                    type='text' 
+                    type='text'
                     defaultValue={selectedShop?.maxPrice} />
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Gambar Banner</Form.Label>
                   <div className='d-flex align-items-end flex-wrap'>
-                    <ShopBanner 
+                    <ShopBanner
                       id='shop-banner-image'
-                      className='mb-2 mr-2' 
+                      className='mb-2 mr-2'
                       src={`/api/public/assets/${selectedShop?.bannerImage?.thumbnailFilename}`}
                       altsrc='/assets/imagenotfound.png' />
                     <CustomButton className='mb-2' onClick={() => bannerUploadInput.current.click()}>Unggah gambar baru</CustomButton>
                   </div>
                 </Form.Group>
                 <CustomButton disabled={!canSubmitProfileEdits} className='mr-2' onClick={() => handleSubmitShopProfileEdits()}>Simpan</CustomButton>
-                <input type='file' style={{display: 'none'}} ref={bannerUploadInput} onChange={() => handleSetBannerImage()} />
+                <input type='file' style={{ display: 'none' }} ref={bannerUploadInput} onChange={() => handleSetBannerImage()} />
                 <CustomButton disabled={!canSubmitProfileEdits} secondary onClick={() => refreshShopData()}>Batalkan perubahan</CustomButton>
               </Form>
             </AdminFormContainer>
@@ -937,7 +937,7 @@ const AdminShopPage = () => {
             <AdminFormContainer>
               <h1 className='mb-3'>Produk</h1>
               <div className='d-flex flex-row mb-3 align-items-center flex-wrap justify-content-end'>
-                <AdminFormControl type='text' placeholder='Cari produk' className='mb-1' style={{maxWidth: '16rem'}} />
+                <AdminFormControl type='text' placeholder='Cari produk' className='mb-1' style={{ maxWidth: '16rem' }} />
                 <div className='flex-grow-1' />
                 <CustomButton className='mb-1' onClick={() => handleCreateProduct()}>Produk baru</CustomButton>
               </div>
@@ -1004,7 +1004,7 @@ const AdminShopPage = () => {
                   {shopCategories.map(category => {
                     return (
                       <tr>
-                        <ItemWithIdTableCell className='w-100' style={{display: 'table-cell'}}>
+                        <ItemWithIdTableCell className='w-100' style={{ display: 'table-cell' }}>
                           <div>
                             <p>{category.name}</p>
                             <p className='id'>{category.id}</p>
@@ -1089,7 +1089,7 @@ const AdminShopPage = () => {
                   {onlineShopPlatforms.map(platform => {
                     return (
                       <tr>
-                        <ItemWithIdTableCell className='w-100' style={{display: 'table-cell'}}>
+                        <ItemWithIdTableCell className='w-100' style={{ display: 'table-cell' }}>
                           <div>
                             <p>{platform.name}</p>
                             <p className='id'>{platform.id}</p>

@@ -103,7 +103,7 @@ const ProductSearchOptionsOverlay = ({ setVisible, visible }) => {
             <IconButton text='Tambah Kategori' onClick={() => {
               setCategoryOverlayVisible(true);
             }}>
-              <AddcategoryIcon style={{width: '1.2rem', height: '1.2rem'}} />
+              <AddcategoryIcon style={{ width: '1.2rem', height: '1.2rem' }} />
             </IconButton>
           </div>
         </section>
@@ -137,7 +137,7 @@ const ProductSearchOptionsOverlay = ({ setVisible, visible }) => {
           </Form.Group>
         </section>
         <div className='flex-grow-1' />
-        <CustomButton className='mx-2 mb-3' onClick={() => setVisible(false) }>Terapkan</CustomButton>
+        <CustomButton className='mx-2 mb-3' onClick={() => setVisible(false)}>Terapkan</CustomButton>
       </ContentContainer>
     </OverlayContainer>
   );

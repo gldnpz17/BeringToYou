@@ -34,23 +34,21 @@ const ShopListPage = () => {
   });
 
   useEffect(() => {
-
   }, [searchCriteria])
 
   const getShopDatas = async () => {
-    
   };
 
   return (
     <StyledContainer className='p-0'>
       <VisitorPageTitleContainer>
-        <ShopIcon/>
+        <ShopIcon />
         <h1>Daftar Toko</h1>
       </VisitorPageTitleContainer>
       <div className='mx-2 mb-4 d-flex flex-column'>
         <SearchTextBox placeholder='Cari Toko' className='mb-3' />
         <IconButton text='Filter & Urutkan' className='align-self-center'>
-          <FilterIcon style={{width: '1.6rem', height: '1.6rem'}} />
+          <FilterIcon style={{ width: '1.6rem', height: '1.6rem' }} />
         </IconButton>
       </div>
       <Row className='row-cols-2 mx-2'>

@@ -7,7 +7,7 @@ class GenericMapIcon extends L.DivIcon {
   constructor(divClass, labelClass, svgIcon, shopName) {
     super({
       className: divClass,
-      html: 
+      html:
         ReactDOMServer.renderToString(svgIcon) +
         DOMPurify.sanitize(`<p class='${labelClass}'>${encode(shopName)}</p>`)
     });

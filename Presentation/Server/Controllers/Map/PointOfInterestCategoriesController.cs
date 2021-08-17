@@ -13,8 +13,6 @@ using Server.Models.Response;
 using Server.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.Map
@@ -25,14 +23,13 @@ namespace Server.Controllers.Map
     {
         public PointOfInterestCategoriesController(AppDbContext database, IAuthorizationService authorizationService) : base(database, authorizationService)
         {
-
         }
 
         [HttpPost]
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
         public async Task<IActionResult> CreatePointOfInterestCategory(
-            [FromBody]CreatePointOfInterestCategoryBody body,
-            [FromServices]IMapper mapper)
+            [FromBody] CreatePointOfInterestCategoryBody body,
+            [FromServices] IMapper mapper)
         {
             var newCategory = mapper.Map<PointOfInterestCategory>(body);
 
@@ -45,7 +42,7 @@ namespace Server.Controllers.Map
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IList<PointOfInterestCategorySummary>> ReadAllPointOfInterestCategories([FromServices]IMapper mapper)
+        public async Task<IList<PointOfInterestCategorySummary>> ReadAllPointOfInterestCategories([FromServices] IMapper mapper)
         {
             var categories = await _database.PointOfInterestCategories.ToListAsync();
 
@@ -57,9 +54,9 @@ namespace Server.Controllers.Map
         [HttpPut("{categoryId}")]
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
         public async Task<IActionResult> UpdatePointOfInterestCategory(
-            [FromRoute]Guid categoryId, 
-            [FromBody]UpdatePointOfInterestCategoryBody body,
-            [FromServices]IMapper mapper)
+            [FromRoute] Guid categoryId,
+            [FromBody] UpdatePointOfInterestCategoryBody body,
+            [FromServices] IMapper mapper)
         {
             var category = await _database.PointOfInterestCategories.FirstOrDefaultAsync(category => category.Id == categoryId);
 
@@ -73,9 +70,9 @@ namespace Server.Controllers.Map
         [HttpDelete("{categoryId}")]
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
         public async Task<IActionResult> DeletePointOfInterestCategory(
-            [FromRoute]Guid categoryId,
-            [FromServices]IFileSystemService fileSystemService,
-            [FromServices]ApplicationConfiguration applicationConfiguration)
+            [FromRoute] Guid categoryId,
+            [FromServices] IFileSystemService fileSystemService,
+            [FromServices] ApplicationConfiguration applicationConfiguration)
         {
             var category = await _database.PointOfInterestCategories.FirstOrDefaultAsync(category => category.Id == categoryId);
 
@@ -91,10 +88,10 @@ namespace Server.Controllers.Map
         [HttpPut("{categoryId}/icon")]
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
         public async Task<IActionResult> UpdateIcon(
-            [FromRoute]Guid categoryId, 
-            [FromForm(Name = "icon")]IFormFile icon,
-            [FromServices]IFileSystemService fileSystemService,
-            [FromServices]ApplicationConfiguration applicationConfiguration)
+            [FromRoute] Guid categoryId,
+            [FromForm(Name = "icon")] IFormFile icon,
+            [FromServices] IFileSystemService fileSystemService,
+            [FromServices] ApplicationConfiguration applicationConfiguration)
         {
             var category = await _database.PointOfInterestCategories.FirstOrDefaultAsync(category => category.Id == categoryId);
 

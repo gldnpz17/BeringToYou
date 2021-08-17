@@ -7,10 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Server.Common;
 using Server.Common.Auth;
 using Server.Models.Request;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.Auth
@@ -41,9 +37,9 @@ namespace Server.Controllers.Auth
             var account = await _database.Accounts.FirstOrDefaultAsync(account => account.Email == body.Email);
 
             account.PasswordCredential.SendPasswordResetToken(
-                emailSender, 
-                alphanumericRng, 
-                _dateTimeService, 
+                emailSender,
+                alphanumericRng,
+                _dateTimeService,
                 _domainModelConfiguration);
 
             await _database.SaveChangesAsync();

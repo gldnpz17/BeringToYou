@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using DomainModel.Entities;
 using EFCoreDatabase;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,9 +7,6 @@ using Server.Common;
 using Server.Common.Auth;
 using Server.Models.Request;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.ShopCategories.Subcategories
@@ -21,7 +17,6 @@ namespace Server.Controllers.ShopCategories.Subcategories
     {
         public SubcategoriesController(AppDbContext database, IAuthorizationService authorizationService) : base(database, authorizationService)
         {
-
         }
 
         [HttpPut("{subcategoryId}")]

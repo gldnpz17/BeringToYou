@@ -10,9 +10,7 @@ using Server.Common;
 using Server.Common.Auth;
 using Server.Models.Request;
 using Server.Models.Response;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.Admin.Accounts
@@ -25,7 +23,6 @@ namespace Server.Controllers.Admin.Accounts
             AppDbContext database,
             IAuthorizationService authorizationService) : base(database, authorizationService)
         {
-
         }
 
         [HttpPost]

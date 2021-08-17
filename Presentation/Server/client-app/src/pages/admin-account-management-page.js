@@ -292,18 +292,18 @@ const AdminAccountManagementPage = () => {
 
   return (
     <AdminPageContainer>
-      <VerifyMerchantModal 
+      <VerifyMerchantModal
         callback={merchantVerificationCallback}
         show={verifyMerchantModalShow}
         verificationRequest={requestToverify}
-        setShow={setVerifyMerchantModalShow} 
+        setShow={setVerifyMerchantModalShow}
       />
-      <EditPermissionPresetModal 
+      <EditPermissionPresetModal
         show={editPermissionPresetModalShow}
         permissionPreset={permissionPresetToEdit}
         setShow={setEditPermissionPresetModalShow}
       />
-      <ManipulateItemModal 
+      <ManipulateItemModal
         query={query}
       />
       <AdminPageHeader title='Manajemen Akun'>
@@ -329,7 +329,7 @@ const AdminAccountManagementPage = () => {
             <AdminFormContainer>
               <h1 className='mb-3'>Manajemen Akun Admin</h1>
               <div className='d-flex flex-row mb-3 align-items-center flex-wrap justify-content-end'>
-                <AdminFormControl type='text' placeholder='Cari akun' className='mb-1' style={{maxWidth: '16rem'}} />
+                <AdminFormControl type='text' placeholder='Cari akun' className='mb-1' style={{ maxWidth: '16rem' }} />
                 <div className='flex-grow-1' />
                 <CustomButton className='mb-1' onClick={() => handleCreateAdminAccount()}>Akun baru</CustomButton>
               </div>
@@ -394,7 +394,7 @@ const AdminAccountManagementPage = () => {
                     return (
                       <tr>
                         <td className='text-nowrap'>{preset.name}</td>
-                        <td style={{maxWidth: '24rem'}}>{listPermissions(preset)}</td>
+                        <td style={{ maxWidth: '24rem' }}>{listPermissions(preset)}</td>
                         <td>
                           <span className='d-flex justify-content-end'>
                             <IconButton className='p-1 mr-2' iconOnly
@@ -419,7 +419,7 @@ const AdminAccountManagementPage = () => {
           <Tab.Pane eventKey='merchant-accounts'>
             <AdminFormContainer>
               <h1 className='mb-3'>Manajemen Akun Pedagang</h1>
-              <AdminFormControl type='text' placeholder='Cari akun' className='mb-3' style={{maxWidth: '16rem'}} />
+              <AdminFormControl type='text' placeholder='Cari akun' className='mb-3' style={{ maxWidth: '16rem' }} />
               <AdminTable>
                 <thead>
                   <tr>
@@ -441,7 +441,7 @@ const AdminAccountManagementPage = () => {
                           <div>
                             <div className='d-flex flex-row align-items-center'>
                               <p className='mr-1'>{account.displayName}</p>
-                              {account.verified ? <VerifiedIcon style={{width: '1em', height: '1em'}} /> : null}
+                              {account.verified ? <VerifiedIcon style={{ width: '1em', height: '1em' }} /> : null}
                             </div>
                             <p className='account-id'>{account.id}</p>
                           </div>
@@ -471,13 +471,13 @@ const AdminAccountManagementPage = () => {
                         <td>
                           <span className='d-flex justify-content-end'>
                             {
-                              (account.verified === false) ? 
+                              (account.verified === false) ?
                                 <IconButton className='p-1 mr-2' iconOnly
                                   onClick={() => handleVerifyMerchant(account)}
                                 >
                                   <VerifiedIcon />
                                 </IconButton>
-                              : null
+                                : null
                             }
                             <IconButton className='p-1' iconOnly danger
                               onClick={() => handleDeleteAccount(account)}

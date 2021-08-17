@@ -1,9 +1,4 @@
-﻿using Server.Common.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Server.Services
 {
@@ -18,8 +13,8 @@ namespace Server.Services
         /// <param name="fileSystemService"></param>
         /// <returns>The randomly-generated filename.</returns>
         public Task<string> GenerateThumbnailAsync(
-            string originalImagePath, 
-            string thumbnailDirectory, 
+            string originalImagePath,
+            string thumbnailDirectory,
             int maxDimension);
     }
 }

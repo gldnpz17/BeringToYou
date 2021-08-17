@@ -23,7 +23,7 @@ const IconButton = ({ children, text, onClick, className, iconOnly, id, style, d
       <span className='d-flex flex-row align-items-center'>
         {children}
         <ButtonText className='m-0 ml-1'>{text}</ButtonText>
-      </span> 
+      </span>
     );
   }
 

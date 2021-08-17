@@ -21,7 +21,7 @@
   "compounds": [
     {
       "name": "Run and open browser",
-      "configurations": ["Run npm start", "Launch Chrome"]
+      "configurations": [ "Run npm start", "Launch Chrome" ]
     }
   ]
 }

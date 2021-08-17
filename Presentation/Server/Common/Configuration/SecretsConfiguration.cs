@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Common.Configuration
 {
@@ -20,8 +16,10 @@ namespace Server.Common.Configuration
             {
                 case "EnvironmentVariables":
                     return GetEnvironmentVariableSecrets();
+
                 case "Json":
                     return GetJsonSecrets();
+
                 default:
                     if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
                     {
@@ -42,7 +40,7 @@ namespace Server.Common.Configuration
                 TotpEncryptionSecret = Environment.GetEnvironmentVariable("TOTP_ENCRYPTION_SECRET"),
                 DatabaseConnectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING")
             };
-        } 
+        }
 
         private static SecretsConfiguration GetJsonSecrets()
         {

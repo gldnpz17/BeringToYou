@@ -13,7 +13,7 @@ const Container = styled.div`
   }
 `;
 
-const VisitorPageTitleContainer = ({children, ...props}) => {
+const VisitorPageTitleContainer = ({ children, ...props }) => {
   return (
     <Container className='title d-flex flex-row px-2 mb-2 pt-2 align-items-center'>
       {children}

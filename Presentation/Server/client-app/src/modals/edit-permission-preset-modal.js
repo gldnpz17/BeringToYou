@@ -6,14 +6,14 @@ import AdminFormControl from "../components/admin-form-control";
 import FormCheck from '../components/form-check';
 import updatePermissionPreset from '../use-cases/admin/account-management/update-permission-preset';
 
-const EditPermissionPresetModal = ({permissionPreset, ...props}) => {
+const EditPermissionPresetModal = ({ permissionPreset, ...props }) => {
   const handleEditPermissionPreset = async () => {
     const getCheckValue = (checkId) => {
       return document.getElementById(checkId).checked;
     }
 
     await updatePermissionPreset(
-      permissionPreset?.name, 
+      permissionPreset?.name,
       {
         canManageAccounts: getCheckValue('manage-accounts-check'),
         canManagePermissions: getCheckValue('manage-permissions-check'),

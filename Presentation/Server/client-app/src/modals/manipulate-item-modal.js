@@ -21,14 +21,14 @@ const ManipulateItemModal = (props) => {
 
   const gatherInputValues = () => {
     let inputs = document.getElementsByClassName(props.query.id);
-    
+
     let values = {};
     for (let x = 0; x < inputs.length; x++) {
       let input = inputs[x];
-      switch(input.type) {
+      switch (input.type) {
         case 'file':
           values[input.name] = input.files[0];
-          break;      
+          break;
         case 'checkbox':
           if (!values[input.name]) {
             values[input.name] = {}
@@ -46,7 +46,7 @@ const ManipulateItemModal = (props) => {
 
   const setImageList = (id) => {
     return (newList) => {
-      let newFormSubmission = {...formImages};
+      let newFormSubmission = { ...formImages };
 
       newFormSubmission[id] = newList;
 
@@ -57,9 +57,9 @@ const ManipulateItemModal = (props) => {
   const submitForm = async () => {
     if (props.query !== null && props.query !== undefined) {
       let inputValues = gatherInputValues();
-  
-      await props.query.submit.callback({...formImages, ...inputValues});
-  
+
+      await props.query.submit.callback({ ...formImages, ...inputValues });
+
       setShow(false);
     }
   };
@@ -87,43 +87,43 @@ const ManipulateItemModal = (props) => {
                     );
                   case 'textarea':
                     return (
-                      <AdminFormControl name={field.id} 
-                        as='textarea' 
-                        readOnly={field.readOnly === true} 
-                        className={`form-control ${props.query?.id}`} 
-                        rows={5} 
-                        defaultValue={field.defaultValue} 
+                      <AdminFormControl name={field.id}
+                        as='textarea'
+                        readOnly={field.readOnly === true}
+                        className={`form-control ${props.query?.id}`}
+                        rows={5}
+                        defaultValue={field.defaultValue}
                       />
                     );
                   case 'text':
                     return (
-                      <AdminFormControl name={field.id} 
+                      <AdminFormControl name={field.id}
                         className={props.query?.id}
-                        type='text' 
-                        readOnly={field.readOnly === true} 
-                        defaultValue={field.defaultValue} 
+                        type='text'
+                        readOnly={field.readOnly === true}
+                        defaultValue={field.defaultValue}
                       />
                     );
                   case 'password':
                     return (
-                      <AdminFormControl name={field.id} 
+                      <AdminFormControl name={field.id}
                         className={props.query?.id}
-                        type='password' 
+                        type='password'
                       />
                     );
                   case 'file':
                     return (
                       <div className='d-flex flex-column'>
                         {(field.preview !== null && field.preview !== undefined) ? <a href={field.preview} target="_blank">File lama</a> : null}
-                        <AdminFormControl name={field.id} 
+                        <AdminFormControl name={field.id}
                           className={props.query?.id}
-                          type='file' 
+                          type='file'
                         />
                       </div>
                     );
                   case 'image-list':
                     return (
-                      <ImageListControl 
+                      <ImageListControl
                         initialImages={field.initialImages}
                         images={formImages[field.id]}
                         setImages={setImageList(field.id)}
@@ -132,7 +132,7 @@ const ManipulateItemModal = (props) => {
                   case 'checkbox':
                     field.options?.map(option => {
                       return (
-                        <FormCheck 
+                        <FormCheck
                           id={option.id}
                           name={field.id}
                           className={props.query?.id}

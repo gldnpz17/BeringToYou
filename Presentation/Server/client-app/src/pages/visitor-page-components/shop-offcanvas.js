@@ -29,13 +29,13 @@ const Background = styled.div`
     pointer-events: none;
   }
 
-  display: ${props => props.showBackground ? 'auto': 'none'};
+  display: ${props => props.showBackground ? 'auto' : 'none'};
 
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
-  right: ${props => props.showBackground ? '0': '100%'};
+  right: ${props => props.showBackground ? '0' : '100%'};
   z-index: 0;
 
   background-color: black;
@@ -197,8 +197,8 @@ const OnlineShop = styled.li`
 const ShopOffCanvas = ({ history, shop, showBackground, canJumpToLocation, visible, setVisible, onDismiss, ...props }) => {
   return (
     <Container {...props}>
-      <Background className={visible ? '' : 'hidden'} 
-        showBackground={showBackground} 
+      <Background className={visible ? '' : 'hidden'}
+        showBackground={showBackground}
         onClick={() => {
           if (showBackground) {
             onDismiss ? onDismiss() : setVisible(false)
@@ -207,13 +207,13 @@ const ShopOffCanvas = ({ history, shop, showBackground, canJumpToLocation, visib
       />
       <Content className={`d-flex flex-column ${visible ? '' : 'hidden'}`}>
         <ImageContainer>
-          <FailSafeImg 
-            src={`api/public/assets/${shop?.bannerImage?.thumbnailFilename}`} 
+          <FailSafeImg
+            src={`api/public/assets/${shop?.bannerImage?.thumbnailFilename}`}
             altsrc={`assets/imagenotfound.png`}
           />
           <h1>{shop?.name}</h1>
           <Close onClick={() => onDismiss ? onDismiss() : setVisible(false)} />
-          {canJumpToLocation ? 
+          {canJumpToLocation ?
             <Location onClick={() => {
               history.push(`/?shopfocus=${shop?.id}`);
             }} />
@@ -227,8 +227,8 @@ const ShopOffCanvas = ({ history, shop, showBackground, canJumpToLocation, visib
             {shop?.onlineShopInstances?.map(onlineShop => {
               return (
                 <OnlineShop className='d-flex flex-row align-items-center'>
-                  <FailSafeImg 
-                    src={`api/public/assets/${onlineShop?.platform?.iconFilename}`} 
+                  <FailSafeImg
+                    src={`api/public/assets/${onlineShop?.platform?.iconFilename}`}
                     altsrc={`assets/imagenotfound.png`}
                   />
                   <a href={onlineShop?.url}>{`${onlineShop?.platform?.name} (${onlineShop?.name})`}</a>

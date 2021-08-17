@@ -11,7 +11,6 @@ using Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.Products
@@ -22,19 +21,18 @@ namespace Server.Controllers.Products
     {
         public ProductsController(AppDbContext database, IAuthorizationService authorizationService) : base(database, authorizationService)
         {
-
         }
 
         [HttpGet]
         [AllowAnonymous]
         public async Task<IList<ProductSummary>> ReadAllProducts(
-            [FromQuery]string keywords,
-            [FromQuery]string categories,
-            [FromQuery]string sort,
-            [FromQuery]int start,
-            [FromQuery]int count,
-            [FromServices]IPaginationService paginationService,
-            [FromServices]IMapper mapper)
+            [FromQuery] string keywords,
+            [FromQuery] string categories,
+            [FromQuery] string sort,
+            [FromQuery] int start,
+            [FromQuery] int count,
+            [FromServices] IPaginationService paginationService,
+            [FromServices] IMapper mapper)
         {
             var splitKeywords = keywords.Split('+');
 
@@ -51,7 +49,7 @@ namespace Server.Controllers.Products
 
         [HttpGet("{productId}")]
         [AllowAnonymous]
-        public async Task<ProductDetailed> ReadProductById([FromRoute]Guid productId, [FromServices]IMapper mapper)
+        public async Task<ProductDetailed> ReadProductById([FromRoute] Guid productId, [FromServices] IMapper mapper)
         {
             var product = await _database.Products.FirstOrDefaultAsync(product => product.Id == productId);
 

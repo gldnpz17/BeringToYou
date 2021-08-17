@@ -48,11 +48,11 @@ const App = () => {
     secondaryDark: '#8c0032',
     whitespace: '#F5F5F5',
     shadow: 'rgba(0, 0, 0, 0.5)',
-    semiTransparentWhite : 'rgba(255, 255, 255, 0.75)',
+    semiTransparentWhite: 'rgba(255, 255, 255, 0.75)',
     mapPrimary: '#E65100',
     mapPrimaryLight: '#FF833A',
     mapPrimaryDark: '#AC1900',
-    mapSecondary: '#1976D2',  
+    mapSecondary: '#1976D2',
     mapSecondaryLight: '#63A4ff',
     mapSecondaryDark: '#004BA0',
     lightButton: '#CFD8DC',
@@ -81,7 +81,7 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <SnackbarProvider maxSnack={3} 
+      <SnackbarProvider maxSnack={3}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'right'

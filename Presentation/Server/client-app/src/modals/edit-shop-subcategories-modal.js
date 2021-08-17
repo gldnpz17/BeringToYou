@@ -19,7 +19,7 @@ import deleteShopSubcategory from "../use-cases/admin/shop/delete-shop-subcatego
 const EditShopSubcategoriesModal = ({ category, ...props }) => {
   const [subcategories, setSubcategories] = useState([]);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  
+
   useEffect(() => {
     if (props.show) {
       getSubcategories();
@@ -105,11 +105,11 @@ const EditShopSubcategoriesModal = ({ category, ...props }) => {
           <form method='POST' className='mb-2 d-flex flex-row align-items-center'
             onSubmit={handleSubmitAddSubcategory}
           >
-            <AdminFormControl name='name' 
-              className='mr-2' type='text' 
-              placeholder='Nama subkategori baru' 
+            <AdminFormControl name='name'
+              className='mr-2' type='text'
+              placeholder='Nama subkategori baru'
             />
-            <CustomButton type='submit' onClick={() => {}}>Tambah</CustomButton>
+            <CustomButton type='submit' onClick={() => { }}>Tambah</CustomButton>
           </form>
           <AdminTable>
             <thead>
@@ -126,20 +126,20 @@ const EditShopSubcategoriesModal = ({ category, ...props }) => {
                       <form className='d-flex flex-row align-items-center'
                         onSubmit={handleUpdateShopSubcategory}
                       >
-                        <input name='id' type='hidden' 
-                          value={subcategory.id} 
+                        <input name='id' type='hidden'
+                          value={subcategory.id}
                           readOnly={true}
                         />
-                        <AdminFormControl name='name' 
-                          className='mr-2' type='text' 
-                          defaultValue={subcategory.name} 
+                        <AdminFormControl name='name'
+                          className='mr-2' type='text'
+                          defaultValue={subcategory.name}
                         />
                         <input type='color' name='color'
                           className='mr-2'
                           defaultValue={subcategory.rgbHexLegendColor}
                         />
                         <IconButton className='p-1' iconOnly
-                          type='submit' onClick={() => {}}
+                          type='submit' onClick={() => { }}
                         >
                           <SaveIcon />
                         </IconButton>

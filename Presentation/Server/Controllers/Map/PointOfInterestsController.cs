@@ -10,8 +10,6 @@ using Server.Models.Request;
 using Server.Models.Response;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.Map
@@ -22,14 +20,13 @@ namespace Server.Controllers.Map
     {
         public PointOfInterestsController(AppDbContext database, IAuthorizationService authorizationService) : base(database, authorizationService)
         {
-
         }
 
         [HttpPost]
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
         public async Task<IActionResult> CreatePointOfInterest(
-            [FromBody]CreatePointOfInterestBody body,
-            [FromServices]IMapper mapper)
+            [FromBody] CreatePointOfInterestBody body,
+            [FromServices] IMapper mapper)
         {
             var newPointOfInterest = mapper.Map<PointOfInterest>(body);
 
@@ -45,7 +42,7 @@ namespace Server.Controllers.Map
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IList<PointOfInterestSummary>> ReadAllPointOfInterests([FromServices]IMapper mapper)
+        public async Task<IList<PointOfInterestSummary>> ReadAllPointOfInterests([FromServices] IMapper mapper)
         {
             var pointOfInterests = await _database.PointOfInterests.ToListAsync();
 
@@ -57,9 +54,9 @@ namespace Server.Controllers.Map
         [HttpPut("{pointOfInterestId}")]
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
         public async Task<IActionResult> UpdatePointOfInterest(
-            [FromRoute]Guid pointOfInterestId,
-            [FromBody]UpdatePointOfInterestBody body,
-            [FromServices]IMapper mapper)
+            [FromRoute] Guid pointOfInterestId,
+            [FromBody] UpdatePointOfInterestBody body,
+            [FromServices] IMapper mapper)
         {
             var pointOfInterest = await _database.PointOfInterests.FirstOrDefaultAsync(pointOfInterest => pointOfInterest.Id == pointOfInterestId);
 
@@ -79,7 +76,7 @@ namespace Server.Controllers.Map
 
         [HttpDelete("{pointOfInterestId}")]
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
-        public async Task<IActionResult> DeletePointOfInterest([FromRoute]Guid pointOfInterestId)
+        public async Task<IActionResult> DeletePointOfInterest([FromRoute] Guid pointOfInterestId)
         {
             var pointOfInterest = await _database.PointOfInterests.FirstOrDefaultAsync(pointOfInterest => pointOfInterest.Id == pointOfInterestId);
 

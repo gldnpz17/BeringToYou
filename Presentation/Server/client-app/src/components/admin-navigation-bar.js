@@ -52,7 +52,7 @@ const AdminNavigationBar = (props) => {
 
     await identityContext.refreshIdentity();
   };
-  
+
   return (
     <StyledNavbar {...props} className='fixed-top w-100 d-flex flex-row align-items-center'>
       <Logo />

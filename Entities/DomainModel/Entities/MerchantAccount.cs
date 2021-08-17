@@ -1,10 +1,6 @@
 ﻿using DomainModel.Common;
 using DomainModel.Services;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DomainModel.Entities
 {
@@ -27,10 +23,12 @@ namespace DomainModel.Entities
             };
         }
 
-        public MerchantAccount() { }
+        public MerchantAccount()
+        {
+        }
 
         public virtual IList<Shop> OwnedShops { get; set; } = new List<Shop>();
-        
+
         public virtual MerchantVerificationRequest VerificationRequest { get; set; }
     }
 }

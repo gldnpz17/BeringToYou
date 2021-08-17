@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import ArrowCollapseLeftIcon from '../svg/arrow-collapse-left-icon'; 
+import ArrowCollapseLeftIcon from '../svg/arrow-collapse-left-icon';
 import AccountIcon from '../svg/account-icon';
 import AdminIcon from '../svg/admin-icon';
 import MapIcon from '../svg/map-icon';
@@ -205,7 +205,7 @@ const AdminSidebar = (props) => {
         <ChevronDoubleLeftIcon className='icon' onClick={() => toggleMinimized()} />
       </MinimizeSidebarButton>
       <div id='profile-picture-container'>
-        <FailSafeImg id='profile-picture' 
+        <FailSafeImg id='profile-picture'
           src={`/api/accounts/${identityContext.identity?.accountId}/profile-picture`}
           altsrc='/admin-assets/no-profile-picture.png'
         />
@@ -221,7 +221,7 @@ const AdminSidebar = (props) => {
           <AccountIcon className='icon' />
           <p className='option-label'>Akun Pribadi</p>
         </NavigationOption>
-        {identityContext?.identity?.adminPermissions?.canManageAccounts || identityContext?.identity?.adminPermissions?.canManagePermissions ? 
+        {identityContext?.identity?.adminPermissions?.canManageAccounts || identityContext?.identity?.adminPermissions?.canManagePermissions ?
           <NavigationOption className={`${(page === 'manajemen-akun') ? 'selected' : ''}`}
             href='/admin/manajemen-akun'
           >

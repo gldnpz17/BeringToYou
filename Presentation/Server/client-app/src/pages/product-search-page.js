@@ -49,7 +49,7 @@ const ProductSearchPage = () => {
     <StyledContainer className='p-0'>
       <ProductSearchOptionsOverlay visible={filterOverlayVisible} setVisible={setFilterOverlayVisible} />
       <div className='title d-flex flex-row px-2 align-items-center mb-2 pt-2'>
-        <SearchIcon style={{width: 'calc(1.375rem + 1.5vw)', height: 'calc(1.375rem + 1.5vw)'}} />
+        <SearchIcon style={{ width: 'calc(1.375rem + 1.5vw)', height: 'calc(1.375rem + 1.5vw)' }} />
         <h1 className='m-0'>Cari Produk</h1>
       </div>
 
@@ -60,21 +60,21 @@ const ProductSearchPage = () => {
           'Gula jawa'
         ]} className='mb-2' />
         <IconButton text='Filter & Urutkan' className='align-self-center' onClick={() => { setFilterOverlayVisible(true) }}>
-          <FilterIcon style={{width: '1.6rem', height: '1.6rem'}} />
+          <FilterIcon style={{ width: '1.6rem', height: '1.6rem' }} />
         </IconButton>
       </div>
 
       <p className='search-result text-center m-0'>Hasil Pencarian</p>
       <div className='d-flex flex-row justify-content-end mx-2 mb-1'>
-        <RadioIconButton className='ml-2 p-1' iconOnly={true} onClick={() => changeDisplayMode('list')} 
+        <RadioIconButton className='ml-2 p-1' iconOnly={true} onClick={() => changeDisplayMode('list')}
           id='product-search-display-list' selectedId={`product-search-display-${displayMode}`}
         >
-          <ViewListIcon style={{width: '1.6rem', height: '1.6rem'}} />
+          <ViewListIcon style={{ width: '1.6rem', height: '1.6rem' }} />
         </RadioIconButton>
-        <RadioIconButton className='ml-2 p-1' iconOnly={true} onClick={() => changeDisplayMode('card')} 
+        <RadioIconButton className='ml-2 p-1' iconOnly={true} onClick={() => changeDisplayMode('card')}
           id='product-search-display-card' selectedId={`product-search-display-${displayMode}`}
         >
-          <ViewModulesIcon style={{width: '1.6rem', height: '1.6rem'}}/>
+          <ViewModulesIcon style={{ width: '1.6rem', height: '1.6rem' }} />
         </RadioIconButton>
       </div>
 

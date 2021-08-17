@@ -8,7 +8,7 @@ const resizeImage = (src, maxDimension) => {
     image.onload = () => {
       let canvasWidth = image.width;
       let canvasHeight = image.height;
-  
+
       if (canvasWidth > canvasHeight) {
         if (canvasWidth > maxDimension) {
           canvasHeight *= maxDimension / canvasWidth;
@@ -20,11 +20,11 @@ const resizeImage = (src, maxDimension) => {
           canvasHeight = maxDimension;
         }
       }
-  
+
       let canvas = document.createElement('canvas');
       canvas.width = canvasWidth;
       canvas.height = canvasHeight;
-  
+
       canvas.getContext('2d').drawImage(image, 0, 0, canvasWidth, canvasHeight);
 
       canvas.toBlob((blob) => {
@@ -48,7 +48,7 @@ const readFile = (file) => {
   })
 };
 
-const uploadImage = async (url, formName, file, httpMethod='POST', maxDimension=512) => {  
+const uploadImage = async (url, formName, file, httpMethod = 'POST', maxDimension = 512) => {
   var arrayBuffer = await readFile(file);
   let blob = await resizeImage(arrayBuffer, maxDimension);
 

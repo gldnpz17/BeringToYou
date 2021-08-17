@@ -7,10 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Server.Common;
 using Server.Common.Auth;
 using Server.Models.Response;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.Auth
@@ -23,7 +19,6 @@ namespace Server.Controllers.Auth
             AppDbContext database,
             IAuthorizationService authorizationService) : base(database, authorizationService)
         {
-
         }
 
         [HttpPost]

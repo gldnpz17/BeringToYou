@@ -128,8 +128,8 @@ const AuthPage = () => {
                       <Form.Label>Kata sandi</Form.Label>
                       <AdminFormControl id='admin-login-password' type='password' />
                     </Form.Group>
-                    <CustomButton 
-                      className='align-self-center' 
+                    <CustomButton
+                      className='align-self-center'
                       onClick={handleLogin}
                     >
                       Masuk
@@ -143,7 +143,7 @@ const AuthPage = () => {
               );
             case 'signup':
               return (
-                <>  
+                <>
                   <h1 className='text-center mb-3'>Daftar</h1>
                   <Form className='d-flex flex-column mb-3'>
                     <Form.Group className='mb-2'>
@@ -158,8 +158,8 @@ const AuthPage = () => {
                       <Form.Label>Kata sandi</Form.Label>
                       <AdminFormControl id='admin-signup-password' name='admin-signup-password' type='password' />
                     </Form.Group>
-                    <CustomButton 
-                      className='align-self-center' 
+                    <CustomButton
+                      className='align-self-center'
                       onClick={handleSignup}
                     >
                       Daftar

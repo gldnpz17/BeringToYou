@@ -5,7 +5,7 @@ import IconButton from "../components/icon-button";
 import LocationIcon from "../svg/location-icon";
 import ShopIcon from "../svg/shop-icon";
 import NextIcon from '../svg/next-icon';
-import PreviousButton  from '../svg/previous-icon';
+import PreviousButton from '../svg/previous-icon';
 import RadioIconButton from "../components/radio-icon-button";
 import ImageSlideshow from "../components/image-slideshow";
 
@@ -25,10 +25,10 @@ const ContentContainer = styled.article`
 
 const ProductDetailsPage = () => {
   const [images, setImages] = useState([
-    '/dummy-images/vegetables.jpg', 
+    '/dummy-images/vegetables.jpg',
     '/dummy-images/fruits.jpg',
     '/dummy-images/meat.jpg',
-    '/dummy-images/fruits.jpg', 
+    '/dummy-images/fruits.jpg',
     '/dummy-images/vegetables.jpg'
   ]);
 
@@ -38,10 +38,10 @@ const ProductDetailsPage = () => {
       <ContentContainer className='w-100 d-flex flex-column'>
         <div className='px-2 pt-2'>
           <IconButton text='Toko' className='align-self-start'>
-            <ShopIcon style={{width: '1.6rem', height: '1.6rem'}} />
+            <ShopIcon style={{ width: '1.6rem', height: '1.6rem' }} />
           </IconButton>
           <IconButton text='Lokasi' className='align-self-start ml-2'>
-            <LocationIcon style={{width: '1.6rem', height: '1.6rem'}} />
+            <LocationIcon style={{ width: '1.6rem', height: '1.6rem' }} />
           </IconButton>
         </div>
         <div className='p-2'>

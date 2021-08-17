@@ -10,7 +10,7 @@ const AttributionsModal = ({ setShow, ...props }) => {
       </Modal.Header>
       <Modal.Body>
         <p className='text-center'>© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a></p>
-        <p className='text-center'>© <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a></p> 
+        <p className='text-center'>© <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a></p>
         <p className='text-center'><strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong></p>
       </Modal.Body>
       <Modal.Footer>

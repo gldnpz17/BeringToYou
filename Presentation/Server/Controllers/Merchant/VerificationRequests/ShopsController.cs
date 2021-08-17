@@ -10,7 +10,6 @@ using Server.Models.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.Merchant.VerificationRequests
@@ -23,13 +22,12 @@ namespace Server.Controllers.Merchant.VerificationRequests
             AppDbContext database,
             IAuthorizationService authorizationService) : base(database, authorizationService)
         {
-
         }
 
         [HttpPost]
         public async Task<IActionResult> AddShopToMerchantVerificationRequest(
-            [FromRoute]Guid accountId,
-            [FromBody]AddShopToMerchantVerificationRequestBody body)
+            [FromRoute] Guid accountId,
+            [FromBody] AddShopToMerchantVerificationRequestBody body)
         {
             await AuthorizeAccountOwner(accountId);
 
@@ -46,8 +44,8 @@ namespace Server.Controllers.Merchant.VerificationRequests
 
         [HttpGet]
         public async Task<IList<ShopSummary>> GetAllMerchantVerificationShops(
-            [FromRoute]Guid accountId,
-            [FromServices]IMapper mapper)
+            [FromRoute] Guid accountId,
+            [FromServices] IMapper mapper)
         {
             await AuthorizeAccountOwner(accountId);
 
@@ -65,8 +63,8 @@ namespace Server.Controllers.Merchant.VerificationRequests
 
         [HttpDelete("{shopId}")]
         public async Task<IActionResult> RemoveMerchantVerificationShop(
-            [FromRoute]Guid accountId,
-            [FromRoute]Guid shopId)
+            [FromRoute] Guid accountId,
+            [FromRoute] Guid shopId)
         {
             await AuthorizeAccountOwner(accountId);
 

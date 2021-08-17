@@ -21,12 +21,11 @@ namespace Server.Controllers.Admin.PermissionPresets
             AppDbContext database,
             IAuthorizationService authorizationService) : base(database, authorizationService)
         {
-
         }
 
         [HttpGet]
         [Authorize(PolicyNameConstants.AdminsOnly)]
-        public async Task<IList<PermissionPreset>> GetAllPermissionPresets([FromServices]IMapper mapper)
+        public async Task<IList<PermissionPreset>> GetAllPermissionPresets([FromServices] IMapper mapper)
         {
             var permissionPresets = await _database.PermissionPresets.ToListAsync();
 

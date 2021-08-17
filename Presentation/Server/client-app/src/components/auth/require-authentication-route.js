@@ -14,7 +14,7 @@ const RequireAuthenticationRoute = ({ children, ...props }) => {
             return (children);
           } else {
             return (
-              <Redirect 
+              <Redirect
                 to={{
                   pathname: '/admin/auth/login',
                   state: { redirect: location.pathname }
@@ -24,7 +24,7 @@ const RequireAuthenticationRoute = ({ children, ...props }) => {
           }
         })()}
       </Route>
-    ); 
+    );
   };
 
   return null;

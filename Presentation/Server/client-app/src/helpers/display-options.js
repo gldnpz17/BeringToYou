@@ -1,6 +1,6 @@
 class DisplayOptions {
   static #productDisplayMode = null;
-  
+
   static get productDisplayMode() {
     if (DisplayOptions.#productDisplayMode === null) {
       let mode = window.localStorage.getItem('product-display-mode');

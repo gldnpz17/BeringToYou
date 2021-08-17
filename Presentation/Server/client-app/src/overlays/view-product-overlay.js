@@ -19,7 +19,7 @@ const OverlayContainer = styled.div`
 
   opacity: 1.0;
   visibility: hidden;
-  
+
   transition: 0.3s;
 
   color: whitesmoke;
@@ -71,13 +71,13 @@ const ViewProductOverlay = ({ id, productId }) => {
   return (
     <OverlayContainer id={id}>
       <OverlayBackground onClick={() => dismissViewProductOverlay()} />
-      <Container style={{height: 'auto', overflow: 'auto', minHeight: '100%'}} className='d-flex flex-column'>
+      <Container style={{ height: 'auto', overflow: 'auto', minHeight: '100%' }} className='d-flex flex-column'>
         <div className='flex-grow-1 p-3'></div>
         <ContentContainer className='w-100 d-flex flex-column'>
           <CloseOverlayButton onClick={() => dismissViewProductOverlay()} />
-          <img className='flex-grow-1' src='/dummy-images/vegetables.jpg' style={{objectFit: 'cover', maxHeight: '50vh'}} />
+          <img className='flex-grow-1' src='/dummy-images/vegetables.jpg' style={{ objectFit: 'cover', maxHeight: '50vh' }} />
           <IconButton text='Lokasi' className='align-self-start ml-2 mt-2'>
-            <LocationIcon style={{width: '1.6rem', height: '1.6rem'}} />
+            <LocationIcon style={{ width: '1.6rem', height: '1.6rem' }} />
           </IconButton>
           <div className='p-2'>
             <h1 className='m-0'>Lorem Ipsum Dolor Sit Amet Consectetur</h1>

@@ -29,25 +29,25 @@ const NavigationBar = (props) => {
     if (navigationOpened) {
       setNavigationOpened(false);
       document.getElementById('navigation-overlay').style.height = '0%';
-      
-      KUTE.fromTo('#current-nav-menu', {path: '#close-path'}, {path: '#menu-path'}, {
+
+      KUTE.fromTo('#current-nav-menu', { path: '#close-path' }, { path: '#menu-path' }, {
         duration: 250,
         morphPrecision: 1
       }).start();
 
-      KUTE.fromTo('#menu-icon', {rotate: 180}, {rotate: 360}, {
+      KUTE.fromTo('#menu-icon', { rotate: 180 }, { rotate: 360 }, {
         duration: 250
       }).start();
     } else {
       setNavigationOpened(true);
       document.getElementById('navigation-overlay').style.height = '100%';
-      
-      KUTE.fromTo('#current-nav-menu', {path: '#menu-path'}, {path: '#close-path'}, {
+
+      KUTE.fromTo('#current-nav-menu', { path: '#menu-path' }, { path: '#close-path' }, {
         duration: 250,
         morphPrecision: 1
       }).start();
 
-      KUTE.fromTo('#menu-icon', {rotate: 0}, {rotate: 180}, {
+      KUTE.fromTo('#menu-icon', { rotate: 0 }, { rotate: 180 }, {
         duration: 250
       }).start();
     }
@@ -58,11 +58,11 @@ const NavigationBar = (props) => {
       <a className='d-flex flex-row align-items-center flex-grow-1'
         href='/'
       >
-        <BeringharjoLogo style={{width: '1.6rem', height: '1.6rem'}} />
+        <BeringharjoLogo style={{ width: '1.6rem', height: '1.6rem' }} />
         <h1 className='m-0 ml-1'>BeRING TO YOU</h1>
       </a>
-      <MenuIcon id='menu-icon' className='mr-2' 
-        style={{width: '2.2rem', height: '2.2rem'}} 
+      <MenuIcon id='menu-icon' className='mr-2'
+        style={{ width: '2.2rem', height: '2.2rem' }}
         onClick={() => toggleNavigation()}
       />
     </StyledNavbar>

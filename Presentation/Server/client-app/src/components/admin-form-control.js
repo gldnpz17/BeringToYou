@@ -27,7 +27,7 @@ const StyledSelect = styled.select`
     :focus {
       border-color: ${props => props.theme.secondary};
       box-shadow: 0 0 0 0.25rem ${props => props.theme.secondaryTransparent};
-      outline: none !important; 
+      outline: none !important;
     }
   }
 

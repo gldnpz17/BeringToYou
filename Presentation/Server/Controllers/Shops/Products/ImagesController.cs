@@ -7,10 +7,8 @@ using Server.Common;
 using Server.Common.Configuration;
 using Server.Services;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.Shops.Products
@@ -21,17 +19,16 @@ namespace Server.Controllers.Shops.Products
     {
         public ImagesController(AppDbContext database, IAuthorizationService authorizationService) : base(database, authorizationService)
         {
-
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateImage(
-            [FromRoute]Guid shopId,
-            [FromRoute]Guid productId,
-            [FromForm(Name = "image")]IFormFile image,
-            [FromServices]IFileSystemService fileSystemService,
-            [FromServices]IImageProcessingService imageProcessingService,
-            [FromServices]ApplicationConfiguration applicationConfiguration)
+            [FromRoute] Guid shopId,
+            [FromRoute] Guid productId,
+            [FromForm(Name = "image")] IFormFile image,
+            [FromServices] IFileSystemService fileSystemService,
+            [FromServices] IImageProcessingService imageProcessingService,
+            [FromServices] ApplicationConfiguration applicationConfiguration)
         {
             var shop = await _database.Shops.FirstOrDefaultAsync(shop => shop.Id == shopId);
             await AuthorizeShopOwner(shop);
@@ -57,11 +54,11 @@ namespace Server.Controllers.Shops.Products
 
         [HttpDelete("{filename}")]
         public async Task<IActionResult> DeleteImage(
-            [FromRoute]Guid shopId,
-            [FromRoute]Guid productId,
-            [FromRoute]string filename,
-            [FromServices]IFileSystemService fileSystemService,
-            [FromServices]ApplicationConfiguration applicationConfiguration)
+            [FromRoute] Guid shopId,
+            [FromRoute] Guid productId,
+            [FromRoute] string filename,
+            [FromServices] IFileSystemService fileSystemService,
+            [FromServices] ApplicationConfiguration applicationConfiguration)
         {
             var shop = await _database.Shops.FirstOrDefaultAsync(shop => shop.Id == shopId);
             await AuthorizeShopOwner(shop);

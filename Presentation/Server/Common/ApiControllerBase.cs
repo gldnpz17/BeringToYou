@@ -5,9 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.Common.Auth;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Common
@@ -30,7 +27,7 @@ namespace Server.Common
             var account = await _database.Accounts.FirstOrDefaultAsync(account => account.Id == accountId);
 
             return account;
-        } 
+        }
 
         private protected async Task AuthorizeAccountOwner(Guid accountId, string adminPermission = "")
         {

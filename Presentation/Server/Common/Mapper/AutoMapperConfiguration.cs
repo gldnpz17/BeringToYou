@@ -1,29 +1,27 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Common.Mapper
 {
     public class AutoMapperConfiguration
     {
-        public MapperConfiguration MapperConfiguration 
-        { 
-            get 
+        public MapperConfiguration MapperConfiguration
+        {
+            get
             {
                 return new MapperConfiguration(config =>
                 {
                     #region Accounts
+
                     config.CreateMap<DomainModel.Entities.AccountBase, Models.Response.AccountSummary>();
 
                     config.CreateMap<DomainModel.Entities.AccountBase, Models.Response.AccountDetailed>();
 
                     config.CreateMap<Models.Request.UpdateAccountBody, DomainModel.Entities.AccountBase>();
-                    #endregion
+
+                    #endregion Accounts
 
                     #region Admin
+
                     config.CreateMap<DomainModel.Entities.AdminAccount, Models.Response.AdminAccountSummary>()
                         .ForMember(
                             destination => destination.PermissionPresetName,
@@ -38,9 +36,11 @@ namespace Server.Common.Mapper
                         .ForMember(
                             destination => destination.CanManageBackups,
                             options => options.MapFrom(source => source.CanBackupData));
-                    #endregion
+
+                    #endregion Admin
 
                     #region Auth
+
                     config.CreateMap<DomainModel.Entities.AccountBase, Models.Response.UserIdentity>()
                         .ForMember(
                             destination => destination.AccountId,
@@ -49,9 +49,11 @@ namespace Server.Common.Mapper
                     config.CreateMap<DomainModel.Structs.PasswordAuthenticationResult, Models.Response.PasswordAuthenticationResult>();
 
                     config.CreateMap<DomainModel.Structs.TwoFactorAuthenticationResult, Models.Response.TwoFactorAuthenticationResult>();
-                    #endregion
+
+                    #endregion Auth
 
                     #region Map
+
                     config.CreateMap<Models.Request.CreateMapFloorBody, DomainModel.Entities.MapFloor>();
 
                     config.CreateMap<DomainModel.Entities.MapFloor, Models.Response.MapFloorSummary>();
@@ -81,9 +83,11 @@ namespace Server.Common.Mapper
                     config.CreateMap<DomainModel.Entities.MapLegend, Models.Response.MapLegendSummary>();
 
                     config.CreateMap<Models.Request.UpdateMapLegendBody, DomainModel.Entities.MapLegend>();
-                    #endregion
+
+                    #endregion Map
 
                     #region Merchant
+
                     config.CreateMap<DomainModel.Entities.MerchantAccount, Models.Response.MerchantAccountSummary>()
                         .ForMember(
                             destination => destination.Verified,
@@ -98,39 +102,49 @@ namespace Server.Common.Mapper
 
                     config.CreateMap<DomainModel.ValueObjects.MerchantVerificationPhoto, string>()
                         .ConvertUsing(source => source.Filename);
-                    #endregion
+
+                    #endregion Merchant
 
                     #region OnlineShopPlatforms
+
                     config.CreateMap<Models.Request.CreateOnlineShopPlatformBody, DomainModel.Entities.OnlineShopPlatform>();
 
                     config.CreateMap<DomainModel.Entities.OnlineShopPlatform, Models.Response.OnlineShopPlatformSummary>();
 
                     config.CreateMap<Models.Request.UpdateOnlineShopBody, DomainModel.Entities.OnlineShopPlatform>();
-                    #endregion
+
+                    #endregion OnlineShopPlatforms
 
                     #region ProductCategories
+
                     config.CreateMap<Models.Request.CreateProductCategoryBody, DomainModel.Entities.ProductCategory>();
 
                     config.CreateMap<DomainModel.Entities.ProductCategory, Models.Response.ProductCategorySummary>();
 
                     config.CreateMap<Models.Request.UpdateProductCategoryBody, DomainModel.Entities.ProductCategory>();
-                    #endregion
+
+                    #endregion ProductCategories
 
                     #region Products
+
                     config.CreateMap<DomainModel.Entities.Product, Models.Response.ProductSummary>();
 
                     config.CreateMap<DomainModel.Entities.Product, Models.Response.ProductDetailed>();
-                    #endregion
+
+                    #endregion Products
 
                     #region ShopCategories
+
                     config.CreateMap<Models.Request.CreateShopCategoryBody, DomainModel.Entities.ShopCategory>();
 
                     config.CreateMap<DomainModel.Entities.ShopCategory, Models.Response.ShopCategorySummary>();
 
                     config.CreateMap<Models.Request.UpdateShopCategoryBody, DomainModel.Entities.ShopCategory>();
-                    #endregion
+
+                    #endregion ShopCategories
 
                     #region ShopSubcategories
+
                     config.CreateMap<Models.Request.CreateShopSubcategoryBody, DomainModel.Entities.ShopSubcategory>();
 
                     config.CreateMap<DomainModel.Entities.ShopSubcategory, Models.Response.ShopSubcategorySummary>()
@@ -139,9 +153,11 @@ namespace Server.Common.Mapper
                             options => options.MapFrom(source => source.ShopCategory.Id));
 
                     config.CreateMap<Models.Request.UpdateShopSubcategoryBody, DomainModel.Entities.ShopSubcategory>();
-                    #endregion
+
+                    #endregion ShopSubcategories
 
                     #region Shops
+
                     config.CreateMap<Models.Request.CreateProductBody, DomainModel.Entities.Product>();
 
                     config.CreateMap<DomainModel.ValueObjects.ThumbnailedImage, Models.Response.ThumbnailedImageSummary>();
@@ -178,9 +194,10 @@ namespace Server.Common.Mapper
                         .ForMember(
                             destination => destination.LowercaseDescription,
                             options => options.MapFrom(source => source.Description.ToLower())); ;
-                    #endregion
+
+                    #endregion Shops
                 });
-            } 
+            }
         }
     }
 }

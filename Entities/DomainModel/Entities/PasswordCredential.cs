@@ -1,18 +1,14 @@
 ﻿using DomainModel.Common;
 using DomainModel.Services;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DomainModel.Entities
 {
     public class PasswordCredential
     {
-        public PasswordCredential( 
-            string password, 
+        public PasswordCredential(
+            string password,
             IPasswordHasher passwordHasher,
             IAlphanumericRng alphanumericRng,
             DomainModelConfiguration configuration)
@@ -24,30 +20,33 @@ namespace DomainModel.Entities
             Hash = passwordHasher.Hash(password, Salt);
         }
 
-        public PasswordCredential() { }
+        public PasswordCredential()
+        {
+        }
 
         [Key]
         public virtual Guid AccountId { get; set; }
+
         public virtual AccountBase Account { get; set; }
 
         public string Hash { get; set; }
-        
+
         public string Salt { get; set; }
 
         public DateTime PasswordAttemptMistakeClear { get; set; }
-        
+
         public int PasswordAttemptMistakeCounter { get; set; }
-        
+
         public DateTime PasswordAttemptTimeoutExpired { get; set; }
 
         public string ResetToken { get; set; }
-        
+
         public DateTime ResetTokenExpired { get; set; }
 
         public DateTime ResetAttemptMistakeClear { get; set; }
-        
+
         public int ResetAttemptMistakeCounter { get; set; }
-        
+
         public DateTime ResetAttemptTimeoutExpired { get; set; }
 
         public bool VerifyPassword(

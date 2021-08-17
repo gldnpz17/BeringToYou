@@ -8,9 +8,6 @@ using Server.Common.Auth;
 using Server.Models.Request;
 using Server.Models.Response;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.Accounts
@@ -23,14 +20,13 @@ namespace Server.Controllers.Accounts
             AppDbContext database,
             IAuthorizationService authorizationService) : base(database, authorizationService)
         {
-
         }
 
         [HttpGet("{accountId}")]
         [Authorize(PolicyNameConstants.AuthenticatedUsers)]
         public async Task<AccountDetailed> GetAccountDetails(
-            [FromRoute]Guid accountId,
-            [FromServices]IMapper mapper)
+            [FromRoute] Guid accountId,
+            [FromServices] IMapper mapper)
         {
             var account = await _database.Accounts.FirstOrDefaultAsync(account => account.Id == accountId);
 
@@ -41,9 +37,9 @@ namespace Server.Controllers.Accounts
 
         [HttpPut("{accountId}")]
         public async Task<IActionResult> UpdateAccountDetails(
-            [FromRoute]Guid accountId,
-            [FromBody]UpdateAccountBody body,
-            [FromServices]IMapper mapper)
+            [FromRoute] Guid accountId,
+            [FromBody] UpdateAccountBody body,
+            [FromServices] IMapper mapper)
         {
             await AuthorizeAccountOwner(accountId, PermissionNameConstants.CanManageAccounts);
 
@@ -58,7 +54,7 @@ namespace Server.Controllers.Accounts
 
         [HttpDelete("{accountId}")]
         public async Task<IActionResult> DeleteAccount(
-            [FromRoute]Guid accountId)
+            [FromRoute] Guid accountId)
         {
             await AuthorizeAccountOwner(accountId, PermissionNameConstants.CanManageAccounts);
 

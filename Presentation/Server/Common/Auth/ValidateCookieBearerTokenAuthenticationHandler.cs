@@ -1,16 +1,13 @@
 ﻿using DomainModel.Common;
-using DomainModel.Entities;
 using DomainModel.Services;
 using EFCoreDatabase;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
@@ -26,9 +23,9 @@ namespace Server.Common.Auth
             AppDbContext database,
             IDateTimeService dateTimeService,
             DomainModelConfiguration domainModelConfiguration,
-            IOptionsMonitor<CookieBearerTokenAuthenticationSchemeOptions> options, 
-            ILoggerFactory logger, 
-            UrlEncoder encoder, 
+            IOptionsMonitor<CookieBearerTokenAuthenticationSchemeOptions> options,
+            ILoggerFactory logger,
+            UrlEncoder encoder,
             ISystemClock clock) : base(options, logger, encoder, clock)
         {
             _database = database;
@@ -68,7 +65,7 @@ namespace Server.Common.Auth
                     new Claim("IsAdmin", (adminAccount != null).ToString()),
 
                     new Claim(
-                        PermissionNameConstants.CanManageAccounts, 
+                        PermissionNameConstants.CanManageAccounts,
                         (adminAccount?.Permissions.CanManageAccounts ?? false).ToString()),
 
                     new Claim(
@@ -76,15 +73,15 @@ namespace Server.Common.Auth
                         (adminAccount?.Permissions.CanManagePermissions ?? false).ToString()),
 
                     new Claim(
-                        PermissionNameConstants.CanManageMap, 
+                        PermissionNameConstants.CanManageMap,
                         (adminAccount?.Permissions.CanManageMap ?? false).ToString()),
 
                     new Claim(
-                        PermissionNameConstants.CanManageShops, 
+                        PermissionNameConstants.CanManageShops,
                         (adminAccount?.Permissions.CanManageShops ?? false).ToString()),
 
                     new Claim(
-                        PermissionNameConstants.CanManageBackups, 
+                        PermissionNameConstants.CanManageBackups,
                         (adminAccount?.Permissions.CanManageBackups ?? false).ToString())
                 };
 

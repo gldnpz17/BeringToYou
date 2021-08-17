@@ -52,7 +52,7 @@ const AdminAccountPage = () => {
 
   const getAllData = async () => {
     setShops(await fetchAllShops());
-    
+
     if (identityContext?.identity?.isMerchant) {
       let request = await fetchMerchantVerificationDetails(identityContext.identity.accountId);
 
@@ -150,7 +150,7 @@ const AdminAccountPage = () => {
 
   return (
     <AdminPageContainer>
-      <ManipulateItemModal 
+      <ManipulateItemModal
         query={query}
       />
       <AdminPageHeader title='Akun Pribadi'>
@@ -170,14 +170,14 @@ const AdminAccountPage = () => {
               <p>Keamanan</p>
             </AdminPageNavLink>
           </Nav.Item>
-          {identityContext?.identity?.isMerchant ? 
+          {identityContext?.identity?.isMerchant ?
             <Nav.Item>
               <AdminPageNavLink eventKey='verification'>
                 <VerifiedIcon />
                 <p>Verifikasi</p>
               </AdminPageNavLink>
             </Nav.Item>
-          : null}
+            : null}
         </AdminPageNav>
         <AdminPagetabContent>
           <Tab.Pane eventKey='profile'>
@@ -186,8 +186,8 @@ const AdminAccountPage = () => {
                 <Form.Group className='mb-3'>
                   <Form.Label>Username</Form.Label>
                   <AdminFormControl type='text'
-                    id='account-profile-form-username' 
-                    defaultValue={identityContext?.identity?.username} 
+                    id='account-profile-form-username'
+                    defaultValue={identityContext?.identity?.username}
                     className='mr-2'
                   />
                 </Form.Group>
@@ -201,7 +201,7 @@ const AdminAccountPage = () => {
                 </Form.Group>
                 <Form.Group className='mb-3'>
                   <Form.Label>Alamat E-Mail</Form.Label>
-                  <AdminFormControl type='text' 
+                  <AdminFormControl type='text'
                     id='account-profile-form-email'
                     defaultValue={identityContext?.identity?.email}
                     className='mr-2'

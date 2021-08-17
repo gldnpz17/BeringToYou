@@ -75,7 +75,7 @@ const AddImageButton = styled(IconButton)`
   width: 6rem;
 `;
 
-const ImageListControl = ({images, loadImages, onUpload, onSwap, onRemove, ...props}) => {
+const ImageListControl = ({ images, loadImages, onUpload, onSwap, onRemove, ...props }) => {
   const fileInput = useRef();
 
   const [pendingImages, setPendingImages] = useState([]);
@@ -148,7 +148,7 @@ const ImageListControl = ({images, loadImages, onUpload, onSwap, onRemove, ...pr
   const handleDrop = (event) => {
     let dragIndex = Number.parseInt(event.dataTransfer.getData('text/plain'));
     let dropIndex = getElementIndex(event.currentTarget);
-    
+
     swapImages(images[dragIndex], images[dropIndex]);
   };
 
@@ -156,7 +156,7 @@ const ImageListControl = ({images, loadImages, onUpload, onSwap, onRemove, ...pr
     event.preventDefault();
     event.stopPropagation();
   };
-  
+
   return (
     <div>
       <ImageList ref={imageList} className='d-flex flex-row flex-wrap'>
@@ -187,7 +187,7 @@ const ImageListControl = ({images, loadImages, onUpload, onSwap, onRemove, ...pr
           <AddIcon />
         </AddImageButton>
       </ImageList>
-      <input ref={fileInput} style={{display: 'none'}} type='file' accept='image/*' onChange={(event) => pushImage(event.target.files[0])} />
+      <input ref={fileInput} style={{ display: 'none' }} type='file' accept='image/*' onChange={(event) => pushImage(event.target.files[0])} />
     </div>
   );
 };

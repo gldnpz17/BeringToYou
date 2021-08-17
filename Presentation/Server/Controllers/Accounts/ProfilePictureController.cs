@@ -6,13 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using Server.Common;
 using Server.Common.Auth;
 using Server.Common.Configuration;
-using Server.Models.Request;
 using Server.Services;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.Accounts
@@ -34,7 +30,7 @@ namespace Server.Controllers.Accounts
         [HttpGet]
         [Authorize(PolicyNameConstants.AuthenticatedUsers)]
         public async Task<IActionResult> DownloadProfilePicture(
-            [FromRoute]Guid accountId)
+            [FromRoute] Guid accountId)
         {
             var account = await _database.Accounts.FirstOrDefaultAsync(account => account.Id == accountId);
 
@@ -57,9 +53,9 @@ namespace Server.Controllers.Accounts
 
         [HttpPost]
         public async Task<IActionResult> UploadProfilePicture(
-            [FromRoute]Guid accountId,
-            [FromForm(Name = "profile-picture")]IFormFile profilePicture,
-            [FromServices]IFileSystemService fileSystemService)
+            [FromRoute] Guid accountId,
+            [FromForm(Name = "profile-picture")] IFormFile profilePicture,
+            [FromServices] IFileSystemService fileSystemService)
         {
             await AuthorizeAccountOwner(accountId);
 
@@ -80,8 +76,8 @@ namespace Server.Controllers.Accounts
 
         [HttpDelete]
         public async Task<IActionResult> DeleteProfilePicture(
-            [FromRoute]Guid accountId,
-            [FromServices]IFileSystemService fileSystemService)
+            [FromRoute] Guid accountId,
+            [FromServices] IFileSystemService fileSystemService)
         {
             await AuthorizeAccountOwner(accountId);
 

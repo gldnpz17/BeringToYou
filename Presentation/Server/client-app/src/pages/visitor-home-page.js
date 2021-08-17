@@ -91,10 +91,10 @@ const VisitorHomePage = ({ history }) => {
 
   return (
     <MapContainer>
-      <StyledShopOffcanvas 
+      <StyledShopOffcanvas
         shop={shopToShow}
-        showBackground={false} 
-        visible={shopOffcanvasShow} 
+        showBackground={false}
+        visible={shopOffcanvasShow}
         setVisible={setShopOffcanvasShow}
       />
       <MarketMap
@@ -104,11 +104,11 @@ const VisitorHomePage = ({ history }) => {
         floors={floors}
         overlays={overlays}
         onShopMarkerClick={(e) => viewShop(e.shopId)}
-        onPointOfInterestMarkerClick={() => {}}
+        onPointOfInterestMarkerClick={() => { }}
         onMoveEnd={clearMapFocus}
         gpsEnabled={true}
         accessToken={websiteConfiguration.mapAccessToken}
-        style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0}}
+        style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }}
       />
     </MapContainer>
   );

@@ -1,16 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Services
 {
     public interface IFileSystemService
-    {   
+    {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="file"></param>
         /// <param name="directory"></param>
@@ -20,6 +16,7 @@ namespace Server.Services
         Task DeleteFileAsync(string directory, string filename);
 
         void CheckFilename(string filename);
+
         void ValidateExtension(string filename, string[] allowedExtensions);
 
         /// <summary>

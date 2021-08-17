@@ -1,6 +1,5 @@
 using AutoMapper;
 using DomainModel.Common;
-using DomainModel.Entities;
 using DomainModel.Services;
 using DomainModelServiceImplementations.AesEncryptionService;
 using DomainModelServiceImplementations.AlphanumericRng;
@@ -13,7 +12,6 @@ using InMemoryDatabase;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,10 +24,6 @@ using Server.Common.Mapper;
 using Server.Common.Middlewares.ApplicationExceptionHandler;
 using Server.ServiceImplementation;
 using Server.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Server
 {
@@ -114,14 +108,14 @@ namespace Server
                 config.AddPolicy(
                     PolicyNameConstants.Admin.CanManageShops,
                     policy => policy.RequireClaim("CanManageShops", new string[] { true.ToString() }));
-                
+
                 config.AddPolicy(
                     PolicyNameConstants.Admin.CanManageBackups,
                     policy => policy.RequireClaim("CanManageBackups", new string[] { true.ToString() }));
             });
             services.AddSingleton<IAuthorizationHandler, AccountOwnerAuthorizationHandler>();
             services.AddSingleton<IAuthorizationHandler, ShopOwnerAuthorizationHandler>();
-                
+
             // Register configuration.
             services.AddSingleton(new DomainModelConfiguration(
                 totpSecretEncryptionKey: SecretsConfiguration.GetSecrets().TotpEncryptionSecret));
@@ -130,7 +124,7 @@ namespace Server
             // Register database.
             if (_environment.IsDevelopment())
             {
-                services.AddTransient<AppDbContext, InMemoryAppDbContext>(serviceProvider => 
+                services.AddTransient<AppDbContext, InMemoryAppDbContext>(serviceProvider =>
                 {
                     return new InMemoryAppDbContext("BeringToYouTestDatabase");
                 });

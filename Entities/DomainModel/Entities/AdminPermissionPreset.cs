@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DomainModel.Entities
 {
@@ -11,7 +6,7 @@ namespace DomainModel.Entities
     {
         [Key]
         public string Name { get; set; }
-        
+
         [Required]
         public bool CanManageAccounts { get; set; } = false;
 
@@ -20,7 +15,7 @@ namespace DomainModel.Entities
 
         [Required]
         public bool CanManageMap { get; set; } = false;
-        
+
         [Required]
         public bool CanManageShops { get; set; } = false;
 

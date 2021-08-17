@@ -2,12 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Server.Common.Configuration;
 using Server.Services;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Controllers.Public
 {
@@ -18,9 +13,9 @@ namespace Server.Controllers.Public
         [HttpGet("{filename}")]
         [AllowAnonymous]
         public IActionResult DownloadAsset(
-            [FromRoute]string filename,
-            [FromServices]ApplicationConfiguration applicationConfiguration,
-            [FromServices]IFileSystemService fileSystemService)
+            [FromRoute] string filename,
+            [FromServices] ApplicationConfiguration applicationConfiguration,
+            [FromServices] IFileSystemService fileSystemService)
         {
             fileSystemService.CheckFilename(filename);
 

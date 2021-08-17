@@ -8,10 +8,7 @@ using Server.Common;
 using Server.Common.Configuration;
 using Server.Services;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.Shops
@@ -28,7 +25,7 @@ namespace Server.Controllers.Shops
             IFileSystemService fileSystemService,
             IImageProcessingService imageProcessingService,
             ApplicationConfiguration applicationConfiguration,
-            AppDbContext database, 
+            AppDbContext database,
             IAuthorizationService authorizationService) : base(database, authorizationService)
         {
             _fileSystemService = fileSystemService;
@@ -38,8 +35,8 @@ namespace Server.Controllers.Shops
 
         [HttpPut]
         public async Task<IActionResult> UpdateBannerImage(
-            [FromRoute]Guid shopId,
-            [FromForm(Name = "image")]IFormFile image)
+            [FromRoute] Guid shopId,
+            [FromForm(Name = "image")] IFormFile image)
         {
             var shop = await _database.Shops.FirstOrDefaultAsync(shop => shop.Id == shopId);
 

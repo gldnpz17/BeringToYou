@@ -56,7 +56,7 @@ const StyledCardContainer = styled.div`
   white-space: nowrap;
 
   scrollbar-width: none;
-  -ms-overflow-style: none; 
+  -ms-overflow-style: none;
   scrollbar-width: none;
   ::-webkit-scrollbar {
     width: 0;
@@ -97,7 +97,7 @@ const HomePage = () => {
   return (
     <Parallax>
       <ParallexBack>
-       <StyledBackgroundContainerDiv>
+        <StyledBackgroundContainerDiv>
           <StyledBackgroundDiv />
         </StyledBackgroundContainerDiv>
       </ParallexBack>
@@ -114,20 +114,20 @@ const HomePage = () => {
           </div>
           <div className='d-flex flex-row justify-content-center mb-4'>
             <IconButton text='Peta' className='mx-2'>
-              <MapIcon style={{height: '1.6rem', width: '1.6rem'}} />
+              <MapIcon style={{ height: '1.6rem', width: '1.6rem' }} />
             </IconButton>
             <IconButton text='Toko' className='mx-2'>
-              <ShopIcon style={{height: '1.6rem', width: '1.6rem'}} />
+              <ShopIcon style={{ height: '1.6rem', width: '1.6rem' }} />
             </IconButton>
           </div>
 
           <h2 className='text-center'>Kategori Produk</h2>
           <StyledCardContainer className='px-3 mb-4'>
-            <ProductCategoryCard name='Lorem' className='d-inline-block mx-1' style={{width: '8rem', height: '12rem'}} />
-            <ProductCategoryCard name='Lorem' className='d-inline-block mx-1' style={{width: '8rem', height: '12rem'}} />
-            <ProductCategoryCard name='Lorem' className='d-inline-block mx-1' style={{width: '8rem', height: '12rem'}} />
-            <ProductCategoryCard name='Lorem' className='d-inline-block mx-1' style={{width: '8rem', height: '12rem'}} />
-            <ProductCategoryCard name='Lorem' className='d-inline-block mx-1' style={{width: '8rem', height: '12rem'}} />
+            <ProductCategoryCard name='Lorem' className='d-inline-block mx-1' style={{ width: '8rem', height: '12rem' }} />
+            <ProductCategoryCard name='Lorem' className='d-inline-block mx-1' style={{ width: '8rem', height: '12rem' }} />
+            <ProductCategoryCard name='Lorem' className='d-inline-block mx-1' style={{ width: '8rem', height: '12rem' }} />
+            <ProductCategoryCard name='Lorem' className='d-inline-block mx-1' style={{ width: '8rem', height: '12rem' }} />
+            <ProductCategoryCard name='Lorem' className='d-inline-block mx-1' style={{ width: '8rem', height: '12rem' }} />
           </StyledCardContainer>
 
           <h2 className='text-center'>Lokasi Pasar</h2>

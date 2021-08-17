@@ -2,13 +2,13 @@ const generateRandomName = (length) => {
   let result = '';
   let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let charactersLength = characters.length;
-  for ( let i = 0; i < length; i++ ) {
+  for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
- }
- return result;
+  }
+  return result;
 }
 
-const uploadFile = async (url, formName, blob, filename, httpMethod='POST') => {
+const uploadFile = async (url, formName, blob, filename, httpMethod = 'POST') => {
   let formData = new FormData();
   formData.append(formName, blob, filename);
 

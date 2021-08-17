@@ -5,4 +5,3 @@ const verifyMerchant = async (accountId) => {
 };
 
 export default verifyMerchant;
-

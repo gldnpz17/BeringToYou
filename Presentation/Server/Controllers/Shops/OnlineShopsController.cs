@@ -10,7 +10,6 @@ using Server.Models.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.Shops
@@ -21,14 +20,13 @@ namespace Server.Controllers.Shops
     {
         public OnlineShopsController(AppDbContext database, IAuthorizationService authorizationService) : base(database, authorizationService)
         {
-
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateOnlineShopInstance(
-            [FromRoute]Guid shopId,
-            [FromBody]CreateOnlineShopInstanceBody body,
-            [FromServices]IMapper mapper)
+            [FromRoute] Guid shopId,
+            [FromBody] CreateOnlineShopInstanceBody body,
+            [FromServices] IMapper mapper)
         {
             var shop = await _database.Shops.FirstOrDefaultAsync(shop => shop.Id == shopId);
             await AuthorizeShopOwner(shop);
@@ -48,8 +46,8 @@ namespace Server.Controllers.Shops
         [HttpGet]
         [AllowAnonymous]
         public async Task<IList<OnlineShopInstanceSummary>> ReadAllOnlineShopInstances(
-            [FromRoute]Guid shopId,
-            [FromServices]IMapper mapper)
+            [FromRoute] Guid shopId,
+            [FromServices] IMapper mapper)
         {
             var shop = await _database.Shops.FirstOrDefaultAsync(shop => shop.Id == shopId);
 
@@ -60,10 +58,10 @@ namespace Server.Controllers.Shops
 
         [HttpPut("{onlineShopId}")]
         public async Task<IActionResult> UpdateOnlineShopInstance(
-            [FromRoute]Guid shopId,
-            [FromRoute]Guid onlineShopId,
-            [FromBody]UpdateOnlineShopInstanceBody body,
-            [FromServices]IMapper mapper)
+            [FromRoute] Guid shopId,
+            [FromRoute] Guid onlineShopId,
+            [FromBody] UpdateOnlineShopInstanceBody body,
+            [FromServices] IMapper mapper)
         {
             var shop = await _database.Shops.FirstOrDefaultAsync(shop => shop.Id == shopId);
             await AuthorizeShopOwner(shop);
@@ -82,7 +80,7 @@ namespace Server.Controllers.Shops
         }
 
         [HttpDelete("{onlineShopId}")]
-        public async Task<IActionResult> DeleteOnlineShopInstance([FromRoute]Guid shopId, [FromRoute]Guid onlineShopId)
+        public async Task<IActionResult> DeleteOnlineShopInstance([FromRoute] Guid shopId, [FromRoute] Guid onlineShopId)
         {
             var shop = await _database.Shops.FirstOrDefaultAsync(shop => shop.Id == shopId);
             await AuthorizeShopOwner(shop);

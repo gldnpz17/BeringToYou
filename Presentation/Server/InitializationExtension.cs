@@ -1,13 +1,9 @@
 ﻿using DomainModel.Common;
 using DomainModel.Services;
 using EFCoreDatabase;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Server.Common.Configuration;
 using Server.Common.Database;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Server
@@ -27,7 +23,7 @@ namespace Server
                 alphanumericRng,
                 domainModelConfiguration,
                 SecretsConfiguration.GetSecrets().DefaultAdminPassword);
-            
+
             await databaseInitializer.Initialize();
         }
     }

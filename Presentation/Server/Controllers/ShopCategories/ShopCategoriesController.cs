@@ -14,7 +14,6 @@ using Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.ShopCategories
@@ -25,7 +24,6 @@ namespace Server.Controllers.ShopCategories
     {
         public ShopCategoriesController(AppDbContext database, IAuthorizationService authorizationService) : base(database, authorizationService)
         {
-
         }
 
         [HttpPost]

@@ -1,11 +1,7 @@
 ﻿using DomainModel.Common;
 using DomainModel.Services;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DomainModel.Entities
 {
@@ -19,16 +15,19 @@ namespace DomainModel.Entities
             GenerateSharedSecret(secretGenerator, encryptionService, configuration);
         }
 
-        public TotpCredential() { }
+        public TotpCredential()
+        {
+        }
 
         [Key]
         public virtual Guid AccountId { get; set; }
+
         public virtual AccountBase Account { get; set; }
 
         public string AesEncryptedSharedSecret { get; set; }
-        
+
         public string Base32EncodedInitializationVector { get; set; }
-        
+
         public DateTime VerificationTimeoutEnd { get; set; }
 
         public string RevealSharedSecret(

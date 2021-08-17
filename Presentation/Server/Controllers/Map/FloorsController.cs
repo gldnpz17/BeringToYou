@@ -15,7 +15,6 @@ using Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Server.Controllers.Map
@@ -26,14 +25,13 @@ namespace Server.Controllers.Map
     {
         public FloorsController(AppDbContext database, IAuthorizationService authorizationService) : base(database, authorizationService)
         {
-
         }
 
         [HttpPost]
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
         public async Task<IActionResult> CreateMapFloor(
-            [FromBody]CreateMapFloorBody body,
-            [FromServices]IMapper mapper)
+            [FromBody] CreateMapFloorBody body,
+            [FromServices] IMapper mapper)
         {
             var existingFloor = await _database.MapFloors.FirstOrDefaultAsync(floor => floor.FloorNumber == body.FloorNumber);
 
@@ -53,7 +51,7 @@ namespace Server.Controllers.Map
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IList<MapFloorSummary>> ReadAllMapFloors([FromServices]IMapper mapper)
+        public async Task<IList<MapFloorSummary>> ReadAllMapFloors([FromServices] IMapper mapper)
         {
             var floors = await _database.MapFloors.ToListAsync();
 
@@ -67,9 +65,9 @@ namespace Server.Controllers.Map
         [HttpPut("{floorId}")]
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
         public async Task<IActionResult> UpdateMapFloor(
-            [FromRoute]Guid floorId, 
-            [FromBody]UpdateMapFloorBody body, 
-            [FromServices]IMapper mapper)
+            [FromRoute] Guid floorId,
+            [FromBody] UpdateMapFloorBody body,
+            [FromServices] IMapper mapper)
         {
             var existingFloor = await _database.MapFloors.FirstOrDefaultAsync(floor => floor.FloorNumber == body.FloorNumber);
 
@@ -90,9 +88,9 @@ namespace Server.Controllers.Map
         [HttpDelete("{floorId}")]
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
         public async Task<IActionResult> DeleteMapFloor(
-            [FromRoute]Guid floorId, 
-            [FromServices]IFileSystemService fileSystemService,
-            [FromServices]ApplicationConfiguration applicationConfiguration)
+            [FromRoute] Guid floorId,
+            [FromServices] IFileSystemService fileSystemService,
+            [FromServices] ApplicationConfiguration applicationConfiguration)
         {
             var floor = await _database.MapFloors.FirstOrDefaultAsync(floor => floor.Id == floorId);
 
@@ -108,10 +106,10 @@ namespace Server.Controllers.Map
         [HttpPut("{floorId}/kml")]
         [Authorize(PolicyNameConstants.Admin.CanManageMap)]
         public async Task<IActionResult> UpdateKml(
-            [FromRoute]Guid floorId, 
-            [FromForm(Name = "kml")]IFormFile kml,
-            [FromServices]IFileSystemService fileSystemService,
-            [FromServices]ApplicationConfiguration applicationConfiguration)
+            [FromRoute] Guid floorId,
+            [FromForm(Name = "kml")] IFormFile kml,
+            [FromServices] IFileSystemService fileSystemService,
+            [FromServices] ApplicationConfiguration applicationConfiguration)
         {
             var floor = await _database.MapFloors.FirstAsync(floor => floor.Id == floorId);
 
@@ -122,7 +120,7 @@ namespace Server.Controllers.Map
             floor.KmlFilename = generatedFilename;
 
             await _database.SaveChangesAsync();
-            
+
             return Ok();
         }
     }

@@ -40,7 +40,7 @@ const SelectedSlideshowImageBackground = styled.div`
   background-image: url(${props => props.src});
   background-size: cover;
   filter: blur(0.1rem) brightness(50%);
-  
+
   left: -10px;
   right: -10px;
   top: -10px;
@@ -108,7 +108,7 @@ const ImageSlideshow = (props) => {
 
   const selectImage = (index) => {
     let images = document.getElementsByClassName('slideshow-image');
-    
+
     for (let x = 0; x < images.length; x++) {
       if (x === index) {
         images[x].ariaSelected = 'true';
@@ -142,9 +142,9 @@ const ImageSlideshow = (props) => {
       <SelectedSlideshowImageContainer height={props.height}>
         <SelectedSlideshowImageBackground src={props.images[currentImageIndex]} />
         <SelectedSlideshowImage id='product-slideshow-current'
-          src={props.images[currentImageIndex]} 
+          src={props.images[currentImageIndex]}
         />
-        <NextImageButton onClick={() => nextImage()}/>
+        <NextImageButton onClick={() => nextImage()} />
         <PreviousImageButton onClick={() => previousImage()} />
       </SelectedSlideshowImageContainer>
       <SlideshowImagesContainer className='d-flex flex-row py-1'>
@@ -152,8 +152,8 @@ const ImageSlideshow = (props) => {
           props.images.map((image, index) => {
             return (
               <span className='px-1'>
-                <SlideshowImage src={image} className='slideshow-image' 
-                  onClick={() => selectImage(index)} 
+                <SlideshowImage src={image} className='slideshow-image'
+                  onClick={() => selectImage(index)}
                 />
               </span>
             );

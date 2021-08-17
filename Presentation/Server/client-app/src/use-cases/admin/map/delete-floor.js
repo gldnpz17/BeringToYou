@@ -5,4 +5,3 @@ const deleteFloor = async (floorId) => {
 };
 
 export default deleteFloor;
-

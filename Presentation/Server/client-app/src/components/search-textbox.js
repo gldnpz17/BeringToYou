@@ -39,12 +39,12 @@ const SearchTextBox = ({ className, placeholder, onSubmit, ...props }) => {
       onSubmit(event);
     }} className={className}>
       <StyledInputGroup>
-          <AdminFormControl type='text' placeholder={placeholder} {...props}/>
-          <InputGroup.Append>
-            <StyledSearchButton type='submit'>
-              <SearchIcon style={{width: '1.6rem', height: '1.6rem'}} />
-            </StyledSearchButton>
-          </InputGroup.Append>
+        <AdminFormControl type='text' placeholder={placeholder} {...props} />
+        <InputGroup.Append>
+          <StyledSearchButton type='submit'>
+            <SearchIcon style={{ width: '1.6rem', height: '1.6rem' }} />
+          </StyledSearchButton>
+        </InputGroup.Append>
       </StyledInputGroup>
     </form>
   );

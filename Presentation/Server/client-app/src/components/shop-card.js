@@ -18,13 +18,13 @@ const StyledCard = styled(CustomCard)`
   }
 `;
 
-const ShopCard = ({shop, className, ...props}) => {
+const ShopCard = ({ shop, className, ...props }) => {
   return (
     <StyledCard className={`m-0 ${className}`} {...props}>
       <Card.Body className='p-0 d-flex flex-column h-100'>
-        <FailSafeImg 
+        <FailSafeImg
           className='flex-grow-1'
-          src={`api/public/assets/${shop?.bannerImage?.thumbnailFilename}`} 
+          src={`api/public/assets/${shop?.bannerImage?.thumbnailFilename}`}
           altsrc={`assets/imagenotfound.png`}
         />
         <div className='p-1'>
@@ -35,5 +35,5 @@ const ShopCard = ({shop, className, ...props}) => {
     </StyledCard>
   );
 };
-  
+
 export default ShopCard;

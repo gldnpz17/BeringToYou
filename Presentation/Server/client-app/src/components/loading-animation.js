@@ -40,7 +40,7 @@ const LoadingAnimation = ({ loaderCount, isLoading, ...props }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const animate = async () => {
-    while(true) {
+    while (true) {
       for (let index = 0; index < loaderCount; index++) {
         setActiveIndex(index);
 
@@ -52,7 +52,7 @@ const LoadingAnimation = ({ loaderCount, isLoading, ...props }) => {
         await delay(100);
       }
     }
-  } 
+  }
 
   useEffect(() => {
     animate();
@@ -62,9 +62,9 @@ const LoadingAnimation = ({ loaderCount, isLoading, ...props }) => {
     <Container className={isLoading ? '' : 'hidden'} {...props}>
       {[...Array(loaderCount).keys()].map(index => {
         return (
-          <div 
-            id={index} 
-            className={(index === activeIndex) ? 'active' : ''} 
+          <div
+            id={index}
+            className={(index === activeIndex) ? 'active' : ''}
           />
         );
       })}

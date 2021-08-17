@@ -53,7 +53,7 @@ const AnimatedSearchTextBox = (props) => {
           if (cancellationToken.isCancelled === true) {
             return;
           };
-          
+
           // Wait for a random amount of time.
           await delay(50 + Math.random(60));
         };

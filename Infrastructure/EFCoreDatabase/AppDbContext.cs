@@ -1,7 +1,5 @@
 ﻿using DomainModel.Entities;
-using DomainModel.ValueObjects;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace EFCoreDatabase
 {
