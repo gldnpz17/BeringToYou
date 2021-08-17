@@ -103,7 +103,7 @@ const EditShopSubcategoriesModal = ({ category, ...props }) => {
           <form method='POST' className='mb-2 d-flex flex-row align-items-center'
             onSubmit={handleSubmitAddSubcategory}
           >
-            <AdminFormControl name='name'
+            <AdminFormControl name='name' required
               className='mr-2' type='text'
               placeholder='Nama subkategori baru'
             />
@@ -119,7 +119,7 @@ const EditShopSubcategoriesModal = ({ category, ...props }) => {
             <tbody>
               {subcategories.map((subcategory) => {
                 return (
-                  <tr>
+                  <tr key={subcategory.id}>
                     <td>
                       <form className='d-flex flex-row align-items-center'
                         onSubmit={handleUpdateShopSubcategory}
@@ -128,7 +128,7 @@ const EditShopSubcategoriesModal = ({ category, ...props }) => {
                           value={subcategory.id}
                           readOnly={true}
                         />
-                        <AdminFormControl name='name'
+                        <AdminFormControl name='name' required
                           className='mr-2' type='text'
                           defaultValue={subcategory.name}
                         />
