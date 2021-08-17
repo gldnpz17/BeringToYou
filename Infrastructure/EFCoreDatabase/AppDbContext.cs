@@ -64,6 +64,12 @@ namespace EFCoreDatabase
 
                 entityBuilder.OwnsOne(entity => entity.MainImage);
             });
+
+            builder.Entity<ShopSubcategory>(entityBuilder =>
+            {
+                entityBuilder.Property(entity => entity.RgbHexLegendColor)
+                    .HasDefaultValue("#FFFFFF");
+            });
         }
     }
 }
