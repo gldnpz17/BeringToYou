@@ -16,11 +16,16 @@ const SubsectionTitle = styled.h1`
 const Legend = styled(Col)`
   img, span {
     width: 1.6rem;
+    min-width: 1.6rem;
     height: 1.6rem;
   }
 
   img {
     object-fit: cover;
+  }
+
+  p {
+    hyphens: auto;
   }
 `;
 
