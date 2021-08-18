@@ -13,8 +13,8 @@ export const IdentityContext = React.createContext({});
 const WebContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 100vw;
+  min-height: 100%;
+  width: 100%;
 `;
 
 const ContentContainer = styled.div`

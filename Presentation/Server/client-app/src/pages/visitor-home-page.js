@@ -11,8 +11,6 @@ import fetchShopDetails from "../use-cases/common/fetch-shop-details";
 import ShopOffCanvas from "./visitor-page-components/shop-offcanvas";
 
 const MapContainer = styled.div`
-  position: relative;
-
   height: 100%;
 `;
 

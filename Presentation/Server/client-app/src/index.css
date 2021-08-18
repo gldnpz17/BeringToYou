@@ -18,3 +18,7 @@ code {
 img {
     image-orientation: from-image !important;
 }
+
+#root {
+    height: 100%;
+}
