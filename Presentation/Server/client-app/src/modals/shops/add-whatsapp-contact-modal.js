@@ -35,7 +35,7 @@ const AddWhatsappContactModal = ({ shopId, setShow, ...props }) => {
   }
 
   return (
-    <AdminModal {...props}>
+    <AdminModal setShow={setShow} {...props}>
       <form method='POST' onSubmit={handleSubmit}>
         <Modal.Header>
           <Modal.Title>Tambah Kontak Whatsapp</Modal.Title>
@@ -49,6 +49,7 @@ const AddWhatsappContactModal = ({ shopId, setShow, ...props }) => {
         </Modal.Body>
         <Modal.Footer>
           <CustomButton type='submit' onClick={() => {}}>Tambahkan</CustomButton>
+          <CustomButton secondary onClick={() => setShow(false)}>Batal</CustomButton>
         </Modal.Footer>
       </form>
     </AdminModal>
