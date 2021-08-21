@@ -80,4 +80,9 @@
     </ItemGroup>
   </Target>
 
+  <ItemGroup>
+    <Content Include="landing-web\\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>
