@@ -161,7 +161,10 @@ namespace Server.Common.Mapper
                             destination => destination.CategoryId,
                             options => options.MapFrom(source => source.ShopCategory.Id));
 
-                    config.CreateMap<Models.Request.UpdateShopSubcategoryBody, DomainModel.Entities.ShopSubcategory>();
+                    config.CreateMap<Models.Request.UpdateShopSubcategoryBody, DomainModel.Entities.ShopSubcategory>()
+                        .ForMember(
+                            destination => destination.LowercaseName,
+                            options => options.MapFrom(source => source.Name.ToLower()));
 
                     #endregion ShopSubcategories
 

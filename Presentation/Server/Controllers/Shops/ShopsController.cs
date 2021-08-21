@@ -81,6 +81,8 @@ namespace Server.Controllers.Shops
                     .Where(shop => queryCategoryId == Guid.Empty || shop.Category.Id == queryCategoryId)
                     .Where(shop => querySubcategoryIds.Any() == false || shop.Subcategories.Any(
                         subcategory => querySubcategoryIds.Any(subcategoryId => subcategoryId == subcategory.Id)))
+                    .Where(shop => queryOnlineShopPlatformIds.Any() == false || shop.OnlineShopInstances.Any(
+                        onlineShop => queryOnlineShopPlatformIds.Any(platformId => platformId == onlineShop.Platform.Id)))
                     .Where(shop => shop.MinPrice >= queryMinPrice && shop.MaxPrice <= queryMaxPrice)
                     .SearchChildren(shop => shop.Subcategories)
                         .With(subcategory => subcategory.LowercaseName)
