@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PostgresDatabase;
@@ -9,9 +10,10 @@ using PostgresDatabase;
 namespace PostgresDatabase.Migrations
 {
     [DbContext(typeof(PostgresAppDbContext))]
-    partial class PostgresAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210821134027_AddWhatsappContacts")]
+    partial class AddWhatsappContacts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
