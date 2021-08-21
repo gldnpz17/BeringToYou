@@ -46,5 +46,7 @@ namespace DomainModel.Entities
         public virtual IList<OnlineShopInstance> OnlineShopInstances { get; set; } = new List<OnlineShopInstance>();
 
         public virtual IList<Product> Products { get; set; } = new List<Product>();
+
+        public virtual IList<WhatsappShopContact> WhatsappContacts { get; set; } = new List<WhatsappShopContact>();
     }
 }

@@ -20,5 +20,6 @@ namespace Server.Models.Response
         public double MinPrice { get; set; }
         public double MaxPrice { get; set; }
         public List<AccountSummary> ShopOwners { get; set; }
+        public List<ShopContactSummary> WhatsappContacts { get; set; }
     }
 }

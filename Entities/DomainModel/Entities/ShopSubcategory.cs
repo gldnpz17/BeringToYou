@@ -12,6 +12,8 @@ namespace DomainModel.Entities
         [Required]
         public string Name { get; set; }
 
+        public string LowercaseName { get; set; }
+
         [Required]
         public string RgbHexLegendColor { get; set; } = "#FFFFFF";
     }

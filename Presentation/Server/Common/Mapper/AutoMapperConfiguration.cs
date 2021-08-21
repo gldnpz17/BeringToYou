@@ -135,17 +135,26 @@ namespace Server.Common.Mapper
 
                     #region ShopCategories
 
-                    config.CreateMap<Models.Request.CreateShopCategoryBody, DomainModel.Entities.ShopCategory>();
+                    config.CreateMap<Models.Request.CreateShopCategoryBody, DomainModel.Entities.ShopCategory>()
+                        .ForMember(
+                            destination => destination.LowercaseName,
+                            options => options.MapFrom(source => source.Name.ToLower()));
 
                     config.CreateMap<DomainModel.Entities.ShopCategory, Models.Response.ShopCategorySummary>();
 
-                    config.CreateMap<Models.Request.UpdateShopCategoryBody, DomainModel.Entities.ShopCategory>();
+                    config.CreateMap<Models.Request.UpdateShopCategoryBody, DomainModel.Entities.ShopCategory>()
+                        .ForMember(
+                            destination => destination.LowercaseName,
+                            options => options.MapFrom(source => source.Name.ToLower()));
 
                     #endregion ShopCategories
 
                     #region ShopSubcategories
 
-                    config.CreateMap<Models.Request.CreateShopSubcategoryBody, DomainModel.Entities.ShopSubcategory>();
+                    config.CreateMap<Models.Request.CreateShopSubcategoryBody, DomainModel.Entities.ShopSubcategory>()
+                        .ForMember(
+                            destination => destination.LowercaseName,
+                            options => options.MapFrom(source => source.Name.ToLower()));
 
                     config.CreateMap<DomainModel.Entities.ShopSubcategory, Models.Response.ShopSubcategorySummary>()
                         .ForMember(
@@ -196,6 +205,10 @@ namespace Server.Common.Mapper
                             options => options.MapFrom(source => source.Description.ToLower())); ;
 
                     #endregion Shops
+
+                    #region
+                        config.CreateMap<DomainModel.Entities.ShopContact, Models.Response.ShopContactSummary>();
+                    #endregion
                 });
             }
         }

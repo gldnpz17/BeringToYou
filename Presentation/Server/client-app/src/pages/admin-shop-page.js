@@ -17,6 +17,7 @@ import IconButton from "../components/icon-button";
 import ItemWithIdTableCell from "../components/item-with-id-table-cell";
 import EditShopSubcategoriesModal from '../modals/edit-shop-subcategories-modal';
 import ManipulateItemModal from "../modals/manipulate-item-modal";
+import AddWhatsappContactModal from '../modals/shops/add-whatsapp-contact-modal';
 import CategoryIcon from '../svg/category-icon';
 import CogsIcon from '../svg/cogs-icon';
 import DeleteIcon from "../svg/delete-icon";
@@ -41,6 +42,7 @@ import fetchAllShops from '../use-cases/common/fetch-all-shops';
 import fetchOnlineShops from '../use-cases/common/fetch-online-shops';
 import fetchShopDetails from "../use-cases/common/fetch-shop-details";
 import fetchShopProducts from "../use-cases/common/fetch-shop-products";
+import fetchAllShopWhatsappContacts from '../use-cases/common/fetch-shop-whatsapp-contacts';
 import uploadFile from "../use-cases/common/upload-file";
 
 const StoreSelectContainer = styled.div`
@@ -85,6 +87,9 @@ const AdminShopPage = () => {
   const [editShopSubcategoriesShow, setEditShopSubcategoriesShow] = useState(false);
   const [categoryToEditSubcategories, setCategoryToEditSubcategories] = useState(null);
 
+  const [whatsappContacts, setWhatsappContacts] = useState([]);
+  const [showCreateWhatsappContactModal, setShowCreateWhatsappContactModal] = useState(false);
+
   useEffect(() => {
     getAllData();
   }, []);
@@ -105,14 +110,17 @@ const AdminShopPage = () => {
   }, [selectedShop])
 
   const refreshShopData = async (shopId) => {
-    let bannerImage = document.getElementById('shop-banner-image');
-    bannerImage.src = `/api/public/assets/${selectedShop?.bannerImage?.thumbnailFilename}`;
-
-    document.getElementById('shop-profile-name').value = selectedShop?.name ?? "";
-    document.getElementById('shop-profile-description').value = selectedShop?.description ?? "";
-
-    setOnlineShops(await fetchOnlineShops(shopId));
-    setProducts(await fetchShopProducts(shopId));
+    if (shopId) {
+      let bannerImage = document.getElementById('shop-banner-image');
+      bannerImage.src = `/api/public/assets/${selectedShop?.bannerImage?.thumbnailFilename}`;
+  
+      document.getElementById('shop-profile-name').value = selectedShop?.name ?? "";
+      document.getElementById('shop-profile-description').value = selectedShop?.description ?? "";
+  
+      setOnlineShops(await fetchOnlineShops(shopId));
+      setProducts(await fetchShopProducts(shopId));
+      setWhatsappContacts(await fetchAllShopWhatsappContacts(shopId));
+    }
 
     setBannerImageToUpload(null);
 
@@ -761,11 +769,27 @@ const AdminShopPage = () => {
     });
   };
 
+  const handleAddWhatsappContact = () => {
+    setShowCreateWhatsappContactModal(true);
+  }
+
+  useEffect(() => {
+    if (!showCreateWhatsappContactModal) {
+      refreshShopData();
+    }
+  }, [showCreateWhatsappContactModal])
+
   return (
     <AdminPageContainer>
       <ManipulateItemModal
         size='xl'
         query={query}
+      />
+      <AddWhatsappContactModal 
+        size='xl'
+        shopId={selectedShop?.id}
+        show={showCreateWhatsappContactModal}
+        setShow={setShowCreateWhatsappContactModal}
       />
       <EditShopSubcategoriesModal
         size='lg'
@@ -919,6 +943,48 @@ const AdminShopPage = () => {
                             </IconButton>
                             <IconButton danger className='p-1' iconOnly
                               onClick={() => handleDeleteOnlineShop(onlineShop)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </AdminTable>
+            </AdminFormContainer>
+            <AdminFormContainer>
+              <h1>Kontak Whatsapp</h1>
+              <CustomButton className='mb-3' onClick={handleAddWhatsappContact}>Kontak Baru</CustomButton>
+              <AdminTable>
+                <thead>
+                  <tr>
+                    <td>Kontak</td>
+                    <td>Link</td>
+                    <td>Aksi</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {whatsappContacts.map(contact => {
+                    return (
+                      <tr>
+                        <ItemWithIdTableCell>
+                          <div>
+                            <p>{contact.contactIdentity}</p>
+                            <p className='id'>{contact.id}</p>
+                          </div>
+                        </ItemWithIdTableCell>
+                        <td>
+                          {(contact.contactUrl) 
+                            ? <a href={contact.contactUrl}>Link</a>
+                            : <p>N/A</p>
+                          }
+                        </td>
+                        <td>
+                          <span className='d-flex flex-row justify-content-end'>
+                            <IconButton danger className='p-1' iconOnly
+                              onClick={() => {}}
                             >
                               <DeleteIcon />
                             </IconButton>

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DomainModel.Entities;
+using DomainModel.Services;
 using EFCoreDatabase;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,8 +41,7 @@ namespace Server.Controllers.Shops
 
             if (category == null)
             {
-                throw new AppException(
-                    AppExceptionCode.SHOP_CATEGORY_NOT_FOUND);
+                throw new AppException(AppExceptionCode.SHOP_CATEGORY_NOT_FOUND);
             }
             else
             {
@@ -60,6 +60,7 @@ namespace Server.Controllers.Shops
         public async Task<IList<ShopSummary>> GetAllShops(
             [FromQuery(Name = "keywords")] string rawQueryKeywords,
             [FromQuery(Name = "category")] string rawQueryCategoryId,
+            [FromQuery(Name = "subcategory")] string rawQuerySubcategoryIds,
             [FromQuery(Name = "onlineshop")] string rawQueryOnlineShopPlatformIds,
             [FromQuery(Name = "minprice")] string rawQueryMinPrice,
             [FromQuery(Name = "maxprice")] string rawQueryMaxPrice,
@@ -69,39 +70,50 @@ namespace Server.Controllers.Shops
             [FromServices] IMapper mapper)
         {
             var queryKeywords = rawQueryKeywords?.Split(' ').Select(raw => raw.ToLower()).ToArray() ?? Array.Empty<string>();
-
-            var queryCategoryId = Guid.Empty;
-            if (rawQueryCategoryId != null)
-            {
-                queryCategoryId = Guid.Parse(rawQueryCategoryId);
-            }
-
-            var queryOnlineShopPlatformIds = Array.Empty<Guid>();
-            if (rawQueryOnlineShopPlatformIds != null)
-            {
-                queryOnlineShopPlatformIds = rawQueryOnlineShopPlatformIds?
-                    .Split(' ')
-                    .Select(platformId => Guid.Parse(platformId))
-                    .ToArray();
-            }
-
+            var queryCategoryId = ParseGuid(rawQueryCategoryId);
+            var querySubcategoryIds = ParseGuidArray(rawQuerySubcategoryIds);
+            var queryOnlineShopPlatformIds = ParseGuidArray(rawQueryOnlineShopPlatformIds);
             var queryMinPrice = rawQueryMinPrice == null ? 0.0 : double.Parse(rawQueryMinPrice);
             var queryMaxPrice = rawQueryMaxPrice == null ? double.MaxValue : double.Parse(rawQueryMaxPrice);
 
             var shops = await paginationService.PaginateAsync(
-                _database.Shops.Where(shop =>
-                    (queryCategoryId == Guid.Empty || shop.Category.Id == queryCategoryId) &&
-                    (queryOnlineShopPlatformIds.Any() == false || shop.OnlineShopInstances.Any(
-                        onlineShop => queryOnlineShopPlatformIds.Any(platformId => platformId == onlineShop.Platform.Id))) &&
-                    shop.MinPrice >= queryMinPrice && shop.MaxPrice <= queryMaxPrice
-                ).Search(
-                    shop => shop.LowercaseName,
-                    shop => shop.LowercaseDescription
-                ).Containing(queryKeywords).OrderBy(shop => shop.Name),
+                _database.Shops
+                    .Where(shop => queryCategoryId == Guid.Empty || shop.Category.Id == queryCategoryId)
+                    .Where(shop => querySubcategoryIds.Any() == false || shop.Subcategories.Any(
+                        subcategory => querySubcategoryIds.Any(subcategoryId => subcategoryId == subcategory.Id)))
+                    .Where(shop => shop.MinPrice >= queryMinPrice && shop.MaxPrice <= queryMaxPrice)
+                    .SearchChildren(shop => shop.Subcategories)
+                        .With(subcategory => subcategory.LowercaseName)
+                        .Containing(queryKeywords)
+                    .Search(shop => shop.LowercaseName,
+                            shop => shop.LowercaseDescription,
+                            shop => shop.Category.LowercaseName)
+                        .Containing(queryKeywords)
+                    .OrderBy(shop => shop.Name),
                 start,
                 count);
 
             return mapper.Map<IList<Shop>, List<ShopSummary>>(shops);
+
+            Guid ParseGuid(string rawGuid)
+            {
+                if (rawGuid == null)
+                {
+                    return Guid.Empty;
+                }
+
+                return Guid.Parse(rawGuid);
+            }
+
+            Guid[] ParseGuidArray(string rawGuids)
+            {
+                if (rawGuids == null)
+                {
+                    return Array.Empty<Guid>();
+                }
+
+                return rawGuids.Split(' ').Select(rawGuid => ParseGuid(rawGuid)).ToArray();
+            }
         }
 
         [HttpGet("{shopId}")]
@@ -167,6 +179,59 @@ namespace Server.Controllers.Shops
             await AuthorizeShopOwner(shop);
 
             _database.Shops.Remove(shop);
+
+            await _database.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPost("{shopId}/whatsapp")]
+        public async Task<IActionResult> CreateWhatsappContact(
+            [FromRoute] Guid shopId,
+            [FromBody] CreateWhatsappContactBody body,
+            [FromServices] IPhoneNumberService phoneNumberService)
+        {
+            var shop = await _database.Shops.FirstAsync(shop => shop.Id == shopId);
+
+            await AuthorizeShopOwner(shop);
+
+            var newContact = new WhatsappShopContact();
+
+            newContact.SetIdentity(body.PhoneNumber, phoneNumberService);
+
+            shop.WhatsappContacts.Add(newContact);
+
+            await _database.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpGet("{shopId}/whatsapp")]
+        public async Task<IList<ShopContactSummary>> ReadAllWhatsappContacts(
+            [FromRoute] Guid shopId,
+            [FromServices] IMapper mapper)
+        {
+            var shop = await _database.Shops.FirstAsync(shop => shop.Id == shopId);
+
+            await AuthorizeShopOwner(shop);
+
+            var contactSummaries = mapper.Map<IList<WhatsappShopContact>, List<ShopContactSummary>>(shop.WhatsappContacts);
+
+            return contactSummaries;
+        }
+
+        [HttpDelete("{shopId}/whatsapp/{contactId}")]
+        public async Task<IActionResult> DeleteWhatsappContact(
+            [FromRoute] Guid shopId,
+            [FromRoute] Guid contactId)
+        {
+            var shop = await _database.Shops.FirstAsync(shop => shop.Id == shopId);
+
+            await AuthorizeShopOwner(shop);
+
+            var contact = await _database.WhatsappShopContacts.FirstAsync(contact => contact.Id == contactId);
+
+            _database.WhatsappShopContacts.Remove(contact);
 
             await _database.SaveChangesAsync();
 

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import FailSafeImg from "../../components/fail-safe-img";
 import CloseIcon from "../../svg/close-icon";
 import LocationIcon from "../../svg/location-icon";
+import WhatsappIcon from "../../svg/whatsapp-icon";
 
 const Container = styled.div`
   position: absolute;
@@ -157,11 +158,11 @@ const ShopDetails = styled.div`
   overflow-y: scroll;
 `;
 
-const OnlineShopList = styled.ul`
+const ExternalLinkList = styled.ul`
   padding-left: 0;
 `;
 
-const OnlineShop = styled.li`
+const ExternalLinkItem = styled.li`
   transition-duration: 0.2s;
 
   padding: 0.3rem;
@@ -183,13 +184,15 @@ const OnlineShop = styled.li`
     margin-right: 0.2rem;
   }
 
-  a {
+  a, p {
     margin-bottom: 0;
     font-size: 1rem;
 
     color: black;
   }
 `;
+
+
 
 const ShopOffCanvas = ({ history, shop, showBackground, canJumpToLocation, visible, setVisible, onDismiss, ...props }) => {
   return (
@@ -220,20 +223,57 @@ const ShopOffCanvas = ({ history, shop, showBackground, canJumpToLocation, visib
         <ShopDetails className='d-flex flex-column flex-grow-1 p-2 pr-3'>
           <p className='mb-1 mt-2'><b>Rentang Harga: </b>{`Rp ${shop?.minPrice} - Rp ${shop?.maxPrice}`}</p>
           <p className='mb-1'><b>Toko Online :</b></p>
-          <OnlineShopList className='mb-3'>
-            {shop?.onlineShopInstances?.map(onlineShop => {
-              return (
-                <OnlineShop className='d-flex flex-row align-items-center'>
-                  <FailSafeImg
-                    src={`api/public/assets/${onlineShop?.platform?.iconFilename}`}
-                    altsrc={`assets/imagenotfound.png`}
-                  />
-                  <a href={onlineShop?.url}>{`${onlineShop?.platform?.name} (${onlineShop?.name})`}</a>
-                </OnlineShop>
-              );
-            })}
-          </OnlineShopList>
+          <ExternalLinkList className='mb-3'>
+            {(() => {
+              if (shop?.onlineShopInstances.length > 0) {
+                return (
+                  shop?.onlineShopInstances?.map(onlineShop => {
+                    return (
+                      <ExternalLinkItem className='d-flex flex-row align-items-center'>
+                        <FailSafeImg
+                          src={`api/public/assets/${onlineShop?.platform?.iconFilename}`}
+                          altsrc={`assets/imagenotfound.png`}
+                        />
+                        <a href={onlineShop?.url}>{`${onlineShop?.platform?.name} (${onlineShop?.name})`}</a>
+                      </ExternalLinkItem>
+                    );
+                  })
+                );
+              } else {
+                return (
+                  <p className='text-muted mb-0'>Tidak ada toko online.</p>
+                );
+              }
+            })()}
+          </ExternalLinkList>
+          <p className='mb-1'><b>Kontak</b></p>
+          <ExternalLinkList className='mb-3'>
+            {(() => {
+              if (shop?.whatsappContacts.length > 0) {
+                return (
+                  shop?.whatsappContacts?.map(contact => {
+                    return (
+                      <ExternalLinkItem className='d-flex flex-row align-items-center'>
+                        <FailSafeImg 
+                          src={`/assets/contact-icons/whatsapp.svg`}
+                          altsrc='/assets/imagenotfound.png'
+                        />
+                        {(contact.contactUrl) ? <a href={contact.contactUrl}>{contact.contactIdentity}</a> : <p>{contact.contactIdentity}</p>}
+                      </ExternalLinkItem>
+                    );
+                  })
+                );
+              } else {
+                return (
+                  <p className='text-muted mb-0'>Tidak ada kontak.</p>
+                );
+              }
+            })()}
+          </ExternalLinkList>
           <p className='mb-1'><b>Kategori : </b>{shop?.category?.name ?? 'N/A'}</p>
+          <p><b>Subkategori : </b>{(shop?.subcategories.length > 0) ? shop?.subcategories?.map(subcategory => {
+            return subcategory.name
+          }).join(', ') : 'N/A'}</p>
           <p className='mb-2'><b>Pemilik : </b>{shop?.ownerNames?.length > 0 ? shop?.ownerNames?.join(', ') : 'N/A'}</p>
           <p>{shop?.description}</p>
         </ShopDetails>

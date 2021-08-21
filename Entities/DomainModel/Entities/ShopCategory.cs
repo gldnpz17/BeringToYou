@@ -12,6 +12,8 @@ namespace DomainModel.Entities
         [Required]
         public string Name { get; set; }
 
+        public string LowercaseName { get; set; }
+
         public string IconFilename { get; set; }
 
         public virtual IList<ShopSubcategory> Subcategories { get; set; } = new List<ShopSubcategory>();

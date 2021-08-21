@@ -6,6 +6,7 @@ using DomainModelServiceImplementations.AlphanumericRng;
 using DomainModelServiceImplementations.DateTimeService;
 using DomainModelServiceImplementations.EmailSender;
 using DomainModelServiceImplementations.PasswordHasher;
+using DomainModelServiceImplementations.PhoneNumberService;
 using DomainModelServiceImplementations.TotpService;
 using EFCoreDatabase;
 using InMemoryDatabase;
@@ -144,6 +145,7 @@ namespace Server
             services.AddSingleton<IEmailSender, DebugEmailSender>();
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
             services.AddSingleton<ITotpService, TotpService>();
+            services.AddSingleton<IPhoneNumberService>(new LibPhoneNumberService(defaultCountry: "ID"));
 
             // Register controller services.
             services.AddSingleton<IFileSystemService, FileSystemService>();
