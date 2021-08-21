@@ -3,7 +3,7 @@
   "name": "BeringToYou",
   "icons": [
     {
-      "src": "beringicon.png",
+      "src": "bty-logo.svg",
       "type": "image/png",
       "sizes": "512x512"
     }

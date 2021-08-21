@@ -84,12 +84,20 @@ const BrandContainer = styled(ExpandableContainer)`
       vertical-align: baseline;
     }
 
+    a {
+      color: black;
+      display: flex;
+      align-items: center;
+    }
+
     h1 {
       transition: max-width 0.5s 0.2s, opacity 1s 0.2s;
+      padding-top: 0.15rem;
+      padding-bottom: 0.15rem;
+      font-size: 1.4rem;
+      user-select: none;
 
       overflow: hidden;
-
-      vertical-align: baseline;
 
       max-width: 15rem;
       opacity: 100%;
@@ -246,8 +254,10 @@ const VisitorNavbar = ({ history, ...props }) => {
             className={`${searchOpen ? 'collapsed' : 'expanded'} ${menuOpen ? 'menu-open' : ''}`}
           >
             <div id='brand-contents'>
-              <h1>beringtoyou.com</h1>
-              <Logo />
+              <a href='/landing'>
+                <h1>beringtoyou.com</h1>
+                <Logo />
+              </a>
             </div>
           </BrandContainer>
           <SearchContainer className={`${searchOpen ? 'expanded' : ''} ${menuOpen ? 'collapsed' : ''}`}>

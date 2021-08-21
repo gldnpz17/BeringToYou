@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using NSwag.Generation.Processors.Security;
 using PostgresDatabase;
@@ -25,6 +26,7 @@ using Server.Common.Mapper;
 using Server.Common.Middlewares.ApplicationExceptionHandler;
 using Server.ServiceImplementation;
 using Server.Services;
+using System.IO;
 
 namespace Server
 {
@@ -169,6 +171,19 @@ namespace Server
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            var landingFileProvider = new PhysicalFileProvider(Path.Combine(_environment.ContentRootPath, "landing-web"));
+            var landingRequestpath = "/landing";
+            app.UseDefaultFiles(new DefaultFilesOptions()
+            {
+                FileProvider = landingFileProvider,
+                RequestPath = landingRequestpath
+            });
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = landingFileProvider,
+                RequestPath = landingRequestpath
+            });
 
             app.UseSpaStaticFiles();
 
