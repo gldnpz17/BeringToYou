@@ -1,3 +1,4 @@
+import { useSnackbar } from 'notistack';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Form, Nav, Tab } from 'react-bootstrap';
 import styled from "styled-components";
@@ -32,6 +33,7 @@ import deleteOnlineShop from '../use-cases/admin/shop/delete-online-shop';
 import deleteOnlineShopPlatform from '../use-cases/admin/shop/delete-online-shop-platform';
 import deleteProductCategory from '../use-cases/admin/shop/delete-product-category';
 import deleteShopCategory from '../use-cases/admin/shop/delete-shop-category';
+import deleteWhatsappContact from '../use-cases/admin/shop/delete-whatsapp-contact';
 import editOnlineShop from '../use-cases/admin/shop/edit-online-shop';
 import updateOnlineShopPlatform from '../use-cases/admin/shop/update-online-shop-platform';
 import { default as updateProductCategory, default as updateShopCategory } from '../use-cases/admin/shop/update-shop-category';
@@ -66,6 +68,8 @@ const ShopBanner = styled(FailSafeImg)`
 `;
 
 const AdminShopPage = () => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const bannerUploadInput = useRef(null);
   const identityContext = useContext(IdentityContext);
 
@@ -773,9 +777,27 @@ const AdminShopPage = () => {
     setShowCreateWhatsappContactModal(true);
   }
 
+  const handleDeleteWhatsappContact = async (contact) => {
+    if (window.confirm(`Hapus nomor whatsapp ${contact.contactIdentity}?`)) {
+      let response = await deleteWhatsappContact(selectedShop.id, contact.id);
+
+      if (response.status === 200) {
+        enqueueSnackbar('Nomor whatsapp berhasil dihapus.', {
+          variant: 'success'
+        });
+
+        refreshShopData(selectedShop.id);
+      } else {
+        enqueueSnackbar('Gagal menghapus nomor whatsapp.', {
+          variant: 'error'
+        });
+      }
+    }
+  }
+
   useEffect(() => {
-    if (!showCreateWhatsappContactModal) {
-      refreshShopData();
+    if (!showCreateWhatsappContactModal && selectedShop) {
+      refreshShopData(selectedShop.id);
     }
   }, [showCreateWhatsappContactModal])
 
@@ -984,7 +1006,7 @@ const AdminShopPage = () => {
                         <td>
                           <span className='d-flex flex-row justify-content-end'>
                             <IconButton danger className='p-1' iconOnly
-                              onClick={() => {}}
+                              onClick={() => handleDeleteWhatsappContact(contact)}
                             >
                               <DeleteIcon />
                             </IconButton>
