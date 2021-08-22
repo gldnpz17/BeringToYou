@@ -25,7 +25,7 @@ const ShopCard = ({ shop, className, ...props }) => {
         <FailSafeImg
           className='flex-grow-1'
           src={`api/public/assets/${shop?.bannerImage?.thumbnailFilename}`}
-          altsrc={`assets/imagenotfound.png`}
+          altsrc={`/assets/imagenotfound.png`}
         />
         <div className='p-1'>
           <p className='m-0'><b>{shop?.name}</b></p>

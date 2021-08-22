@@ -238,7 +238,7 @@ const VisitorNavbar = ({ history, ...props }) => {
   };
 
   const closeSearch = () => {
-    history.push('/');
+    history.push('/map');
   };
 
   return (

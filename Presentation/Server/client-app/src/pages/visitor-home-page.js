@@ -61,7 +61,7 @@ const VisitorHomePage = ({ history }) => {
     if (shopFocusId) {
       params.delete('shopfocus');
 
-      history.push('/?' + params.toString());
+      history.push('/map?' + params.toString());
     }
   };
 

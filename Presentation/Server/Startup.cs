@@ -172,22 +172,20 @@ namespace Server
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseRouting();
+
             var landingFileProvider = new PhysicalFileProvider(Path.Combine(_environment.ContentRootPath, "landing-web"));
-            var landingRequestpath = "/landing";
-            app.UseDefaultFiles(new DefaultFilesOptions()
+            app.UseDefaultFiles(new DefaultFilesOptions() 
             {
-                FileProvider = landingFileProvider,
-                RequestPath = landingRequestpath
+                FileProvider = landingFileProvider
             });
+            app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions()
             {
-                FileProvider = landingFileProvider,
-                RequestPath = landingRequestpath
-            });
+                FileProvider = landingFileProvider
+            });;
 
             app.UseSpaStaticFiles();
-
-            app.UseRouting();
 
             if (_environment.IsDevelopment())
             {

@@ -208,14 +208,14 @@ const ShopOffCanvas = ({ history, shop, showBackground, canJumpToLocation, visib
       <Content className={`d-flex flex-column ${visible ? '' : 'hidden'}`}>
         <ImageContainer>
           <FailSafeImg
-            src={`api/public/assets/${shop?.bannerImage?.thumbnailFilename}`}
-            altsrc={`assets/imagenotfound.png`}
+            src={`/api/public/assets/${shop?.bannerImage?.thumbnailFilename}`}
+            altsrc={`/assets/imagenotfound.png`}
           />
           <h1>{shop?.name}</h1>
           <Close onClick={() => onDismiss ? onDismiss() : setVisible(false)} />
           {canJumpToLocation ?
             <Location onClick={() => {
-              history.push(`/?shopfocus=${shop?.id}`);
+              history.push(`/map?shopfocus=${shop?.id}`);
             }} />
             : null
           }
@@ -231,8 +231,8 @@ const ShopOffCanvas = ({ history, shop, showBackground, canJumpToLocation, visib
                     return (
                       <ExternalLinkItem className='d-flex flex-row align-items-center'>
                         <FailSafeImg
-                          src={`api/public/assets/${onlineShop?.platform?.iconFilename}`}
-                          altsrc={`assets/imagenotfound.png`}
+                          src={`/api/public/assets/${onlineShop?.platform?.iconFilename}`}
+                          altsrc={`/assets/imagenotfound.png`}
                         />
                         <a href={onlineShop?.url}>{`${onlineShop?.platform?.name} (${onlineShop?.name})`}</a>
                       </ExternalLinkItem>

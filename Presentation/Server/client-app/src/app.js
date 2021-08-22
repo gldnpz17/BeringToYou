@@ -87,7 +87,7 @@ const App = () => {
                   <AdminNavigationBar id='navigation-bar' />
                 </IdentityContext.Provider>
               </Route>
-              <Route path='/'>
+              <Route path='/(map|search)'>
                 <VisitorNavbar id='navigation-bar' />
               </Route>
             </Switch>
@@ -101,9 +101,9 @@ const App = () => {
                 </Route>
 
                 {/* Visitor page contents. */}
-                <Route path='/'>
+                <Route path='/(map|search)'>
                   <Switch>
-                    <Route exact path='/(search)?'>
+                    <Route path='/'>
                       <VisitorHomePage />
                     </Route>
                   </Switch>
