@@ -254,7 +254,7 @@ const VisitorNavbar = ({ history, ...props }) => {
             className={`${searchOpen ? 'collapsed' : 'expanded'} ${menuOpen ? 'menu-open' : ''}`}
           >
             <div id='brand-contents'>
-              <a href='/landing'>
+              <a href='/'>
                 <h1>beringtoyou.com</h1>
                 <Logo />
               </a>
