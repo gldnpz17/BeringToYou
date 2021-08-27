@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import FailSafeImg from "../../components/fail-safe-img";
 import CloseIcon from "../../svg/close-icon";
 import LocationIcon from "../../svg/location-icon";
 import WhatsappIcon from "../../svg/whatsapp-icon";
+import ReactGA from 'react-ga';
 
 const Container = styled.div`
   position: absolute;
@@ -192,9 +194,13 @@ const ExternalLinkItem = styled.li`
   }
 `;
 
-
-
 const ShopOffCanvas = ({ history, shop, showBackground, canJumpToLocation, visible, setVisible, onDismiss, ...props }) => {
+  useEffect(() => {
+    if (shop) {
+      ReactGA.modalview(`shop-modal/${shop.id}_${shop.name}`);
+    }
+  }, [shop])
+  
   return (
     <Container {...props}>
       <Background className={visible ? '' : 'hidden'}

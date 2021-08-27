@@ -13,6 +13,8 @@ import ReactGA from 'react-ga';
 
 export const IdentityContext = React.createContext({});
 
+const GoogleAnalyticsId = 'UA-206116809-1';
+
 const WebContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -69,7 +71,7 @@ const App = () => {
   useEffect(() => {
     getIdentity();
 
-    ReactGA.initialize('UA-206116809-1');
+    ReactGA.initialize(GoogleAnalyticsId);
     ReactGA.pageview(window.location.pathname + window.location.search)
   }, []);
 

@@ -13,6 +13,7 @@ import ShopFilterModal from "../../modals/shop-filter-modal";
 import fetchAllShops from '../../use-cases/common/fetch-all-shops';
 import fetchShopDetails from "../../use-cases/common/fetch-shop-details";
 import ShopOffCanvas from "./shop-offcanvas";
+import ReactGA from 'react-ga';
 
 const Container = styled.div`
   height: 100%;
@@ -56,6 +57,8 @@ const SearchMenu = ({ history }) => {
     setSearchResults([]);
     setSearchEndReached(false);
     setIsLoading(false);
+
+    ReactGA.pageview(window.location.pathname + window.location.search)
 
     await loadMoreResults();
   };
