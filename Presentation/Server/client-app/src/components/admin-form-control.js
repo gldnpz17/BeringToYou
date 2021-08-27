@@ -46,7 +46,7 @@ const StyledSelect = styled.select`
     .inner>ul>li>a {
       &.active, &:active {
         color: black;
-        background-color: ${props => props.theme.secondary};
+        background-color: ${props => props.theme.secondaryLight};
       }
     }
   }

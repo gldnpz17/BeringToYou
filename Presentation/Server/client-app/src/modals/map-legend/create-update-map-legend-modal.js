@@ -9,7 +9,7 @@ import updateLegend from '../../use-cases/admin/map/update-legend';
 import uploadImage from "../../use-cases/common/upload-image";
 
 const CreateUpdateMapLegendModal = ({ legendToUpdate, show, setShow, ...props }) => {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
   let mode = legendToUpdate ? 'update' : 'create';
 

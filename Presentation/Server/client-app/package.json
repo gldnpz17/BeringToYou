@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.12.3",
+    "@material-ui/data-grid": "^4.0.0-alpha.37",
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
@@ -14,6 +15,7 @@
     "jquery": "^1.12.4",
     "kute.js": "^2.1.1-alpha3",
     "leaflet": "^1.7.1",
+    "luxon": "^2.0.2",
     "notistack": "^1.0.10",
     "popper.js": "^1.16.1",
     "react": "^17.0.2",

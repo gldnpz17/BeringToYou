@@ -7,6 +7,8 @@ import VisitorNavbar from './components/visitor-navbar';
 import VisitorHomePage from './pages/visitor-home-page';
 import AdminRoute from './routes/admin-route';
 import checkIdentity from './use-cases/check-identity';
+import { ThemeProvider as MaterialUiThemeProvider } from '@material-ui/styles';
+import { createTheme } from '@material-ui/core';
 
 export const IdentityContext = React.createContext({});
 
@@ -55,6 +57,14 @@ const App = () => {
     textOnDanger: 'white'
   }
 
+  const materialUiTheme = createTheme({
+    palette: {
+      primary: {
+        main: theme.primary
+      }
+    }
+  })
+
   useEffect(() => {
     getIdentity();
   }, []);
@@ -72,47 +82,49 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <SnackbarProvider maxSnack={3}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
-        }}
-        autoHideDuration={2500}
-      >
-        <BrowserRouter>
-          <WebContainer>
-            <Switch>
-              <Route path='/admin'>
-                <IdentityContext.Provider value={identityContextValue}>
-                  <AdminNavigationBar id='navigation-bar' />
-                </IdentityContext.Provider>
-              </Route>
-              <Route path='/(map|search)'>
-                <VisitorNavbar id='navigation-bar' />
-              </Route>
-            </Switch>
-            <ContentContainer>
+      <MaterialUiThemeProvider theme={materialUiTheme}>
+        <SnackbarProvider maxSnack={3}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right'
+          }}
+          autoHideDuration={2500}
+        >
+          <BrowserRouter>
+            <WebContainer>
               <Switch>
-                {/* Admin page contents. */}
                 <Route path='/admin'>
                   <IdentityContext.Provider value={identityContextValue}>
-                    <AdminRoute />
+                    <AdminNavigationBar id='navigation-bar' />
                   </IdentityContext.Provider>
                 </Route>
-
-                {/* Visitor page contents. */}
                 <Route path='/(map|search)'>
-                  <Switch>
-                    <Route path='/'>
-                      <VisitorHomePage />
-                    </Route>
-                  </Switch>
+                  <VisitorNavbar id='navigation-bar' />
                 </Route>
               </Switch>
-            </ContentContainer>
-          </WebContainer>
-        </BrowserRouter>
-      </SnackbarProvider>
+              <ContentContainer>
+                <Switch>
+                  {/* Admin page contents. */}
+                  <Route path='/admin'>
+                    <IdentityContext.Provider value={identityContextValue}>
+                      <AdminRoute />
+                    </IdentityContext.Provider>
+                  </Route>
+
+                  {/* Visitor page contents. */}
+                  <Route path='/(map|search)'>
+                    <Switch>
+                      <Route path='/'>
+                        <VisitorHomePage />
+                      </Route>
+                    </Switch>
+                  </Route>
+                </Switch>
+              </ContentContainer>
+            </WebContainer>
+          </BrowserRouter>
+        </SnackbarProvider>
+      </MaterialUiThemeProvider>
     </ThemeProvider>
   );
 };

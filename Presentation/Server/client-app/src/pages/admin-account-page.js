@@ -20,12 +20,12 @@ import DeleteIcon from "../svg/delete-icon";
 import ProfileIcon from '../svg/profile-icon';
 import SecurityIcon from '../svg/security-icon';
 import VerifiedIcon from "../svg/verified-icon";
+import AccountManagement from "../use-cases/account-management";
 import addMerchantVerificationImage from '../use-cases/admin/account/add-merchant-verification-image';
 import addShopToMerchantVerification from "../use-cases/admin/account/add-shop-to-merchant-verification";
 import deleteMerchantVerificationImage from '../use-cases/admin/account/delete-merchant-verification-image';
 import deleteShopFromMerchantVerification from "../use-cases/admin/account/delete-shop-from-merchant-verification";
 import updateProfile from "../use-cases/admin/account/update-profile";
-import fetchMerchantVerificationDetails from '../use-cases/admin/fetch-merchant-verification-details';
 import fetchMerchantVerificationShops from "../use-cases/admin/fetch-merchant-verification-shops";
 import resetPassword from "../use-cases/admin/reset-password";
 import fetchAllShops from '../use-cases/common/fetch-all-shops';
@@ -52,7 +52,7 @@ const AdminAccountPage = () => {
     setShops(await fetchAllShops());
 
     if (identityContext?.identity?.isMerchant) {
-      let request = await fetchMerchantVerificationDetails(identityContext.identity.accountId);
+      let request = await AccountManagement.readMerchantVerificationRequest(identityContext.identity.accountId);
 
       setVerificationRequest(request)
 

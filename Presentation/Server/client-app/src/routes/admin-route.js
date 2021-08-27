@@ -3,7 +3,7 @@ import { Route, Switch, useRouteMatch } from "react-router";
 import styled from "styled-components";
 import AdminSidebar from "../components/admin-sidebar";
 import RequireAuthenticationRoute from "../components/auth/require-authentication-route";
-import AdminAdminPage from '../pages/admin-account-management-page';
+import AdminAccountManagementPage from '../pages/admin-account-management/admin-account-management-page';
 import AdminAccountPage from '../pages/admin-account-page';
 import AdminMapPage from '../pages/admin-map-page';
 import AdminMiscPage from '../pages/admin-misc-page';
@@ -47,7 +47,7 @@ const AdminRoute = () => {
                 <AdminAccountPage />
               </Route>
               <Route path={`${path}/manajemen-akun`}>
-                <AdminAdminPage />
+                <AdminAccountManagementPage />
               </Route>
               <Route path={`${path}/peta-digital`}>
                 <AdminMapPage />

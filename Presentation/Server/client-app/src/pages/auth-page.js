@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { IdentityContext } from "../app";
 import AdminFormControl from '../components/admin-form-control';
 import CustomButton from "../components/custom-button";
-import createMerchantAccount from "../use-cases/admin/account-management/create-merchant-account";
+import AccountManagement from "../use-cases/account-management";
 import login from "../use-cases/admin/auth/login";
 
 const Container = styled.div`
@@ -99,7 +99,7 @@ const AuthPage = () => {
     let displayName = document.getElementById('admin-signup-display-name').value;
     let password = document.getElementById('admin-signup-password').value;
 
-    await createMerchantAccount(
+    await AccountManagement.createMerchantAccount(
       username,
       displayName,
       password
