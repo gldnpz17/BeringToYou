@@ -9,6 +9,7 @@ import AdminRoute from './routes/admin-route';
 import checkIdentity from './use-cases/check-identity';
 import { ThemeProvider as MaterialUiThemeProvider } from '@material-ui/styles';
 import { createTheme } from '@material-ui/core';
+import ReactGA from 'react-ga';
 
 export const IdentityContext = React.createContext({});
 
@@ -67,6 +68,9 @@ const App = () => {
 
   useEffect(() => {
     getIdentity();
+
+    ReactGA.initialize('UA-206116809-1');
+    ReactGA.pageview(window.location.pathname + window.location.search)
   }, []);
 
   const getIdentity = async () => {
