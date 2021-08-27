@@ -9,6 +9,7 @@ import VerifiedIcon from "../../../svg/verified-icon";
 import AccountManagement from "../../../use-cases/account-management";
 import setActiveModal from "../../common/utils/set-active-modal";
 import VerifyMerchantModal from '../modals/verify-merchant-modal';
+import FailSafeImg from '../../../components/fail-safe-img';
 
 const Modals = {
   verifyMerchant: 'verify-merchant'
@@ -74,6 +75,21 @@ const MerchantAccountsTab = () => {
               Toolbar: GridToolbar
             }}
             columns={[
+              {
+                field: 'profilePicture',
+                headerName: 'Foto',
+                disableExport: true,
+                disableReorder: true,
+                sortable: false,
+                align: 'center',
+                renderCell: params => (
+                  <FailSafeImg
+                    className='h-100 p-1 rounded-circle' 
+                    src={`/api/accounts/${params.row.id}/profile-picture`}
+                    altsrc='/admin-assets/no-profile-picture.png'
+                  />
+                )
+              },
               {
                 field: 'username',
                 headerName: 'Username',

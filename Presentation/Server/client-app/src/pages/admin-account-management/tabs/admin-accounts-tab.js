@@ -14,6 +14,7 @@ import PermissionPreset from "../../../use-cases/permission-preset";
 import { useSnackbar } from "notistack";
 import { DataGrid, GridToolbar } from "@material-ui/data-grid";
 import SecurityIcon from '../../../svg/security-icon';
+import FailSafeImg from "../../../components/fail-safe-img";
 
 const Modals = {
   createAdminAccount: 'create-admin-account',
@@ -123,6 +124,21 @@ const AdminAccountsTab = (props) => {
               Toolbar: GridToolbar
             }}
             columns={[
+              {
+                field: 'profilePicture',
+                headerName: 'Foto',
+                disableExport: true,
+                disableReorder: true,
+                sortable: false,
+                align: 'center',
+                renderCell: params => (
+                  <FailSafeImg
+                    className='h-100 p-1 rounded-circle' 
+                    src={`/api/accounts/${params.row.id}/profile-picture`}
+                    altsrc='/admin-assets/no-profile-picture.png'
+                  />
+                )
+              },
               {
                 field: 'username',
                 headerName: 'Username',
